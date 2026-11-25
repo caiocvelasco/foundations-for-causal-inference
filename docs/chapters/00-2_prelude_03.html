@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Where We Want to Go: from the Random Experiment to the Statistical Model – Foundations for Causal Inference</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/01_from_uncertainty_to_probability.html" rel="next">
+<link href="../chapters/00-2_prelude_02.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8ee17f74d3b140f8619030554e94af15.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/00_what_can_we_learn_from_data.html">Prelude</a></li><li class="breadcrumb-item"><a href="../chapters/00-2_prelude_03.html"><span class="chapter-title">Where We Want to Go: from the Random Experiment to the Statistical Model</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Foundations for Causal Inference</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Foundations for Causal Inference</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Prelude</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00_what_can_we_learn_from_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">What Do We Want to Learn from Data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The Map of Probability and Inference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_02.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Empirical Modeling: from the Real World to the Statistical Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_03.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Where We Want to Go: from the Random Experiment to the Statistical Model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Module 1 - Probability</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01_from_uncertainty_to_probability.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">From Uncertainty to Probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02_formalizing_the_statistical_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mathematical Formalization - Statistical Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_1_probability_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Part 1 of 2 - Constructing a Probability Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_2_dgp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Where Do Data Come From? The Data Generating Process</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_when_the_sample_space_is_continuous.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Real Life: When the Sample Space Is Continuous</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_sampling_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Part 2 of 2 - Sampling Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_iid.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The IID Case</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_conditional_probability.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conditional Probability: Information, Updating Probabilities, and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#from-the-stochastic-phenomenon-to-the-random-experiment" id="toc-from-the-stochastic-phenomenon-to-the-random-experiment" class="nav-link active" data-scroll-target="#from-the-stochastic-phenomenon-to-the-random-experiment">From the stochastic phenomenon to the random experiment</a>
+  <ul class="collapse">
+  <li><a href="#the-three-conditions-will-be-our-roadmap" id="toc-the-three-conditions-will-be-our-roadmap" class="nav-link" data-scroll-target="#the-three-conditions-will-be-our-roadmap">The three conditions will be our roadmap</a></li>
+  </ul></li>
+  <li><a href="#first-destination-building-the-abstract-spaces" id="toc-first-destination-building-the-abstract-spaces" class="nav-link" data-scroll-target="#first-destination-building-the-abstract-spaces">First destination: building the abstract spaces</a>
+  <ul class="collapse">
+  <li><a href="#and-where-does-iid-fit-in" id="toc-and-where-does-iid-fit-in" class="nav-link" data-scroll-target="#and-where-does-iid-fit-in">And where does IID fit in?</a></li>
+  </ul></li>
+  <li><a href="#spaces-now-models-later" id="toc-spaces-now-models-later" class="nav-link" data-scroll-target="#spaces-now-models-later">Spaces now, models later</a></li>
+  <li><a href="#the-complete-map-of-the-construction" id="toc-the-complete-map-of-the-construction" class="nav-link" data-scroll-target="#the-complete-map-of-the-construction">The complete map of the construction</a></li>
+  <li><a href="#where-will-the-data-appear" id="toc-where-will-the-data-appear" class="nav-link" data-scroll-target="#where-will-the-data-appear">Where will the data appear?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/00_what_can_we_learn_from_data.html">Prelude</a></li><li class="breadcrumb-item"><a href="../chapters/00-2_prelude_03.html"><span class="chapter-title">Where We Want to Go: from the Random Experiment to the Statistical Model</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Where We Want to Go: from the Random Experiment to the Statistical Model</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+OBJECTIVE OF THIS PRELUDE
+
+Show, before the technical details, the mathematical architecture that will be built in the next chapters.
+
+This file is a MAP. It should not teach any of the objects below in depth.
+
+MAIN ARC
+
+real world
+→ stochastic phenomenon / chance regularity
+→ random experiment
+→ abstract formalization
+→ statistical space
+→ random variables
+→ numerical models
+→ data / inference
+
+CENTRAL DISTINCTION
+
+NOW:
+- abstract spaces
+- Ω, F, P, G_n
+- statistical space
+
+LATER:
+- random variables
+- probability model
+- sampling model / random sample
+- statistical model
+
+MAIN SOURCES
+
+Spanos:
+- Chapter 2 — Probability Theory: A Modeling Framework
+- 2.4 Random Experiments
+- 2.5 Formalizing Condition [a]
+- 2.6 Formalizing Condition [b]
+- 2.7 Formalizing Condition [c]: Random Trials
+- 2.8 Statistical Space
+- 2.9 A Look Forward
+- Chapter 3 — The Notion of a Probability Model
+- Chapter 4 — The Notion of a Random Sample
+
+SUPPLEMENTARY REFERENCES
+
+Bertsekas & Tsitsiklis — Introduction to Probability
+Robert Ash — Basic Probability Theory
+
+CAUTIONS
+
+- experiment = defined mechanism/procedure
+- trial = one complete execution of the experiment
+- outcome = ω
+- sample space = Ω
+- sampling space = G_n
+- Cartesian product does not imply repetition
+- G_n can be general; IID is an additional assumption
+- conditional probability does not depend on repetition
+- random sample will only be defined after random variables
+- (Ω,F,P) is a probability space, not a probability model, in this pedagogical arc
+-->
+<p>In the two previous preludes, we built the broader context of this journey.</p>
+<p>First we saw the <strong>general map</strong> connecting Probability, data, and Statistical Inference.</p>
+<p>Then we saw that these objects are part of a larger process of <strong>empirical modeling</strong>: specifying models, estimating them, confronting them with the data, and revising them when necessary.</p>
+<p>Now we will go one level deeper into the architecture:</p>
+<blockquote class="blockquote">
+<p><strong>where does the statistical model used in that process come from?</strong></p>
+</blockquote>
+<p>To answer, we will begin with the simplest mathematical structure we will use to represent a stochastic phenomenon: the <strong>random experiment</strong>.</p>
+<p>This question organizes a large part of the road ahead.</p>
+<p>The strategy will be to begin with the simplest possible case, understand its architecture precisely, and only then expand that architecture to more realistic phenomena.</p>
+<p>This is important because, in the next chapters, we will start working with symbols such as <span class="math inline">\(\Omega\)</span>, <span class="math inline">\(\mathcal F\)</span>, <span class="math inline">\(P\)</span>, Cartesian products, and sequences of trials. If we look only at each isolated piece, it is easy to lose sight of <strong>what we are building and why</strong>.</p>
+<p>The idea of this prelude is to see the forest first. Later we will enter the trees.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Do not try to memorize the formulas on this page.</p>
+<p>They appear only to show <strong>where each concept we will learn fits</strong>.</p>
+</div>
+</div>
+</div>
+<section id="from-the-stochastic-phenomenon-to-the-random-experiment" class="level2">
+<h2 class="anchored" data-anchor-id="from-the-stochastic-phenomenon-to-the-random-experiment">From the stochastic phenomenon to the random experiment</h2>
+<p>We begin in the real world with a <span class="concept"><strong>stochastic phenomenon</strong></span>: a phenomenon in which there is uncertainty about individual realizations, but regularities may appear when we observe many occurrences.</p>
+<p>This is the combination we already called <strong>chance regularity</strong>:</p>
+<p><span class="math display">\[
+\boxed{\text{individual uncertainty}}
+\qquad + \qquad
+\boxed{\text{aggregate regularity}}
+\]</span></p>
+<p>But stochastic phenomena can have very different structures. Therefore, instead of trying to begin with the most general case, we will begin with a particularly simple class.</p>
+<p>The idea is to represent a phenomenon that can be thought of as a <span class="concept"><strong>random experiment</strong></span>.</p>
+<p>Here, <strong>random experiment does not mean only “something uncertain that happens.”</strong> It is a chance mechanism with three specific characteristics:</p>
+<ol type="1">
+<li><strong>[a] The possible outcomes are known a priori.</strong></li>
+<li><strong>[b] The result of a particular trial is not known a priori, but there is a regularity of occurrence associated with the outcomes.</strong></li>
+<li><strong>[c] The experiment can be repeated under identical conditions.</strong></li>
+</ol>
+<p>Simple examples fit this idea well: tossing a coin, measuring the lifetime of a light bulb, or counting how many calls arrive at a call center during a time interval.</p>
+<p>The last situation already seems much closer to real data. Even so, if we can imagine the count being observed repeatedly under sufficiently similar conditions, it can initially be treated within this simple structure.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Why begin with such a simple case?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why begin with such a simple case?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because it allows us to build, without unnecessary complications, the fundamental architecture of the theory.</p>
+<p>First we mathematize a simple form of stochastic phenomenon. Then we will see which assumptions need to be modified when the real phenomenon is more complex.</p>
+</div>
+</div>
+<p>Not every stochastic phenomenon, however, fits this structure.</p>
+<p>Think, for example, of a time series of <strong>exchange rates</strong>. The possible values can be described and the next value is uncertain, but condition <strong>[c]</strong> is problematic: circumstances change over time and today’s value may be related to yesterday’s. The phenomenon remains stochastic and may exhibit <em>chance regularity</em>, but the simple structure of the random experiment is no longer sufficient to capture it.</p>
+<p>That is,</p>
+<p><span class="math display">\[
+\boxed{\text{stochastic phenomenon}}
+\quad \not\Rightarrow \quad
+\boxed{\text{simple random experiment}}
+\]</span></p>
+<p>This contrast is important for understanding the strategy of the course:</p>
+<blockquote class="blockquote">
+<p><strong>we will begin by building the model of the simple case precisely; then we will have a foundation on which to introduce dependence, heterogeneity, and more realistic structures.</strong></p>
+</blockquote>
+<section id="the-three-conditions-will-be-our-roadmap" class="level3">
+<h3 class="anchored" data-anchor-id="the-three-conditions-will-be-our-roadmap">The three conditions will be our roadmap</h3>
+<p>The mathematical formalization will follow directly from the three characteristics of the random experiment:</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+\textbf{[a]} &amp; \text{which outcomes are possible?} &amp; \longrightarrow \Omega \\\[0.8em]
+\textbf{[b]} &amp; \text{how do we represent uncertainty?} &amp; \longrightarrow (\Omega,\mathcal F,P) \\\[0.8em]
+\textbf{[c]} &amp; \text{how do we represent its repetitions?} &amp; \longrightarrow \mathcal G_n
+\end{array}
+\]</span></p>
+<p>This is the common thread of the next chapters.</p>
+<p>In other words, we are trying to <strong>mathematize the random experiment</strong>. The first complete form of that formalization will be a <strong>statistical space</strong>. Later, with random variables, we will arrive at the numerical form that we will call a <strong>statistical model</strong>.</p>
+</section>
+</section>
+<section id="first-destination-building-the-abstract-spaces" class="level2">
+<h2 class="anchored" data-anchor-id="first-destination-building-the-abstract-spaces">First destination: building the abstract spaces</h2>
+<p>The first question will lead us to the set of possible outcomes:</p>
+<p><span class="math display">\[
+\boxed{\Omega}
+\]</span></p>
+<p>Then we will build the events we want to represent and a function capable of assigning probabilities to them:</p>
+<p><span class="math display">\[
+\boxed{(\Omega,\mathcal F,P)}
+\]</span></p>
+<p>This object will be called a <span class="concept"><strong>probability space</strong></span>.</p>
+<p>It represents mathematically the uncertainty associated with the outcome of <strong>one complete trial</strong> of the experiment we defined.</p>
+<p>But our story does not end with one trial.</p>
+<p>If we perform the experiment several times,</p>
+<p><span class="math display">\[
+T_1,T_2,\ldots,T_n,
+\]</span></p>
+<p>we will need to represent jointly the possible outcomes of those executions and the probabilistic structure that exists among them.</p>
+<p>This will lead us to a joint probability space,</p>
+<p><span class="math display">\[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\]</span></p>
+<p>and to the <span class="concept"><strong>sampling space</strong></span></p>
+<p><span class="math display">\[
+\mathcal G_n.
+\]</span></p>
+<p>Putting these pieces together, we will arrive at our first major destination:</p>
+<p><span class="math display">\[
+\boxed{
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right]
+}
+\]</span></p>
+<p>which we will call a <span class="concept"><strong>statistical space</strong></span>.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="What are we building up to this point?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What are we building up to this point?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An <strong>abstract</strong> mathematical structure capable of representing:</p>
+<ul>
+<li>the uncertainty of a trial;</li>
+<li>several executions of the experiment;</li>
+<li>and the probabilistic relationship among those executions.</li>
+</ul>
+<p>We are still working with <strong>spaces, events, and probability functions</strong> — not with the numerical data that will appear later.</p>
+</div>
+</div>
+<section id="and-where-does-iid-fit-in" class="level3">
+<h3 class="anchored" data-anchor-id="and-where-does-iid-fit-in">And where does IID fit in?</h3>
+<p>In the simple construction motivating this story, the expression “repeat under identical conditions” will eventually lead to the IID case.</p>
+<p>In our course, however, we will make a small pedagogical generalization: first we will build a <strong>general</strong> sampling space <span class="math inline">\(\mathcal G_n\)</span> and only later specialize to the case in which the trials are modeled as:</p>
+<ul>
+<li><strong>[I]</strong> being <em>independent</em>;</li>
+<li><strong>[ID]</strong> <em>identically distributed</em>, that is, with the same probabilistic structure.</li>
+</ul>
+<p>In that case, we will arrive at the simple structure</p>
+<p><span class="math display">\[
+\boxed{
+\left[
+(\Omega,\mathcal F,P)^n,
+\mathcal G_n^{IID}
+\right]
+}
+\]</span></p>
+<p>which will be called the <span class="concept"><strong>simple statistical space</strong></span>.</p>
+<p>We do not need to understand IID now.</p>
+<p>The important thing to keep in mind is only this:</p>
+<blockquote class="blockquote">
+<p><strong>IID does not appear because there are many data points. It is an additional assumption about how we model the relationship among the trials.</strong></p>
+</blockquote>
+<p>Later we will see that formalizing precisely the idea that <em>“knowing what happened in one trial does not change the probabilities of the others”</em> will require a new tool: <strong>conditional probability</strong>.</p>
+<p><span class="attention"><strong>Attention:</strong> conditional probability is a general concept and does not depend on repeated trials. It appears here in our narrative because it will be a natural tool for defining independence.</span></p>
+</section>
+</section>
+<section id="spaces-now-models-later" class="level2">
+<h2 class="anchored" data-anchor-id="spaces-now-models-later">Spaces now, models later</h2>
+<p>Here is a distinction that will be fundamental so that we do not mix different stages of the construction:</p>
+<p><span class="math display">\[
+\boxed{\textbf{SPACE} \neq \textbf{MODEL}}
+\]</span></p>
+<p>Up to the end of this first part, we will be building <strong>abstract spaces</strong>.</p>
+<p>Only afterwards will we introduce <span class="concept"><strong>random variables</strong></span>. They will allow us to take this abstract structure to numerical objects defined on the real line.</p>
+<p>We can visualize the transformation like this:</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\boxed{
+\begin{array}{c}
+\textbf{NOW}\\[0.3em]
+\text{probability space}\\
+(\Omega,\mathcal F,P)\\[0.6em]
++\\[0.6em]
+\text{sampling space}\\
+\mathcal G_n\\[0.6em]
+\Downarrow\\
+\textbf{statistical space}
+\end{array}}
+&amp;
+\quad \xrightarrow{\quad \text{random variables} \quad} \quad
+&amp;
+\boxed{
+\begin{array}{c}
+\textbf{LATER}\\[0.3em]
+\text{probability model}\\
+\textit{(probability model)}\\[0.6em]
++\\[0.6em]
+\text{sampling model}\\
+\textit{(sampling model)}\\[0.6em]
+\Downarrow\\
+\textbf{statistical model}
+\end{array}}
+\end{array}
+\]</span></p>
+<p>The idea is simple:</p>
+<p><span class="math display">\[
+\boxed{\text{abstract structure}}
+\quad\longrightarrow\quad
+\boxed{\text{numerical representation}}
+\]</span></p>
+<p>The <span class="concept"><strong>probability space</strong></span> <span class="math inline">\((\Omega,\mathcal F,P)\)</span> will be carried, through random variables, to a <span class="concept"><strong>probability model</strong></span>.</p>
+<p>In the same way, the structure of the trials will be carried to a <span class="concept"><strong>sampling model</strong></span>.</p>
+<p>The two sides will then form a <span class="concept"><strong>statistical model</strong></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="But we already used the word model in the previous prelude...">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+But we already used the word model in the previous prelude…
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Yes — and that was intentional.</p>
+<p>First we showed <strong>the destination</strong> to build a general intuition. Now we will begin to distinguish the stages of the road more precisely.</p>
+<p>In the next chapters, <span class="math inline">\((\Omega,\mathcal F,P)\)</span> will be called a <strong>probability space</strong>. The <strong>probability model</strong>, in the more specific sense we will adopt later, will appear only after we introduce random variables and distributions.</p>
+</div>
+</div>
+</section>
+<section id="the-complete-map-of-the-construction" class="level2">
+<h2 class="anchored" data-anchor-id="the-complete-map-of-the-construction">The complete map of the construction</h2>
+<p>We can now look at the whole story at once:</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\boxed{\text{REAL WORLD}}\\
+\Downarrow\\
+\boxed{\text{stochastic phenomenon}}\\
+\Downarrow\\[-0.2em]
+\textit{we begin with the simplest case}\\
+\Downarrow\\
+\boxed{\text{random experiment: [a], [b], [c]}}\\
+\Downarrow\\[-0.2em]
+\text{mathematical formalization}\\
+\Downarrow\\
+\boxed{
+\begin{array}{c}
+\Omega,\ \mathcal F,\ P,\ \mathcal G_n\\[0.3em]
+\textbf{STATISTICAL SPACE}
+\end{array}}
+\\[1em]
+\textit{later}\\[-0.2em]
+\Downarrow\\
+\boxed{\text{random variables}}\\
+\Downarrow\\
+\boxed{\textbf{STATISTICAL MODEL}}\\
+\Downarrow\\
+\boxed{\text{observed data and inference}}
+\end{array}
+\]</span></p>
+<p>Notice that the <strong>random experiment is not a set containing these spaces</strong>.</p>
+<p>It is the conceptual mechanism we are trying to represent. The spaces appear as part of its <strong>mathematical formalization</strong>.</p>
+</section>
+<section id="where-will-the-data-appear" class="level2">
+<h2 class="anchored" data-anchor-id="where-will-the-data-appear">Where will the data appear?</h2>
+<p>When we arrive at random variables, the trials</p>
+<p><span class="math display">\[
+T_1,T_2,\ldots,T_n
+\]</span></p>
+<p>can be associated with numerical objects</p>
+<p><span class="math display">\[
+X_1,X_2,\ldots,X_n.
+\]</span></p>
+<p>After the trials actually occur, we will observe concrete values</p>
+<p><span class="math display">\[
+x_1,x_2,\ldots,x_n.
+\]</span></p>
+<p>That is when we will begin to recognize what, in the real world, we store as <strong>data</strong>.</p>
+<p>For example, imagine that our interest is to observe the spending of different customers in a purchase. After observing the customers, we might end up with something like this:</p>
+<div class="compact-table">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">observation</th>
+<th style="text-align: center;">customer</th>
+<th style="text-align: center;">spending</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_1 \rightarrow\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">42.90</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_2 \rightarrow\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">18.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_3 \rightarrow\)</span></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">76.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_4 \rightarrow\)</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">31.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\vdots\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\vdots\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\vdots\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_n \rightarrow\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n\)</span></td>
+<td style="text-align: center;">54.70</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this example,</p>
+<p><span class="math display">\[
+x_1 = 42.90,\qquad
+x_2 = 18.50,\qquad
+x_3 = 76.20,\qquad
+x_4 = 31.00,\qquad \ldots
+\]</span></p>
+<p>Each <span class="math inline">\(x_i\)</span> is therefore an <strong>observed value</strong>: what actually appeared after the corresponding trial took place.</p>
+<p>It is precisely the collection of these observed values that we begin to recognize, in the day-to-day of Data Science, as a <strong>dataset</strong>.</p>
+<p>So the general idea is:</p>
+<p><span class="math display">\[
+\boxed{
+T_1,\ldots,T_n
+\quad\longrightarrow\quad
+X_1,\ldots,X_n
+\quad\longrightarrow\quad
+x_1,\ldots,x_n
+\quad\longrightarrow\quad
+\text{observed dataset}
+}
+\]</span></p>
+<p>Later on, we will see carefully how we move from each trial <span class="math inline">\(T_i\)</span> to a random variable <span class="math inline">\(X_i\)</span>, and from <span class="math inline">\(X_i\)</span> to the observed value <span class="math inline">\(x_i\)</span>.</p>
+<p>But we do not need to formalize that step yet.</p>
+<p>For now, it is enough to know <strong>where it will appear</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Read this map like this">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Read this map like this
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>We begin by mathematizing the simplest form of the stochastic phenomenon: the random experiment.</strong></p>
+<p>First we will build its abstract structure. Then we will use random variables to transform it into numerical objects. Only then will we be ready to connect this structure to data — and, later on, to expand the model when the real world requires dependence, heterogeneity, and other forms of complexity.</p>
+</div>
+</div>
+<p>In the next chapters, we will follow exactly this path — one piece at a time.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/00-2_prelude_02.html" class="pagination-link" aria-label="Empirical Modeling: from the Real World to the Statistical Model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Empirical Modeling: from the Real World to the Statistical Model</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/01_from_uncertainty_to_probability.html" class="pagination-link" aria-label="From Uncertainty to Probability">
+        <span class="nav-page-text"><span class="chapter-title">From Uncertainty to Probability</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,105 @@
+---
+title: "Conditional Probability: Information, Updating Probabilities, and Bayes"
+---
+
+<!--
+SUPPLEMENTARY CHAPTER / DRAFT FOR LATER REVIEW.
+Objective: carefully develop the interpretation of the revised probability
+model in Bertsekas & Tsitsiklis, without confusing conditional probabilities
+with the need to adopt a subjective interpretation of probability.
+References: Bertsekas & Tsitsiklis, Ch. 1 §§1.3–1.4;
+MIT 6.041, lectures on conditioning, total probability, and Bayes;
+Spanos, discussion of conditioning as a modeling tool.
+-->
+
+In the chapter on IID, we used [**conditional probability**]{.concept} to investigate whether knowing the result of one trial changes the probabilities associated with another.
+
+Now let us study this idea in its own right:
+
+> **When we receive new information, how should we update the probabilities of a model?**
+
+## 1. New information, a new question
+
+We roll a fair die once. Before knowing the outcome, we ask what the probability is that it is even.
+
+Let $A=\{2,4,6\}$ (“even”) and $B=\{4,5,6\}$ (“greater than 3”). Initially, $P(A)=1/2$. We then receive the information that $B$ has occurred: now, among $4,5,6$, two outcomes are even. Thus,
+
+$$
+P(A)=\tfrac12,\qquad P(A\mid B)=\tfrac23.
+$$
+
+We have neither repeated the experiment nor changed the die. **We have changed the information available about the outcome.**
+
+## 2. The revised probability model
+
+For events $A,B\in\mathcal F$ with $P(B)>0$, we define
+
+$$
+\boxed{P(A\mid B)=\frac{P(A\cap B)}{P(B)}.}
+$$
+
+When we fix the event $B$, the rule $A\mapsto P(A\mid B)$ is a new probability law on the original events: the [**conditional probability law**]{.concept}.
+
+This is the meaning of the [**revised probability model**]{.concept} emphasized by Tsitsiklis: now that we know that $B$ has occurred, probabilities are calculated **within $B$** and appropriately normalized.
+
+For example, $P(B\mid B)=1$ and $P(B^c\mid B)=0$.
+
+## 3. Probabilities as beliefs: what does this language mean?
+
+Tsitsiklis also uses the language of [**probabilistic beliefs**]{.concept}: a probability expresses the degree of plausibility we assign to an event **within a model**.
+
+Receiving new information may lead to [**revised beliefs**]{.concept}, that is, conditional probabilities that differ from the initial probabilities.
+
+It is important to distinguish the **language of information updating** from a philosophical claim: the conditional probability formula holds regardless of whether we adopt a frequentist or a subjective interpretation of probability.
+
+## 4. The multiplication rule
+
+The definition of conditioning implies:
+
+$$
+\boxed{P(A\cap B)=P(B)P(A\mid B).}
+$$
+
+If $P(A)>0$, we can also write $P(A\cap B)=P(A)P(B\mid A)$. This rule is useful for reasoning about processes that unfold in stages.
+
+**Exercise 1.** An urn contains 3 red balls and 2 blue balls. Two balls are drawn without replacement. What is the probability that both are red? Write your solution using conditional probabilities, without assuming independence.
+
+## 5. Total probability: different ways an event can occur
+
+If $B_1,\ldots,B_k$ form a [**partition**]{.concept} of the space, with $P(B_j)>0$, then
+
+$$
+\boxed{P(A)=\sum_{j=1}^k P(A\mid B_j)P(B_j).}
+$$
+
+The [**law of total probability**]{.concept} decomposes $P(A)$ into mutually exclusive and exhaustive scenarios.
+
+**Exercise 2.** A company ships 60% of its orders through carrier 1 and 40% through carrier 2. The probabilities of delay are 5% and 10%, respectively. What is the probability that a randomly selected order arrives late?
+
+## 6. Bayes: from observed information to possible scenarios
+
+Suppose we know the probabilities of observing evidence $A$ under each scenario $B_j$. After observing $A$, we want to determine the probability of each scenario.
+
+[**Bayes' theorem**]{.concept} combines the multiplication rule with the law of total probability:
+
+$$
+\boxed{P(B_j\mid A)=\frac{P(A\mid B_j)P(B_j)}{\sum_{\ell=1}^kP(A\mid B_\ell)P(B_\ell)}},\qquad P(A)>0.
+$$
+
+In the language of belief updating, $P(B_j)$ is the [**prior probability**]{.concept}, and $P(B_j\mid A)$ is the [**posterior probability**]{.concept}. Bayes' theorem does not assume that probabilities are subjective: it is an identity that holds within the probability model.
+
+**Exercise 3.** Only 2% of manufactured items are defective. A test flags 90% of genuinely defective items and 5% of nondefective items as defective. If the test flags an item as defective, what is the probability that the item is actually defective? Explain why the answer is not 90%.
+
+## 7. Returning to independence
+
+If $A$ and $B$ are independent and $P(B)>0$, then $P(A\mid B)=P(A)$: the information that $B$ has occurred does not change the probability of $A$.
+
+But **conditioning is not synonymous with dependence**. Conditioning is the general operation of updating probabilities when an event is known to have occurred; independence is a special property of the joint probability law.
+
+## Before continuing
+
+1. Why does conditional probability not require two trials?
+2. What exactly changes in the revised probability model?
+3. What is the difference between $P(A\mid B)$ and $P(B\mid A)$?
+4. How does the law of total probability appear in the denominator of Bayes' formula?
+5. Why does using the term *belief* not require us to adopt a Bayesian philosophy of probability?

@@ -1,0 +1,246 @@
+/* ========================================
+   COURSE FIGURES
+   ======================================== */
+
+.course-figure {
+  display: block;
+  margin: 0.5rem auto;
+  max-width: 100%;
+}
+
+/* Reduce extra spacing added around figure containers */
+figure:has(.course-figure) {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Prevent extra caption spacing when there is no caption */
+figure:has(.course-figure) figcaption:empty {
+  display: none;
+}
+
+
+/* ========================================
+   COMPACT TABLES
+   ======================================== */
+
+.compact-table {
+  text-align: center !important;
+  margin: 1rem 0 !important;
+}
+
+.compact-table table,
+.compact-table table.table,
+.compact-table .table {
+  width: 90% !important;
+  display: inline-table !important;
+  margin: 0 !important;
+}
+
+.compact-table col {
+  width: auto !important;
+}
+
+.compact-table th,
+.compact-table td {
+  text-align: center !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+
+/* ========================================
+   INLINE HIGHLIGHTS
+   ======================================== */
+
+/* Main mathematical / statistical concepts */
+.concept {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* Important warnings, common mistakes, things to notice */
+.attention {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Connections to practice / real-world applications */
+.real-world {
+  color: #198754;
+  font-weight: 600;
+}
+
+/* ========================================
+   BOOK TYPOGRAPHY
+   ======================================== */
+
+#quarto-document-content {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #333;
+  font-weight: 400;
+}
+
+#quarto-document-content p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+#quarto-document-content h1,
+#quarto-document-content h2,
+#quarto-document-content h3,
+#quarto-document-content h4 {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  color: #222;
+}
+
+#quarto-document-content h1 {
+  font-size: 2.35rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+#quarto-document-content h2 {
+  font-size: 1.9rem;
+  line-height: 1.25;
+  font-weight: 600;
+  margin-top: 2.6rem;
+  margin-bottom: 1rem;
+}
+
+#quarto-document-content h3 {
+  font-size: 1.55rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-top: 2.1rem;
+  margin-bottom: 0.8rem;
+}
+
+#quarto-document-content h4 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+/* ========================================
+   RIGHT TABLE OF CONTENTS
+   ======================================== */
+
+#TOC {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+#TOC .nav-link {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  font-weight: 400;
+  color: #6b7280;
+  padding-top: 0.28rem;
+  padding-bottom: 0.28rem;
+}
+
+#TOC .nav-link:hover {
+  color: #374151;
+}
+
+#TOC .nav-link.active {
+  color: #198754;
+  font-weight: 500;
+}
+
+#TOC #toc-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.65rem;
+}
+
+/* ========================================
+   LEFT SIDEBAR
+   ======================================== */
+
+#quarto-sidebar {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+/* Book title */
+#quarto-sidebar .sidebar-title {
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: #2f3437;
+}
+
+/* Main links */
+#quarto-sidebar .sidebar-item-text,
+#quarto-sidebar .sidebar-link {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #5f666b;
+}
+
+/* Hover */
+#quarto-sidebar .sidebar-link:hover {
+  color: #30363a;
+}
+
+/* Current page */
+#quarto-sidebar .sidebar-link.active {
+  color: #198754;
+  font-weight: 500;
+}
+
+/* Module / part titles */
+#quarto-sidebar
+.sidebar-item-section
+> .sidebar-item-container
+> .sidebar-item-text,
+#quarto-sidebar
+.sidebar-item-section
+> .sidebar-item-container
+> .sidebar-link {
+  font-size: 0.9rem;
+  font-weight: 700 !important;
+  color: #2f3437;
+}
+
+/* Spacing between items */
+#quarto-sidebar .sidebar-item {
+  margin-bottom: 0.12rem;
+}
+
+/* Slightly reduced vertical spacing in links */
+#quarto-sidebar .sidebar-link {
+  padding-top: 0.28rem;
+  padding-bottom: 0.28rem;
+}

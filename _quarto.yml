@@ -1,0 +1,71 @@
+project:
+  type: book
+  output-dir: docs
+
+  preview:
+    watch-inputs: true
+    navigate: true
+    browser: true
+
+book:
+  title: "Foundations for Causal Inference"
+  subtitle: "Lecture Notes"
+
+  search: true
+
+  sidebar:
+    style: docked
+    collapse-level: 1
+
+  chapters:
+    - index.qmd
+  #  - chapters/00-1_mathematical_prerequisites.qmd
+
+    - part: "Prelude"
+      chapters:
+        - chapters/00_what_can_we_learn_from_data.qmd
+        - chapters/00-2_prelude_01.qmd
+        - chapters/00-2_prelude_02.qmd
+        - chapters/00-2_prelude_03.qmd
+
+    - part: "Module 1 - Probability"
+      chapters:
+        - chapters/01_from_uncertainty_to_probability.qmd
+        - chapters/02_formalizing_the_statistical_space.qmd
+        - chapters/03_1_probability_space.qmd
+        - chapters/03_2_dgp.qmd
+        - chapters/04_when_the_sample_space_is_continuous.qmd
+        - chapters/05_sampling_space.qmd
+        - chapters/06_iid.qmd
+        - chapters/07_conditional_probability.qmd
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+
+    toc: true
+    toc-location: right
+    toc-depth: 3
+
+    code-link: true
+    code-copy: true
+
+    fontsize: 1em
+    linestretch: 1.5
+
+    grid:
+      sidebar-width: 320px
+      body-width: 800px
+      margin-width: 290px
+      gutter-width: 1.5rem
+
+    # grid:
+    #   sidebar-width: 280px
+    #   body-width: 950px
+    #   margin-width: 280px
+    #   gutter-width: 1.5rem
+
+number-sections: false
+
+lang: en

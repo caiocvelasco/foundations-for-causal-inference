@@ -1,0 +1,410 @@
+---
+title: "The Map of Probability and Inference"
+---
+
+Before we begin, I want to make clear **where we are going**.
+
+The central idea of this course is simple and can be seen through two distinct but deeply connected movements:
+
+1. **[Probability Theory]{.concept} — starting from the mechanism and moving toward the possible data:** motivated by the regularities we observe in nature, we build a mathematical language to represent the uncertain mechanism that could produce the data and study what that model implies.
+
+2. **[Statistical Inference]{.concept} — starting from the observed data and moving toward the mechanism:** the world (or "nature") produces data, but we do not directly observe all the characteristics of the mechanism that generated them (because to do so we would need all the data). We therefore use the observed data (the *sample*) to learn — or infer — those unknown characteristics.
+
+When *some characteristic of this mechanism is unknown* — such as a mean, a conversion probability, or some other quantity of interest — we use the observed data to learn about it.
+
+It is from this relationship between **model** and **data** that the two major ideas we will connect throughout the course arise: [**Probability**]{.concept} and [**Statistical Inference**]{.concept}.
+
+::: {.callout-note appearance="simple"}
+
+We do not need to master all the terms that appear on this page right now.
+
+The goal of this prelude is only to build a **mental map**. In the next chapters, we will construct each part of this map carefully.
+
+:::
+
+## 1. Probability Theory: why do we build probabilistic models?
+
+In the real world there are phenomena whose individual outcome we cannot determine in advance with certainty.
+
+- Will a user buy?
+- Will a customer churn?
+- How much will a person spend next month?
+- What will be the result of the next coin toss?
+
+There is **uncertainty at the individual level**, that is, if you carry out one trial of an experiment, you do not know what may happen.
+
+But uncertainty does not mean a complete absence of **structure**.
+
+And having *some structure* is **very important**, because that is where mathematics comes in to understand and model the phenomenon.
+
+Notice something interesting. When we observe many occurrences of certain phenomena, **aggregate regularities** may appear: some outcomes occur more often than others, some proportions seem to stabilize, and certain patterns reappear in the data.
+
+This combination of individual uncertainty with aggregate regularity is a useful way to think about what we call [**chance regularity**]{.concept} (*chance and regularity*).
+
+$$
+\begin{array}{c}
+\boxed{\text{uncertain real phenomenon}} \\
+\Downarrow \\
+\boxed{\text{unpredictable individual outcomes}} \\
+\Downarrow \\
+\boxed{\text{regularities may appear in the aggregate}}
+\end{array}
+$$
+
+**Probability Theory** provides a mathematical language to represent this kind of phenomenon.
+
+Instead of trying to describe each individual outcome in advance, we build a **[mathematical]{.attention} representation of the uncertain mechanism** that could produce those outcomes.
+
+We will call this representation a **[probability model]{.concept}**.
+
+$$
+\begin{array}{c}
+\boxed{\text{REAL WORLD}} \\
+\Downarrow \\
+\boxed{\text{uncertain phenomenon}} \\
+\Downarrow \\
+\boxed{\text{observable regularities}} \\
+\Downarrow \\
+\boxed{\text{mathematical representation}} \\
+\Downarrow \\
+\boxed{\text{PROBABILITY MODEL}}
+\end{array}
+$$
+
+This is the first movement of our map:
+
+$$
+\begin{array}{c}
+\boxed{\text{uncertain phenomenon}} \\
+\Downarrow \\
+\boxed{\text{mathematical representation}} \\
+\Downarrow \\
+\boxed{\text{probability model}} \\
+\Downarrow \\
+\boxed{\text{study what this model implies}}
+\end{array}
+$$
+
+## 2. Statistical Inference: when the model meets the data
+
+In practice, however, we rarely know all the characteristics of the mechanism we are trying to represent.
+
+We may know **how** to represent a phenomenon probabilistically, but still not know some important quantity in the model: a mean, a variance, a conversion probability, among others.
+
+That is where the second movement of our map appears.
+
+Instead of starting from a fully specified model and asking only what it implies, we observe data and ask:
+
+> **What do these data allow us to learn about the unknown characteristics of the probabilistic mechanism that could have produced them?**
+
+$$
+\begin{array}{c}
+\boxed{\text{probability model with something unknown}} \\
++ \\
+\boxed{\text{observed data}} \\
+\Downarrow \\
+\boxed{\text{learn about the mechanism}}
+\end{array}
+$$
+
+This is where **Statistical Inference** is born. It does not abandon Probability: it uses precisely the probabilistic structure of the model to connect what we observe to what we want to learn.
+
+With these two movements in mind, we can compare two simple situations.
+
+## Case 1 — the model is completely specified
+
+Consider a coin that we decide to model as **fair**.
+
+Here, we begin from the assumption that we already have a Probability Model for the world.
+
+We define
+
+$$
+X=
+\begin{cases}
+1, & \text{if heads occurs},\\
+0, & \text{if tails occurs}.
+\end{cases}
+$$
+
+And we specify the model, that is, we assume that this phenomenon follows something like
+
+$$
+X\sim\operatorname{Bernoulli}(0.5).
+$$
+
+The value $0.5$ did not appear because the axioms of Probability force a coin to have that probability.
+
+It is part of our **modeling of the coin as fair**, that is,
+
+$$
+P(X=1)=P(X=0)=0.5.
+$$
+
+In this example, *the physical symmetry of the coin helps justify the hypothesis of equal probabilities*. In other problems, the assumptions may come from other sources.
+
+Now imagine 100 tosses:
+
+$$
+X_1,X_2,\ldots,X_{100}.
+$$
+
+Since the model is completely specified (in the sense that we are assuming we *know all the parameters*, including the $p$), we can ask:
+
+> **If I toss this coin 100 times, what is the probability of observing exactly 50 heads?**
+
+And calculate
+
+$$
+P\left(\sum_{i=1}^{100}X_i=50\right)
+=
+\binom{100}{50}(0.5)^{100}.
+$$
+
+The direction of reasoning is:
+
+$$
+\begin{array}{c}
+\boxed{\text{we already have a specified probability model}} \\
+\Downarrow \\
+\boxed{\text{what does this model imply mathematically?}} \\
+\Downarrow \\
+\boxed{\text{we arrive at possible data and their probabilities}}
+\end{array}
+$$
+
+Here we are doing **Probability**:
+
+> **we start from a specified model and deduce its consequences.**
+
+## Case 2 — part of the model is unknown
+
+Now consider something much closer to the day-to-day of **_Data Science_**: checkout conversion.
+
+For each observed user session on the website, we define
+
+$$
+X=
+\begin{cases}
+1, & \text{if there was a purchase},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Motivated by our prior knowledge of Probability Models, we can represent this outcome by a Bernoulli:
+
+$$
+X\sim\operatorname{Bernoulli}(p).
+$$
+
+But now there is a fundamental difference: we do not know the value of
+
+$$
+p=P(X=1),
+$$
+
+that is, **the conversion probability in the model**.
+
+In this case, **unfortunately there is no physical symmetry here** that gives us something like $p=0.5$ in advance and helps us arrive at a final answer.
+
+We know one possible way to represent the phenomenon probabilistically, but **one characteristic of the model remains unknown**.
+
+That is where the data come in (and **Statistical Inference**).
+
+If we observe $n$ sessions, before seeing the results we can represent them by
+
+$$
+X_1,X_2,\ldots,X_n.
+$$
+
+After those sessions actually happen, we observe concrete values:
+
+$$
+x_1,x_2,\ldots,x_n.
+$$
+
+In practice, these observed values are stored as data — that is, as a **dataset** (in this case with only one column).
+
+::: {.compact-table}
+
+| session | purchase |
+|:---:|:---:|
+| 1 | 0 |
+| 2 | 1 |
+| 3 | 0 |
+| 4 | 0 |
+| 5 | 1 |
+| $\vdots$ | $\vdots$ |
+| $n$ | 0 |
+
+:::
+
+This is an important connection between the language of theory and what we see in practice. In our example, the whole path can be seen at once:
+
+$$
+\begin{array}{c}
+\boxed{X\sim\operatorname{Bernoulli}(p),\quad p\text{ unknown}} \\
+\Downarrow \\
+\boxed{X_1,\ldots,X_n\quad \text{(the sample, before observation)}} \\
+\Downarrow \\
+\boxed{\text{we observe their values}} \\
+\Downarrow \\
+\boxed{x_1,\ldots,x_n\quad \text{(observed dataset)}} \\
+\Downarrow \\
+\boxed{\text{we use the data to learn about }p}
+\end{array}
+$$
+
+That is: what in theory we write as $X_1,\ldots,X_n$ becomes, after observation, the concrete values $x_1,\ldots,x_n$ that we find in a dataset. From there, we use what we observed to learn about what we do not know.
+
+Here **Statistical Inference** begins:
+
+> **we start from the observed data to learn about unknown characteristics of the probability model;**
+> **but we continue to use mathematics and Probability Theory to formalize the idea of inference.**
+
+::: {.callout-important title="Probability does not disappear"}
+
+Statistical Inference does not replace Probability.
+
+It depends on it.
+
+We continue using a probabilistic structure to represent the mechanism that could have generated the data. The difference is that now some part of that structure is unknown and must be learned from the observations.
+
+:::
+
+## But what about Descriptive Statistics?
+
+So far we have talked about **Probability** and **Statistical Inference**. But there is a third term that appears all the time in books, courses, and data work: [**Descriptive Statistics**]{.concept}.
+
+The idea is much simpler than the name may suggest.
+
+After we observe the values
+
+$$
+x_1,x_2,\ldots,x_n,
+$$
+
+and have a **dataset in hand**, we can simply ask:
+
+> **What do these data that I observed show?**
+
+For example:
+
+- what was the observed conversion rate?
+- what was the average spending?
+- what was the median?
+- how are the values distributed?
+- are there values far from the others?
+- what is the observed correlation between two columns?
+
+This is the role of **Descriptive Statistics**: **to organize, summarize, and visualize the data we actually observed**.
+
+$$
+\begin{array}{c}
+\boxed{\text{observed dataset}} \\
+\Downarrow \\
+\boxed{\text{summarize and describe what happened in the data}}
+\end{array}
+$$
+
+Suppose, for example, that we observed 1,000 checkout sessions and in 120 of them there was a purchase.
+
+The observed conversion rate is
+
+$$
+\frac{120}{1000}=0.12.
+$$
+
+Saying
+
+> **"12% of the sessions in this dataset ended in purchase"**
+
+is a purely **descriptive** statement. We are simply summarizing what happened in the data we have in hand.
+
+Notice that, in order to make this statement, we still do not need to say that $0.12$ is the true conversion probability of all users, nor that this number will repeat in another set of sessions.
+
+To try to go **beyond the observed dataset**, we need something more. That is exactly where the **probability model** and **Statistical Inference** come in.
+
+## The map we want to keep
+
+Everything in this prelude can be summarized in a single map.
+
+The first movement is that of **Probability Theory**: the real world motivates the construction of a mathematical representation for uncertain phenomena.
+
+$$
+\begin{array}{c}
+\boxed{\text{uncertain real phenomenon}} \\
+\Downarrow \\
+\boxed{\text{aggregate regularities}} \\
+\Downarrow \\
+\boxed{\begin{array}{c}
+\text{probability model} \\
+\text{(mathematics!)}
+\end{array}}
+\end{array}
+$$
+
+When the model is completely specified, we follow the direction of **Probability Theory**:
+
+$$
+\boxed{\text{specified probability model}}
+\;\longrightarrow\;
+\boxed{\text{possible data and their probabilities}}
+$$
+
+The second movement is that of **Statistical Inference**. When some characteristic of the model is unknown, we observe a sample:
+
+$$
+\begin{array}{c}
+\boxed{X_1,\ldots,X_n} \\
+\Downarrow \\
+\boxed{\text{we observe}} \\
+\Downarrow \\
+\boxed{x_1,\ldots,x_n} \\
+\Downarrow \\
+\boxed{\text{observed dataset}}
+\end{array}
+$$
+
+And, from this dataset, **two different questions** appear:
+
+$$
+\begin{array}{ccc}
+& \boxed{\text{observed dataset}} & \\
+& \boxed{x_1,\ldots,x_n} & \\
+& \swarrow \qquad \searrow & \\
+\boxed{\text{DESCRIPTIVE STATISTICS}}
+&&
+\boxed{\text{STATISTICAL INFERENCE}}
+\\[0.15cm]
+\Downarrow && \Downarrow
+\\[0.15cm]
+\boxed{\text{describe what we observed}}
+&&
+\boxed{\begin{array}{c}
+\text{use data + probability model}\\
+\text{to learn about unknown}\\
+\text{characteristics of the mechanism}
+\end{array}}
+\end{array}
+$$
+
+In one sentence for each part:
+
+> **Descriptive Statistics:** what happened in the data we observed?
+>
+> **Probability Theory:** if this is the probabilistic mechanism, what could happen and with what probabilities?
+>
+> **Statistical Inference:** what do the observed data, together with a probability model, allow us to learn about the mechanism that could have produced them?
+
+These three ideas do not compete with one another. In practice, a Data Scientist may describe and explore the data, build or evaluate a model, and do inference — often moving back and forth between these steps.
+
+But, conceptually, it is worth keeping the distinction:
+
+> **describing the data is not the same as inferring beyond them.**
+
+With this map in mind, we can return to the beginning and ask the first question of the course:
+
+> **why do we need a Theory of Probability?**
+
+And those are "_Scenes from the next chapter..._"

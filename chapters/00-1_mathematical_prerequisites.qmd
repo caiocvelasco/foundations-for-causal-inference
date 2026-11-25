@@ -1,0 +1,960 @@
+---
+title: "Mathematical Prerequisites"
+---
+
+<!--
+OBJECTIVE OF THIS MODULE
+
+This file should contain ONLY the Mathematics the student really needs
+
+to follow the next modules.
+
+Maintenance rule:
+
+- when a new mathematical concept appears in the course, first ask:
+
+  "does the student need to know this beforehand, or does the chapter itself already teach enough?"
+
+- add here only what is truly a prerequisite;
+
+- avoid turning this module into a separate Mathematics course;
+
+- always present the idea, use it immediately, and propose a short exercise right after.
+
+CURRENT VERSION
+
+Built from the first three chapters of Module 1:
+
+1. From Uncertainty to Probability
+
+2. Formalization — Probability Space
+
+3. When the Sample Space Is Continuous
+
+At this moment, these are NOT prerequisites:
+
+- differential calculus;
+
+- integral calculus;
+
+- Linear Algebra;
+
+- formal theorem proofs;
+
+- advanced combinatorics.
+
+-->
+
+The proposal here is to review the main points of Mathematics that appear throughout our study.
+
+We will learn **only the tools we need**, nothing more and nothing less.
+
+And we will always do it in the same way: **idea → example → exercise.**
+
+## 1. Basic Arithmetic and Algebra
+
+### Numbers, proportions, and percentages
+
+A large part of Probability begins with something very familiar: **comparing a part with a whole**.
+
+If, in $100$ sessions on a website, $23$ ended in a purchase, the fraction of sessions with a purchase was
+
+$23/100=0.23$.
+
+And $0.23$ corresponds to **23%**.
+
+These are just three different ways of representing the same proportion:
+
+$\frac{23}{100}=0.23=23\%$.
+
+Later on, this language will appear naturally when we talk about **relative frequencies**, conversion rates, and probabilities.
+
+::: {.callout-note title="In practice"}
+
+If an A/B experiment has $5\,000$ users in the treatment group and $600$ convert, the observed conversion rate is
+
+$600/5000=0.12=12\%$.
+
+We are not doing Inference yet. We are simply describing an observed proportion.
+
+:::
+
+#### Quick exercise
+
+1. In $2\,000$ sessions, $340$ ended in a purchase. Write the purchase proportion as:
+
+   - a fraction;
+
+   - a decimal number;
+
+   - a percentage.
+
+2. A rate increased from $0.20$ to $0.25$. What is the increase in **percentage points**?
+
+### Equalities, expressions, and inequalities
+
+A mathematical expression is just a compact way to represent a relationship.
+
+For example,
+
+$y=2x+1$
+
+tells us how to obtain $y$ when we know $x$.
+
+If $x=3$, then
+
+$y=2(3)+1=7$.
+
+We will also frequently use **inequalities**:
+
+- $x<10$: $x$ is less than $10$;
+
+- $x\leq10$: $x$ is less than or equal to $10$;
+
+- $x>10$: $x$ is greater than $10$;
+
+- $x\geq10$: $x$ is greater than or equal to $10$.
+
+In a checkout problem, for example,
+
+$Y\leq15$
+
+may represent the statement:
+
+> **the checkout took at most 15 seconds.**
+
+#### Quick exercise
+
+Translate into Mathematics:
+
+1. "Spending was greater than R$ 100."
+
+2. "The checkout time was at most 20 seconds."
+
+3. "Revenue cannot be negative."
+
+### Intervals
+
+When we want to represent **all the numbers between certain limits**, we use intervals.
+
+For example,
+
+$[0,1]$
+
+represents all real numbers between $0$ and $1$, **including** the endpoints.
+
+By contrast,
+
+$(0,1)$
+
+represents the numbers between $0$ and $1$, **without including** $0$ and $1$.
+
+The difference is visual:
+
+- bracket $[$ or $]$: endpoint included;
+
+- parenthesis $($ or $)$: endpoint excluded.
+
+We may also have intervals with no upper bound. For example,
+
+$[0,\infty)$
+
+represents all real numbers greater than or equal to zero.
+
+::: {.callout-tip title="Why does this appear in Probability?"}
+
+Many real-world variables are modeled as being able to take any value within an interval:
+
+- waiting time: $[0,\infty)$;
+
+- proportion: $[0,1]$;
+
+- temperature: potentially an interval of real numbers.
+
+:::
+
+#### Quick exercise
+
+Write using intervals:
+
+1. all values between $0$ and $100$, including both endpoints;
+
+2. all positive numbers;
+
+3. all possible completion times of a task, assuming only that time cannot be negative.
+
+## 2. Sets
+
+### Sets and elements
+
+A **set** is a collection of objects.
+
+For example,
+
+$A=\{1,2,3\}$.
+
+The objects $1$, $2$, and $3$ are the **elements** of $A$.
+
+To say that $2$ belongs to $A$, we write
+
+$2\in A$.
+
+To say that $5$ does not belong to $A$, we write
+
+$5\notin A$.
+
+This distinction will be central in Probability because the **sample space** will be a set of possible outcomes.
+
+If
+
+$\Omega=\{H,T\}$,
+
+then
+
+$H\in\Omega$.
+
+#### Quick exercise
+
+Consider $S=\{2,4,6,8\}$.
+
+Say whether each statement is true or false:
+
+1. $4\in S$;
+
+2. $5\in S$;
+
+3. $\{4\}\in S$.
+
+::: {.callout-warning title="Be careful with one detail"}
+
+$4$ and $\{4\}$ are different objects.
+
+- $4$ is a number;
+
+- $\{4\}$ is a **set containing the number 4**.
+
+This difference seems small, but it will be important when we distinguish **outcomes** from **events**.
+
+:::
+
+### Subsets
+
+We say that $A$ is a **subset** of $B$ when **every element of $A$ also belongs to $B$**.
+
+We write
+
+$A\subseteq B$.
+
+For example, if
+
+$B=\{1,2,3,4\}$
+
+and
+
+$A=\{2,4\}$,
+
+then $A\subseteq B$.
+
+In the course, we will constantly see structures such as
+
+$A\subseteq\Omega$.
+
+The interpretation will be:
+
+> every outcome belonging to event $A$ is a possible outcome of the experiment.
+
+#### Quick exercise
+
+Consider $\Omega=\{HH,HT,TH,TT\}$.
+
+1. Is the set $A=\{HT,TH\}$ a subset of $\Omega$?
+
+2. And what about $B=\{HH,XX\}$?
+
+3. Is $\Omega$ itself a subset of $\Omega$?
+
+### The empty set
+
+There is a set that has no elements. It is called the **empty set** and is represented by
+
+$\varnothing$.
+
+A simple but important property is:
+
+$\varnothing\subseteq A$
+
+for any set $A$.
+
+In Probability, the empty set will have a natural interpretation: **an impossible event**.
+
+#### Quick exercise
+
+If $\Omega=\{H,T\}$, which set represents the event
+
+> "the coin toss resulted simultaneously in heads and tails"?
+
+### Operations on sets
+
+If events are going to be sets, we need to know how to combine sets.
+
+Consider
+
+$A=\{1,2,3\}$
+
+and
+
+$B=\{3,4,5\}$.
+
+#### Intersection
+
+The **intersection** contains the elements that belong to both sets:
+
+$A\cap B=\{3\}$.
+
+Think of $\cap$ as **AND**.
+
+In Probability, $A\cap B$ will represent:
+
+> **A occurs AND B occurs.**
+
+#### Union
+
+The **union** contains the elements that belong to $A$, to $B$, or to both:
+
+$A\cup B=\{1,2,3,4,5\}$.
+
+Think of $\cup$ as **OR**.
+
+In Probability, $A\cup B$ will represent:
+
+> **A occurs OR B occurs.**
+
+#### Complement
+
+If we are working within a universe $\Omega$, the **complement** of $A$ contains everything that is in $\Omega$ but not in $A$.
+
+We write $A^c$.
+
+If
+
+$\Omega=\{1,2,3,4,5\}$
+
+and
+
+$A=\{1,2\}$,
+
+then
+
+$A^c=\{3,4,5\}$.
+
+In Probability, $A^c$ will simply represent:
+
+> **A does not occur.**
+
+#### Quick exercise
+
+Consider $\Omega=\{HH,HT,TH,TT\}$ and the events
+
+- $A=$ "the first coin is heads" $=\{HH,HT\}$;
+
+- $B=$ "the second coin is heads" $=\{HH,TH\}$.
+
+Find:
+
+1. $A\cap B$;
+
+2. $A\cup B$;
+
+3. $A^c$.
+
+Then translate each result back into a sentence about the two coins.
+
+### Disjoint sets
+
+Two sets are **disjoint** when they have no elements in common.
+
+Equivalently,
+
+$A\cap B=\varnothing$.
+
+In Probability, we will also use the expression **mutually exclusive events**.
+
+This means that the two events **cannot occur simultaneously**.
+
+For example, in a single die roll:
+
+- $A=$ "the result was 1";
+
+- $B=$ "the result was 6".
+
+These events are mutually exclusive.
+
+#### Quick exercise
+
+Consider a six-sided die.
+
+Which pairs below are disjoint?
+
+1. $A=\{1,2\}$ and $B=\{3,4\}$;
+
+2. $A=\{1,2\}$ and $B=\{2,3\}$;
+
+3. $A=$ "even result" and $B=$ "odd result".
+
+### Set-builder notation
+
+We do not always want to list all the elements of a set.
+
+We can describe it by the **property its elements must satisfy**.
+
+For example,
+
+$A=\{x\in\mathbb R:x\geq0\}$
+
+can be read as:
+
+> **the set of real numbers $x$ such that $x$ is greater than or equal to zero.**
+
+In the course, expressions such as
+
+$A=\{(x,y)\in\Omega:y\leq15\}$
+
+will appear. Read it from left to right:
+
+> the set of outcomes $(x,y)$ belonging to $\Omega$ **such that** $y\leq15$.
+
+There is no new Mathematics hidden there. It is just a compact way to describe a set.
+
+#### Quick exercise
+
+Write in words:
+
+1. $A=\{x\in\mathbb R:x>100\}$;
+
+2. $B=\{x\in[0,1]:x\leq0.5\}$.
+
+Then try to write in mathematical notation:
+
+3. "the set of times $t$ greater than 10 seconds".
+
+### Cardinality: the number of elements in a set
+
+When a set has a finite number of elements, we can count how many there are.
+
+The **cardinality** of $A$ is represented by $|A|$.
+
+If
+
+$A=\{a,b,c\}$,
+
+then
+
+$|A|=3$.
+
+If we roll two dice, there are $6\times6=36$ possible pairs. Therefore,
+
+$|\Omega|=36$.
+
+::: {.callout-note title="Do not confuse the bars"}
+
+In this context, $|A|$ means **the number of elements in the set $A$**.
+
+Later on, bars may also appear with other mathematical meanings. The context will tell us which one we are using.
+
+:::
+
+#### Quick exercise
+
+1. If $A=\{2,4,6,8,10\}$, what is $|A|$?
+
+2. If an experiment simultaneously records one of $3$ versions of a page and one of $4$ possible devices, how many combinations are there?
+
+### Power set
+
+If $S$ is a set, we can ask:
+
+> **what are all the subsets that can be formed from $S$?**
+
+The collection of all of them is called the **power set**.
+
+If
+
+$S=\{1,2\}$,
+
+then its subsets are
+
+- $\varnothing$;
+
+- $\{1\}$;
+
+- $\{2\}$;
+
+- $\{1,2\}$.
+
+We can represent the power set by $2^S$.
+
+Thus,
+
+$$
+
+2^S=\{\varnothing,\{1\},\{2\},\{1,2\}\}.
+
+$$
+
+Notice an important detail: **the elements of $2^S$ are themselves sets**.
+
+This will help us when we build a **family of events**.
+
+#### Quick exercise
+
+List $2^S$ when $S=\{H,T\}$.
+
+How many elements does the power set have?
+
+## 3. Ordered Pairs and Cartesian Product
+
+### Ordered pairs
+
+Sometimes a single outcome needs to store **more than one piece of information**.
+
+In that case we can use an **ordered pair**:
+
+$(x,y)$.
+
+"Ordered" means that position matters.
+
+In general,
+
+$(x,y)\neq(y,x)$.
+
+For example,
+
+$(H,T)$
+
+may mean:
+
+- first coin: heads;
+
+- second coin: tails.
+
+Whereas $(T,H)$ represents another outcome.
+
+In the real world, we might have
+
+$(1,12.7)$,
+
+where:
+
+- $1$ identifies the new checkout version;
+
+- $12.7$ is the observed time, in seconds.
+
+#### Quick exercise
+
+Explain why the pairs below represent different information:
+
+1. $(2,5)$ and $(5,2)$ in the roll of two dice;
+
+2. $(1,12.7)$ and $(0,12.7)$ in a checkout experiment.
+
+### Cartesian product
+
+If the first component of an outcome can come from a set $A$ and the second from a set $B$, the set of **all possible combinations** is called the **Cartesian product**:
+
+$A\times B$.
+
+For example,
+
+$\{H,T\}\times\{H,T\}$
+
+produces
+
+$\{(H,H),(H,T),(T,H),(T,T)\}$.
+
+The idea is simple:
+
+$$
+
+\boxed{\text{possibilities for the first component}}
+
+\times
+
+\boxed{\text{possibilities for the second component}}
+
+\longrightarrow
+
+\boxed{\text{all combinations}}
+
+$$
+
+In the checkout experiment, we may have
+
+$\Omega=\{0,1\}\times[0,\infty)$.
+
+This means that each outcome has:
+
+- a first component equal to $0$ or $1$;
+
+- a second component equal to some nonnegative number.
+
+#### Quick exercise
+
+1. Expand completely $\{A,B\}\times\{1,2,3\}$.
+
+2. If $|A|=4$ and $|B|=5$, how many elements are there in $A\times B$?
+
+3. Interpret in words $\{0,1\}\times[0,\infty)$.
+
+## 4. Functions
+
+### Functions: input, rule, and output
+
+A **function** is a rule that associates each allowed input element with **exactly one output**.
+
+For example,
+
+$f(x)=x^2$.
+
+If $x=3$, then $f(3)=9$.
+
+We can write
+
+$f:\{1,2,3\}\longrightarrow\mathbb R$.
+
+The reading is:
+
+> function $f$ takes elements from $\{1,2,3\}$ and produces values in the set of real numbers $\mathbb R$.
+
+Three ideas will be important:
+
+- **domain:** set of allowed inputs;
+
+- **codomain:** set in which the outputs are defined;
+
+- **image:** the values that the function actually produces.
+
+In the example $f(x)=x^2$ with domain $\{1,2,3\}$:
+
+- domain: $\{1,2,3\}$;
+
+- codomain: $\mathbb R$;
+
+- image: $\{1,4,9\}$.
+
+#### Quick exercise
+
+Consider $f:\{0,1,2\}\to\mathbb R$ defined by $f(x)=2x+1$.
+
+1. Compute $f(0)$, $f(1)$, and $f(2)$.
+
+2. What is the domain?
+
+3. What is the codomain?
+
+4. What is the image?
+
+### A function can take sets as input
+
+Nothing in the definition of a function says that the input has to be a number.
+
+A function can take **sets**.
+
+This is exactly what will happen with a probability law:
+
+$P:\mathcal F\longrightarrow[0,1]$.
+
+Here:
+
+- the domain is $\mathcal F$, a family of events;
+
+- each element of $\mathcal F$ is itself a set;
+
+- $P$ takes an event $A$ and returns a number $P(A)$ between $0$ and $1$.
+
+Therefore, in
+
+$P(A)=0.3$,
+
+$A$ is the **input to the function** and $0.3$ is its output.
+
+::: {.callout-important title="A distinction that needs to become automatic"}
+
+Later on, we will simultaneously have:
+
+- $\omega\in\Omega$: an outcome belongs to the sample space;
+
+- $A\subseteq\Omega$: an event is a subset of the sample space;
+
+- $A\in\mathcal F$: this event is an element of the family of events.
+
+The symbols $\in$ and $\subseteq$ do not mean the same thing.
+
+:::
+
+#### Quick exercise
+
+Suppose
+
+$\Omega=\{H,T\}$
+
+and
+
+$\mathcal F=\{\varnothing,\{H\},\{T\},\Omega\}$.
+
+Classify each statement as true or false:
+
+1. $H\in\Omega$;
+
+2. $\{H\}\subseteq\Omega$;
+
+3. $\{H\}\in\mathcal F$;
+
+4. $H\in\mathcal F$.
+
+## 5. Sequences and Mathematical Notation
+
+### Sequences and indices
+
+When we have many similar objects, it is convenient to identify them by an index:
+
+$A_1,A_2,A_3,\ldots$
+
+The letter $i$ can be used to represent a generic index:
+
+$A_i$.
+
+Nothing mysterious is happening. $A_i$ simply means:
+
+> **the set occupying position $i$ in the collection.**
+
+The same holds for numbers:
+
+$x_1,x_2,x_3,\ldots$
+
+This notation will appear when we need to talk about a sequence of events.
+
+#### Quick exercise
+
+Consider
+
+$A_1=\{1\}$, $A_2=\{2\}$, $A_3=\{3\}$.
+
+1. What is the element of $A_2$?
+
+2. What does $A_i$ represent in this collection?
+
+### Summations
+
+The symbol $\sum$ is simply a compact way of writing a sum with many terms.
+
+For example,
+
+$$
+
+\sum_{i=1}^{3}x_i=x_1+x_2+x_3.
+
+$$
+
+If $x_1=2$, $x_2=5$, and $x_3=7$, then
+
+$\sum_{i=1}^{3}x_i=14$.
+
+We may also write
+
+$\sum_{i=1}^{\infty}x_i$.
+
+At this point, you **do not need to study infinite series**.
+
+You only need to read the notation as:
+
+> sum the terms $x_1,x_2,x_3,\ldots$.
+
+Later, when the convergence of this sum really matters, we will handle the topic with the necessary care.
+
+#### Quick exercise
+
+Expand without using $\sum$:
+
+1. $\sum_{i=1}^{4}x_i$;
+
+2. $\sum_{i=1}^{3}P(A_i)$.
+
+### Indexed unions
+
+The same idea of indices can be used with sets.
+
+For example,
+
+$$
+
+\bigcup_{i=1}^{3}A_i
+
+=
+
+A_1\cup A_2\cup A_3.
+
+$$
+
+And
+
+$$
+
+\bigcup_{i=1}^{\infty}A_i
+
+$$
+
+means the union of the sets
+
+$A_1,A_2,A_3,\ldots$
+
+This notation will appear in the **axioms of Probability** and in the definition of a $\sigma$-algebra.
+
+At this moment, the important thing is simply to be able to **read** the expression.
+
+#### Quick exercise
+
+Consider
+
+$A_1=\{1,2\}$, $A_2=\{2,3\}$, and $A_3=\{4\}$.
+
+Compute
+
+$\bigcup_{i=1}^{3}A_i$.
+
+### Finite, countably infinite, and uncountably infinite
+
+Not all infinite sets have the same type of structure.
+
+For this beginning of the course, we need to recognize three cases.
+
+#### Finite
+
+We can list all the elements, and the list ends.
+
+Example:
+
+$\{1,2,3,4,5,6\}$.
+
+#### Countably infinite
+
+The list never ends, but we can organize the elements into a sequence:
+
+$1,2,3,4,\ldots$
+
+Example: the natural numbers.
+
+#### Uncountably infinite
+
+Not even an infinite list can go through all the elements.
+
+The most important example for us will be a continuous interval such as
+
+$[0,1]$.
+
+We do not need to prove this difference now.
+
+We only need to know that it exists — because it will have consequences for the way we build continuous probabilistic models.
+
+#### Quick exercise
+
+Classify as finite, countably infinite, or uncountably infinite:
+
+1. outcomes of a die;
+
+2. the number of purchases a customer can make over time;
+
+3. waiting time modeled as any value in $[0,\infty)$.
+
+## 6. Putting the pieces together
+
+### The mathematical map we will take into Probability
+
+We have reached the point at which the notation of the first chapters stops being a barrier.
+
+You can already read structures such as
+
+$$
+
+\Omega=\{0,1\}\times[0,\infty)
+
+$$
+
+as:
+
+> each outcome has two components: the first is $0$ or $1$ and the second is a nonnegative real number.
+
+You can also read
+
+$A=\{(x,y)\in\Omega:y\leq15\}$
+
+as:
+
+> the set of outcomes in $\Omega$ whose second component is less than or equal to $15$.
+
+And you can distinguish among
+
+- $\omega\in\Omega$;
+
+- $A\subseteq\Omega$;
+
+- $A\in\mathcal F$;
+
+- $P(A)\in[0,1]$.
+
+It is exactly this Mathematics that we need in order to begin formalizing Probability.
+
+::: {.callout-tip title="Checklist before moving on"}
+
+Before Module 1, you should be able to explain, without memorizing:
+
+- what $x\in A$ means;
+
+- what $A\subseteq B$ means;
+
+- union, intersection, and complement;
+
+- what $A\cap B=\varnothing$ means;
+
+- how to read an interval such as $[0,\infty)$;
+
+- what an ordered pair is;
+
+- what a Cartesian product does;
+
+- what domain, codomain, and image of a function are;
+
+- why a function can take sets as input;
+
+- how to read $\sum_i$ and $\bigcup_i$;
+
+- the intuitive difference between finite, countable, and uncountable sets.
+
+If that feels comfortable, then you have the Mathematics needed **for the point where the course stands today**.
+
+:::
+
+### Integrated challenge
+
+Consider an experiment in which a company shows a visitor one of two versions of a page and records how long, in seconds, the visitor remains on it.
+
+Define
+
+$\Omega=\{0,1\}\times[0,\infty)$.
+
+Answer:
+
+1. What does the outcome $\omega=(1,23.4)$ represent?
+
+2. Write as a set the event $A=$ "the user stayed for at most 15 seconds".
+
+3. Is the event $A$ an element of $\Omega$ or a subset of $\Omega$?
+
+4. What would $A^c$ represent?
+
+5. If $B=$ "the user received the new version", what does $A\cap B$ represent?
+
+6. If $A\in\mathcal F$, what does it mean to write $P(A)=0.20$?
+
+7. What is the input to the function $P$ in that expression? And what is the output?
+
+This exercise brings together almost all the Mathematics we will use to build the first probability space of the course.

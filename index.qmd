@@ -1,0 +1,20 @@
+---
+title: "Foundations for Causal Inference"
+---
+
+![](images/principal_2.png){.course-figure width="60%"}
+
+These are the **in-depth lecture notes** for our course **Foundations for Causal Inference**.
+
+The objective of the course is to build, step by step, the foundations necessary for a rigorous understanding of causal inference, connecting theory with real-world applications.
+
+> Access to this content is restricted to enrolled students. All material is **privately owned, protected, and traceable**. Its use is strictly limited to enrolled students for the duration of the course.
+
+The main learning path will cover:
+
+- Probability
+- Statistical Inference
+- Regression
+- Causal Inference
+
+These in-depth lecture notes serve as supplementary material for learning, study, and reference.

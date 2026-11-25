@@ -1,0 +1,425 @@
+---
+title: "Empirical Modeling: from the Real World to the Statistical Model"
+---
+
+<!--
+OBJECTIVE OF THIS PRELUDE
+
+Present empirical modeling as the broader process within which we build,
+estimate, evaluate, and revise statistical models in order to learn from data.
+
+This prelude should NOT teach specification, estimation,
+misspecification testing, or respecification technically. The goal is to show why the foundations
+of Probability, Statistics, and modeling that will come later are necessary.
+
+MAIN SOURCE
+
+Aris Spanos — Probability Theory and Statistical Inference:
+- Chapter 1 — An Introduction to Empirical Modeling
+- 1.3 Chance Regularity and Statistical Models
+- 1.4 Statistical Adequacy
+- 1.5 Statistical versus Theory Information
+- 1.6 Observed Data
+- 1.7 Looking Ahead
+
+CENTRAL IDEA
+
+Empirical modeling is the broader process.
+The statistical model is one of the main objects used in that process.
+The random experiment will be introduced in the next prelude as the simple case used
+to motivate the probabilistic construction of the statistical model.
+
+COURSE SCOPE
+
+The language of this prelude is especially natural for Statistical Modeling,
+Econometrics, and Causal Inference, particularly with observational data.
+
+In predictive Machine Learning there are clear parallels:
+- specification -> choice of representation/model/features/loss
+- estimation -> training/fitting
+- checking -> validation/diagnostics
+- respecification -> revising the pipeline/model
+
+But the vocabulary and the goals are not identical, and misspecification testing in Spanos's
+formal sense is not necessarily the center of a predictive ML workflow.
+
+Do not turn this caveat into a long discussion.
+-->
+
+In the first prelude, we saw the **general map** connecting Probability, data, and Statistical Inference.
+
+Now let us move one level up.
+
+Before asking how to construct a probability space, a random variable, or a distribution, it is worth asking:
+
+> **Why do we want to build all of this?**
+
+A useful answer is: to do [**empirical modeling**]{.concept} — that is, to build and use models in order to learn, in a disciplined way, about phenomena observed in the real world from data.
+
+::: {.callout-important title="The main idea"}
+
+The final goal is not to learn $\Omega$, $\mathcal F$, $P$, regressions, or estimators in isolation.
+
+These objects are part of a larger architecture:
+
+$$
+\boxed{\text{real-world phenomenon}}
+\longrightarrow
+\boxed{\text{statistical model}}
+\longrightarrow
+\boxed{\text{data}}
+\longrightarrow
+\boxed{\text{empirical learning}}
+$$
+
+:::
+
+## The statistical model inside a larger process
+
+A [**statistical model**]{.concept} is a probabilistic representation of the phenomenon we want to study.
+
+But building a model does not finish the job.
+
+In empirical modeling, the model enters a larger process:
+
+$$
+\begin{array}{c}
+\boxed{\textbf{REAL WORLD}}\\
+\Downarrow\\
+\boxed{\text{stochastic phenomenon}}\\
+\Downarrow\\
+\boxed{
+\begin{array}{c}
+\textbf{EMPIRICAL MODELING}\\[0.4em]
+\text{specify}\\
+\Downarrow\\
+\text{estimate}\\
+\Downarrow\\
+\text{confront with the data}\\
+\Downarrow\\
+\text{revise when necessary}
+\end{array}}
+\end{array}
+$$
+
+## The four stages
+
+In the organization we will follow, this process can be thought of as four movements.
+
+$$
+\boxed{\textbf{1. SPECIFICATION}}
+$$
+
+We choose a probabilistic representation for the phenomenon.
+
+This involves questions such as:
+
+- what do we want to explain or measure?
+- which variables enter?
+- what type of relationship are we assuming?
+- what probabilistic assumptions are we making?
+
+$$
+\Downarrow
+$$
+
+$$
+\boxed{\textbf{2. ESTIMATION}}
+$$
+
+We use the observed data to learn unknown values of the model.
+
+This is where ideas such as parameters, estimators, and fitting procedures appear.
+
+$$
+\Downarrow
+$$
+
+$$
+\boxed{\textbf{3. MISSPECIFICATION CHECKING}}
+$$
+
+We ask whether the model we posited is compatible with relevant aspects of the data.
+
+In language closer to day-to-day Data Science, this is where ideas such as these appear:
+
+- diagnostics;
+- residual analysis;
+- assumption checking;
+- validation;
+- model checking.
+
+$$
+\Downarrow
+$$
+
+$$
+\boxed{\textbf{4. RESPECIFICATION}}
+$$
+
+If the model does not adequately capture the observed structure, we revise it.
+
+We may change variables, relationships, distributions, assumptions, or even the entire class of model.
+
+::: {.callout-note appearance="simple"}
+
+We do not need to master any of these stages right now.
+
+The goal is to realize that **specifying a model is only the beginning**.
+
+Later on, we will need to know how to build, estimate, evaluate, and, when necessary, revise models.
+
+:::
+
+## A simple example: regression
+
+Imagine that we want to study **customer spending** using some observed characteristics.
+
+We can begin by **specifying** something like
+
+$$
+Y_i
+=
+\beta_0
++
+\beta_1X_{1i}
++
+\beta_2X_{2i}
++
+\varepsilon_i
+$$
+
+where $Y_i$ represents spending and the $X$'s represent customer characteristics.
+
+Even before calculating anything, we have already made several choices.
+
+### 1. Specification
+
+At this first stage, we choose:
+
+- what the variable of interest is;
+- which variables to use to represent it;
+- a functional form;
+- and a probabilistic structure for the problem.
+
+In other words, before fitting any model, we already need to decide **how we will represent the phenomenon**.
+
+### 2. Estimation
+
+Then we use the data to obtain values such as
+
+$$
+\hat\beta_0,\hat\beta_1,\hat\beta_2.
+$$
+
+This is where the model meets the data: we use the observed sample to learn unknown values of the model.
+
+### 3. Model checking
+
+But the work is not over yet.
+
+After estimating, we may discover that:
+
+- the residuals have structure;
+- the relationship does not seem linear;
+- different groups behave in different ways;
+- or some model assumption seems implausible.
+
+In other words, we need to ask whether the model we chose seems compatible with the observed data.
+
+### 4. Respecification
+
+If the answer is “not completely,” we may need to:
+
+- add an interaction;
+- transform a variable;
+- include new predictors;
+- or even choose another representation for the problem.
+
+That is, the model may need to be revised.
+
+::: {.callout-tip title="Read this example as a cycle"}
+
+$$
+\boxed{\text{1. Specification}}
+\longrightarrow
+\boxed{\text{2. Estimation}}
+\longrightarrow
+\boxed{\text{3. Model\ Checking}}
+\longrightarrow
+\boxed{\text{4. Respecification}}
+$$
+
+Even an apparently simple regression already participates in this cycle.
+
+:::
+
+
+## And in Causal Inference?
+
+The same logic appears even more explicitly when we want to answer a causal question.
+
+Imagine that we want to study:
+
+> **what is the effect of a campaign on customer spending?**
+
+### 1. Specification
+
+Before estimating any effect, we need to specify the problem.
+
+This involves questions such as:
+
+- what is the treatment?
+- what is the outcome?
+- what is the population?
+- what effect do we want to estimate?
+- which assumptions make this comparison causal?
+
+That is, before any calculation, we need to make clear **what the causal question is and under what conditions it can be answered**.
+
+### 2. Estimation
+
+Then we use the data to estimate the effect of interest.
+
+Depending on the problem, this may involve regression, matching, weighting, Difference-in-Differences, experiments, or other methods.
+
+### 3. Model checking
+
+Next, we need to evaluate whether the relevant assumptions seem plausible and whether the procedure is working as expected.
+
+Checks such as the following may appear:
+
+- balance;
+- overlap;
+- pre-trends;
+- residual diagnostics;
+- placebo tests;
+- sensitivity checks.
+
+### 4. Respecification
+
+If some assumption or important aspect of the model does not seem adequate, we need to revise the strategy.
+
+This may mean:
+
+- changing the specification;
+- adjusting the set of covariates;
+- switching methods;
+- redefining the population;
+- or reformulating the causal question itself.
+
+::: {.callout-tip title="The same cycle appears again"}
+
+$$
+\boxed{\text{1. Specification}}
+\longrightarrow
+\boxed{\text{2. Estimation}}
+\longrightarrow
+\boxed{\text{3. Model\ Checking}}
+\longrightarrow
+\boxed{\text{4. Respecification}}
+$$
+
+The difference is that, in Causal Inference, the assumptions needed to interpret the result causally take on a central role.
+
+:::
+
+Again, we do not need to learn these tools now.
+
+The point is to realize **where the foundations of this course are taking us**.
+
+
+## And Machine Learning?
+
+There is a clear relationship, but it is not a perfect equivalence.
+
+In a predictive Machine Learning problem, we also choose a representation, fit the model, evaluate its performance, and iterate:
+
+$$
+\boxed{\text{choose}}
+\longrightarrow
+\boxed{\text{train}}
+\longrightarrow
+\boxed{\text{validate}}
+\longrightarrow
+\boxed{\text{revise}}
+$$
+
+So the general logic remains useful.
+
+But the focus of this course is closer to **Statistical Modeling, Econometrics, Experimentation, and Causal Inference**, where explicitly understanding the probabilistic structure and the assumptions of the model will be especially important.
+
+::: {.callout-tip title="Why does this matter for a Data Scientist?"}
+
+Because knowing how to execute
+
+```python
+model.fit(X, y)
+```
+
+is only one part of the problem.
+
+Before `fit`, someone needed to decide **what is being modeled, under what assumptions, and with what structure**.
+
+After `fit`, someone still needs to decide **whether what was estimated answers the original question and whether the model is compatible with the data**.
+
+:::
+
+## Where are we going?
+
+We can now put the whole architecture in a single figure:
+
+$$
+\begin{array}{c}
+\boxed{\textbf{REAL WORLD}}\\
+\Downarrow\\
+\boxed{\text{stochastic phenomenon}}\\
+\Downarrow\\
+\boxed{
+\begin{array}{c}
+\textbf{EMPIRICAL MODELING}\\[0.3em]
+\text{specify}\\
+\rightarrow
+\text{estimate}\\
+\rightarrow
+\text{check}\\
+\rightarrow
+\text{revise}
+\end{array}}
+\\
+\Uparrow\\[-0.2em]
+\textit{uses}\\
+\Uparrow\\
+\boxed{\textbf{STATISTICAL MODEL}}\\
+\Uparrow\\[-0.2em]
+\textit{but how do we build this object?}\\
+\Uparrow\\
+\boxed{\text{we will begin with the simplest case}}\\
+\Uparrow\\
+\boxed{\textbf{RANDOM EXPERIMENT}}
+\end{array}
+$$
+
+That last question will be the theme of the next prelude.
+
+To understand where a statistical model comes from, we will go back to the beginning and build, step by step, the probabilistic structure of the simplest case.
+
+::: {.callout-important title="The next step"}
+
+In the next prelude, we will go one level deeper into this architecture:
+
+$$
+\boxed{\text{random experiment}}
+\longrightarrow
+\boxed{\text{probability theory}}
+\longrightarrow
+\boxed{\text{statistical space}}
+\longrightarrow
+\boxed{\text{random variables}}
+\longrightarrow
+\boxed{\text{statistical model}}
+$$
+
+After that, we will begin building each piece for real.
+
+:::

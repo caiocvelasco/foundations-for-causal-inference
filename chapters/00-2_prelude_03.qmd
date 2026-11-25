@@ -1,0 +1,441 @@
+---
+title: "Where We Want to Go: from the Random Experiment to the Statistical Model"
+---
+
+<!--
+OBJECTIVE OF THIS PRELUDE
+
+Show, before the technical details, the mathematical architecture that will be built in the next chapters.
+
+This file is a MAP. It should not teach any of the objects below in depth.
+
+MAIN ARC
+
+real world
+→ stochastic phenomenon / chance regularity
+→ random experiment
+→ abstract formalization
+→ statistical space
+→ random variables
+→ numerical models
+→ data / inference
+
+CENTRAL DISTINCTION
+
+NOW:
+- abstract spaces
+- Ω, F, P, G_n
+- statistical space
+
+LATER:
+- random variables
+- probability model
+- sampling model / random sample
+- statistical model
+
+MAIN SOURCES
+
+Spanos:
+- Chapter 2 — Probability Theory: A Modeling Framework
+- 2.4 Random Experiments
+- 2.5 Formalizing Condition [a]
+- 2.6 Formalizing Condition [b]
+- 2.7 Formalizing Condition [c]: Random Trials
+- 2.8 Statistical Space
+- 2.9 A Look Forward
+- Chapter 3 — The Notion of a Probability Model
+- Chapter 4 — The Notion of a Random Sample
+
+SUPPLEMENTARY REFERENCES
+
+Bertsekas & Tsitsiklis — Introduction to Probability
+Robert Ash — Basic Probability Theory
+
+CAUTIONS
+
+- experiment = defined mechanism/procedure
+- trial = one complete execution of the experiment
+- outcome = ω
+- sample space = Ω
+- sampling space = G_n
+- Cartesian product does not imply repetition
+- G_n can be general; IID is an additional assumption
+- conditional probability does not depend on repetition
+- random sample will only be defined after random variables
+- (Ω,F,P) is a probability space, not a probability model, in this pedagogical arc
+-->
+
+In the two previous preludes, we built the broader context of this journey.
+
+First we saw the **general map** connecting Probability, data, and Statistical Inference.
+
+Then we saw that these objects are part of a larger process of **empirical modeling**: specifying models, estimating them, confronting them with the data, and revising them when necessary.
+
+Now we will go one level deeper into the architecture:
+
+> **where does the statistical model used in that process come from?**
+
+To answer, we will begin with the simplest mathematical structure we will use to represent a stochastic phenomenon: the **random experiment**.
+
+This question organizes a large part of the road ahead.
+
+The strategy will be to begin with the simplest possible case, understand its architecture precisely, and only then expand that architecture to more realistic phenomena.
+
+This is important because, in the next chapters, we will start working with symbols such as $\Omega$, $\mathcal F$, $P$, Cartesian products, and sequences of trials. If we look only at each isolated piece, it is easy to lose sight of **what we are building and why**.
+
+The idea of this prelude is to see the forest first. Later we will enter the trees.
+
+::: {.callout-note appearance="simple"}
+
+Do not try to memorize the formulas on this page.
+
+They appear only to show **where each concept we will learn fits**.
+
+:::
+
+## From the stochastic phenomenon to the random experiment
+
+We begin in the real world with a [**stochastic phenomenon**]{.concept}: a phenomenon in which there is uncertainty about individual realizations, but regularities may appear when we observe many occurrences.
+
+This is the combination we already called **chance regularity**:
+
+$$
+\boxed{\text{individual uncertainty}}
+\qquad + \qquad
+\boxed{\text{aggregate regularity}}
+$$
+
+But stochastic phenomena can have very different structures. Therefore, instead of trying to begin with the most general case, we will begin with a particularly simple class.
+
+The idea is to represent a phenomenon that can be thought of as a [**random experiment**]{.concept}.
+
+Here, **random experiment does not mean only “something uncertain that happens.”** It is a chance mechanism with three specific characteristics:
+
+1. **[a] The possible outcomes are known a priori.**
+2. **[b] The result of a particular trial is not known a priori, but there is a regularity of occurrence associated with the outcomes.**
+3. **[c] The experiment can be repeated under identical conditions.**
+
+Simple examples fit this idea well: tossing a coin, measuring the lifetime of a light bulb, or counting how many calls arrive at a call center during a time interval.
+
+The last situation already seems much closer to real data. Even so, if we can imagine the count being observed repeatedly under sufficiently similar conditions, it can initially be treated within this simple structure.
+
+::: {.callout-important title="Why begin with such a simple case?"}
+
+Because it allows us to build, without unnecessary complications, the fundamental architecture of the theory.
+
+First we mathematize a simple form of stochastic phenomenon. Then we will see which assumptions need to be modified when the real phenomenon is more complex.
+
+:::
+
+Not every stochastic phenomenon, however, fits this structure.
+
+Think, for example, of a time series of **exchange rates**. The possible values can be described and the next value is uncertain, but condition **[c]** is problematic: circumstances change over time and today's value may be related to yesterday's. The phenomenon remains stochastic and may exhibit *chance regularity*, but the simple structure of the random experiment is no longer sufficient to capture it.
+
+That is,
+
+$$
+\boxed{\text{stochastic phenomenon}}
+\quad \not\Rightarrow \quad
+\boxed{\text{simple random experiment}}
+$$
+
+This contrast is important for understanding the strategy of the course:
+
+> **we will begin by building the model of the simple case precisely; then we will have a foundation on which to introduce dependence, heterogeneity, and more realistic structures.**
+
+### The three conditions will be our roadmap
+
+The mathematical formalization will follow directly from the three characteristics of the random experiment:
+
+$$
+\begin{array}{rcl}
+\textbf{[a]} & \text{which outcomes are possible?} & \longrightarrow \Omega \\\[0.8em]
+\textbf{[b]} & \text{how do we represent uncertainty?} & \longrightarrow (\Omega,\mathcal F,P) \\\[0.8em]
+\textbf{[c]} & \text{how do we represent its repetitions?} & \longrightarrow \mathcal G_n
+\end{array}
+$$
+
+This is the common thread of the next chapters.
+
+In other words, we are trying to **mathematize the random experiment**. The first complete form of that formalization will be a **statistical space**. Later, with random variables, we will arrive at the numerical form that we will call a **statistical model**.
+
+## First destination: building the abstract spaces
+
+The first question will lead us to the set of possible outcomes:
+
+$$
+\boxed{\Omega}
+$$
+
+Then we will build the events we want to represent and a function capable of assigning probabilities to them:
+
+$$
+\boxed{(\Omega,\mathcal F,P)}
+$$
+
+This object will be called a [**probability space**]{.concept}.
+
+It represents mathematically the uncertainty associated with the outcome of **one complete trial** of the experiment we defined.
+
+But our story does not end with one trial.
+
+If we perform the experiment several times,
+
+$$
+T_1,T_2,\ldots,T_n,
+$$
+
+we will need to represent jointly the possible outcomes of those executions and the probabilistic structure that exists among them.
+
+This will lead us to a joint probability space,
+
+$$
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+$$
+
+and to the [**sampling space**]{.concept}
+
+$$
+\mathcal G_n.
+$$
+
+Putting these pieces together, we will arrive at our first major destination:
+
+$$
+\boxed{
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right]
+}
+$$
+
+which we will call a [**statistical space**]{.concept}.
+
+::: {.callout-important title="What are we building up to this point?"}
+
+An **abstract** mathematical structure capable of representing:
+
+- the uncertainty of a trial;
+- several executions of the experiment;
+- and the probabilistic relationship among those executions.
+
+We are still working with **spaces, events, and probability functions** — not with the numerical data that will appear later.
+
+:::
+
+### And where does IID fit in?
+
+In the simple construction motivating this story, the expression “repeat under identical conditions” will eventually lead to the IID case.
+
+In our course, however, we will make a small pedagogical generalization: first we will build a **general** sampling space $\mathcal G_n$ and only later specialize to the case in which the trials are modeled as:
+
+- **[I]** being *independent*;
+- **[ID]** *identically distributed*, that is, with the same probabilistic structure.
+
+In that case, we will arrive at the simple structure
+
+$$
+\boxed{
+\left[
+(\Omega,\mathcal F,P)^n,
+\mathcal G_n^{IID}
+\right]
+}
+$$
+
+which will be called the [**simple statistical space**]{.concept}.
+
+We do not need to understand IID now.
+
+The important thing to keep in mind is only this:
+
+> **IID does not appear because there are many data points. It is an additional assumption about how we model the relationship among the trials.**
+
+Later we will see that formalizing precisely the idea that *“knowing what happened in one trial does not change the probabilities of the others”* will require a new tool: **conditional probability**.
+
+[**Attention:** conditional probability is a general concept and does not depend on repeated trials. It appears here in our narrative because it will be a natural tool for defining independence.]{.attention}
+
+## Spaces now, models later
+
+Here is a distinction that will be fundamental so that we do not mix different stages of the construction:
+
+$$
+\boxed{\textbf{SPACE} \neq \textbf{MODEL}}
+$$
+
+Up to the end of this first part, we will be building **abstract spaces**.
+
+Only afterwards will we introduce [**random variables**]{.concept}. They will allow us to take this abstract structure to numerical objects defined on the real line.
+
+We can visualize the transformation like this:
+
+$$
+\begin{array}{ccc}
+\boxed{
+\begin{array}{c}
+\textbf{NOW}\\[0.3em]
+\text{probability space}\\
+(\Omega,\mathcal F,P)\\[0.6em]
++\\[0.6em]
+\text{sampling space}\\
+\mathcal G_n\\[0.6em]
+\Downarrow\\
+\textbf{statistical space}
+\end{array}}
+&
+\quad \xrightarrow{\quad \text{random variables} \quad} \quad
+&
+\boxed{
+\begin{array}{c}
+\textbf{LATER}\\[0.3em]
+\text{probability model}\\
+\textit{(probability model)}\\[0.6em]
++\\[0.6em]
+\text{sampling model}\\
+\textit{(sampling model)}\\[0.6em]
+\Downarrow\\
+\textbf{statistical model}
+\end{array}}
+\end{array}
+$$
+
+The idea is simple:
+
+$$
+\boxed{\text{abstract structure}}
+\quad\longrightarrow\quad
+\boxed{\text{numerical representation}}
+$$
+
+The [**probability space**]{.concept} $(\Omega,\mathcal F,P)$ will be carried, through random variables, to a [**probability model**]{.concept}.
+
+In the same way, the structure of the trials will be carried to a [**sampling model**]{.concept}.
+
+The two sides will then form a [**statistical model**]{.concept}.
+
+::: {.callout-note title="But we already used the word model in the previous prelude..."}
+
+Yes — and that was intentional.
+
+First we showed **the destination** to build a general intuition. Now we will begin to distinguish the stages of the road more precisely.
+
+In the next chapters, $(\Omega,\mathcal F,P)$ will be called a **probability space**. The **probability model**, in the more specific sense we will adopt later, will appear only after we introduce random variables and distributions.
+
+:::
+
+## The complete map of the construction
+
+We can now look at the whole story at once:
+
+$$
+\begin{array}{c}
+\boxed{\text{REAL WORLD}}\\
+\Downarrow\\
+\boxed{\text{stochastic phenomenon}}\\
+\Downarrow\\[-0.2em]
+\textit{we begin with the simplest case}\\
+\Downarrow\\
+\boxed{\text{random experiment: [a], [b], [c]}}\\
+\Downarrow\\[-0.2em]
+\text{mathematical formalization}\\
+\Downarrow\\
+\boxed{
+\begin{array}{c}
+\Omega,\ \mathcal F,\ P,\ \mathcal G_n\\[0.3em]
+\textbf{STATISTICAL SPACE}
+\end{array}}
+\\[1em]
+\textit{later}\\[-0.2em]
+\Downarrow\\
+\boxed{\text{random variables}}\\
+\Downarrow\\
+\boxed{\textbf{STATISTICAL MODEL}}\\
+\Downarrow\\
+\boxed{\text{observed data and inference}}
+\end{array}
+$$
+
+Notice that the **random experiment is not a set containing these spaces**.
+
+It is the conceptual mechanism we are trying to represent. The spaces appear as part of its **mathematical formalization**.
+
+## Where will the data appear?
+
+When we arrive at random variables, the trials
+
+$$
+T_1,T_2,\ldots,T_n
+$$
+
+can be associated with numerical objects
+
+$$
+X_1,X_2,\ldots,X_n.
+$$
+
+After the trials actually occur, we will observe concrete values
+
+$$
+x_1,x_2,\ldots,x_n.
+$$
+
+That is when we will begin to recognize what, in the real world, we store as **data**.
+
+For example, imagine that our interest is to observe the spending of different customers in a purchase. After observing the customers, we might end up with something like this:
+
+::: {.compact-table}
+
+| observation | customer | spending |
+|:---:|:---:|:---:|
+| $x_1 \rightarrow$ | 1 | 42.90 |
+| $x_2 \rightarrow$ | 2 | 18.50 |
+| $x_3 \rightarrow$ | 3 | 76.20 |
+| $x_4 \rightarrow$ | 4 | 31.00 |
+| $\vdots$ | $\vdots$ | $\vdots$ |
+| $x_n \rightarrow$ | $n$ | 54.70 |
+
+:::
+
+In this example,
+
+$$
+x_1 = 42.90,\qquad
+x_2 = 18.50,\qquad
+x_3 = 76.20,\qquad
+x_4 = 31.00,\qquad \ldots
+$$
+
+Each $x_i$ is therefore an **observed value**: what actually appeared after the corresponding trial took place.
+
+It is precisely the collection of these observed values that we begin to recognize, in the day-to-day of Data Science, as a **dataset**.
+
+So the general idea is:
+
+$$
+\boxed{
+T_1,\ldots,T_n
+\quad\longrightarrow\quad
+X_1,\ldots,X_n
+\quad\longrightarrow\quad
+x_1,\ldots,x_n
+\quad\longrightarrow\quad
+\text{observed dataset}
+}
+$$
+
+Later on, we will see carefully how we move from each trial $T_i$ to a random variable $X_i$, and from $X_i$ to the observed value $x_i$.
+
+But we do not need to formalize that step yet.
+
+For now, it is enough to know **where it will appear**.
+
+::: {.callout-tip title="Read this map like this"}
+
+**We begin by mathematizing the simplest form of the stochastic phenomenon: the random experiment.**
+
+First we will build its abstract structure. Then we will use random variables to transform it into numerical objects. Only then will we be ready to connect this structure to data — and, later on, to expand the model when the real world requires dependence, heterogeneity, and other forms of complexity.
+
+:::
+
+In the next chapters, we will follow exactly this path — one piece at a time.

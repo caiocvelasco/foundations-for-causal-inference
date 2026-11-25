@@ -1,0 +1,188 @@
+---
+title: "Where Do Data Come From? The Data Generating Process"
+---
+
+<!--
+SOURCES AND NOTES ON RIGOR (not part of the student-facing text)
+
+Wasserman, All of Statistics (2004), Preface: probability starts with a
+generating process and studies its outcomes; inference starts with the outcomes
+and seeks to learn about the process.
+
+Bertsekas & Tsitsiklis, Introduction to Probability, ch. 1: probabilistic
+models are mathematical representations of uncertain situations.
+
+Ash, Basic Probability Theory, ch. 1: the same phenomenon admits different
+choices of outcome space, depending on the problem being studied.
+
+Spanos, Probability Theory and Statistical Inference (1999), chs. 1, 2,
+7.5 and 10: modeling stochastic phenomena and statistical adequacy.
+The statistical generating mechanism (GM) has its own formulation in the book;
+it should not automatically be equated with the real DGP.
+
+Breiman (2001), Statistical Modeling: The Two Cultures: contrasts explicit
+stochastic modeling with an algorithmic approach that treats the generating
+mechanism as unknown. https://doi.org/10.1214/ss/1009213726
+
+Hernán & Robins, Causal Inference: What If: causal questions require
+justifying claims about effects under interventions; the observed distribution is not enough.
+https://miguelhernan.org/whatifbook
+
+Design-based inference: randomness can arise from the selection of the
+sample, while the values in the finite population remain fixed.
+
+The Bernoulli example below is deliberately a hypothetical simplification.
+Conversions by real users are not assumed to be IID.
+-->
+
+We have just constructed a [**Probability Space**]{.conceito}, $(\Omega,\mathcal F,P)$.
+
+But **what are we trying to represent with this structure?**
+
+Imagine an e-commerce website. On each visit, a user may complete a purchase or leave without buying anything. At the end of the day, we have a table of conversions: $1$ for a purchase and $0$ for no purchase.
+
+The table shows **what happened**. But what caused these data to appear?
+
+## The process behind the data
+
+We call the underlying process that produces the data we can observe the [**Data Generating Process**]{.conceito} (*DGP*).
+
+But **do we need to believe that there is a probabilistic formula hidden in the world, waiting to be discovered?** No. The phenomenon exists; describing it through a probabilistic mechanism is a **modeling choice**. Probability gives us a language for representing uncertainty — not a guarantee that our model is the true explanation of the world.
+
+This distinction appears in different ways in the **four questions** we explored in the prelude:
+
+- **Description:** to calculate the observed conversion rate, we do not need to postulate a DGP.
+- **Prediction:** we can make accurate predictions without knowing the real mechanism. But what if consumer behavior changes? A model trained on past data may no longer predict well because the patterns it learned no longer represent the new data (**_distribution shift_**).
+- **Statistical Inference:** we want to use the observed data (the sample) to learn about unknown quantities of a population or distribution (**_true distribution_**). To do so, we need to justify how the sample was generated: we can postulate a statistical model or, in sample surveys, use the sampling mechanism itself.
+- **Causal Inference:** we want to understand what would happen **if we intervened** in the phenomenon. For example, does a marketing campaign actually increase sales, or is it merely associated with customers who would have made a purchase anyway? To answer this question, reproducing the patterns observed in the data is not enough: we need additional assumptions that allow us to identify cause-and-effect relationships.
+
+The statistician **Leo Breiman**, in his paper *Statistical Modeling: The Two Cultures*, popularized a similar distinction: some approaches specify a stochastic model for the data, while others, common in predictive *Machine Learning*, treat the underlying mechanism as unknown and focus on making accurate predictions.[^breiman]
+
+[^breiman]: Breiman, L. (2001). *Statistical Modeling: The Two Cultures*. Statistical Science, 16(3), 199–231. https://doi.org/10.1214/ss/1009213726
+
+We also encounter expressions such as *generating mechanism* or *stochastic mechanism*. Here, we will use **DGP** as our primary term. Phrases such as “nature generates the data” are simply informal ways of telling this story.
+
+```{=html}
+<div style="max-width:760px;margin:1.5rem auto;text-align:center;line-height:1.6;">
+  <div style="border:1.5px solid currentColor;border-radius:10px;padding:.75rem 1rem;">Real-world phenomenon: users visit an e-commerce website</div>
+  <div style="font-size:1.5rem;line-height:1.4;">↓</div>
+  <div style="border:2px solid #2563a6;border-radius:10px;padding:.85rem 1rem;"><strong>Data Generating Process (DGP)</strong><div style="font-size:.9rem;">underlying mechanism, generally unknown</div></div>
+  <div style="font-size:1.5rem;line-height:1.4;">↓</div>
+  <div style="border:1.5px solid currentColor;border-radius:10px;padding:.75rem 1rem;">Many possible outcomes<br><span style="font-family:monospace;">0, 1, 0, 0, 1, ... &nbsp; or &nbsp; 0, 0, 1, 0, 0, ...</span></div>
+  <div style="font-size:1.5rem;line-height:1.4;">↓</div>
+  <div style="border:1.5px solid currentColor;border-radius:10px;padding:.75rem 1rem;"><strong>One observed realization</strong><br>the data that ended up in our table</div>
+</div>
+```
+
+The distinction is essential: **the observed dataset is not the DGP**. It is an outcome produced by it. Under similar conditions, we could have observed different data.
+
+## Where does $(\Omega,\mathcal F,P)$ fit in?
+
+The real-world phenomenon does not come with a ready-made mathematical formula. We are the ones who choose how to represent it.
+
+The [**Probability Space**]{.conceito} provides this language:
+
+- $\Omega$: which outcomes we consider possible;
+- $\mathcal F$: which events we can ask questions about;
+- $P$: how we assign probabilities to those events.
+
+Thus, $(\Omega,\mathcal F,P)$ **is not, by definition, the real DGP**. It is a mathematical structure that we can use to represent the uncertainty associated with the phenomenon. Later, random variables will allow us to connect this structure to the values recorded in the data.
+
+## The real process and the model we choose
+
+Let us return to conversions. A fairly simple representation would be to imagine that each visit has a constant probability $p$ of ending in a purchase.
+
+For example, **if we chose $p=0.10$**, the model would assign a 10% probability to a purchase on any given visit.
+
+This is a **modeling assumption**, not an automatic discovery about the e-commerce website. In reality, the probability of a purchase may vary depending on the user, the time of day, the campaign, and many other factors. Visits may also be related to one another.
+
+Therefore, we need to distinguish between:
+
+- [**real DGP**]{.conceito}: the process that actually produced the data, which we do not fully understand;
+- [**probabilistic model**]{.conceito}: the mathematical representation we propose in order to study it.
+
+If we denote the true distribution of the **data of interest** by $P_0$, it will not necessarily be the same as the distribution postulated by our model.
+
+> **A model may represent the process that produced the data well, approximately, or poorly.**
+
+This question — **_how adequate is our representation?_** — will be important in Statistical Inference.
+
+## Probability and Inference: two directions
+
+Here we encounter a fundamental connection:
+
+```{=html}
+<div style="max-width:780px;margin:1.5rem auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem;">
+  <div style="border:1.5px solid currentColor;border-radius:10px;padding:1rem;text-align:center;">
+    <strong style="color:#2563a6;">PROBABILITY</strong>
+    <div style="margin:.65rem 0;">Known process/model</div>
+    <div style="font-size:1.5rem;">↓</div>
+    <div>What data could appear?</div>
+  </div>
+  <div style="border:1.5px solid currentColor;border-radius:10px;padding:1rem;text-align:center;">
+    <strong style="color:#2563a6;">STATISTICAL INFERENCE</strong>
+    <div style="margin:.65rem 0;">Observed data</div>
+    <div style="font-size:1.5rem;">↓</div>
+    <div>What can we learn about the process?</div>
+  </div>
+</div>
+```
+
+In **Probability**, we start with a probabilistic representation and study its possible outcomes.
+
+In [**Statistical Inference**]{.conceito}, we follow the reverse path: we use the observed outcomes to learn about unknown aspects of the process that generated them.
+
+
+### And where does an unknown parameter fit in?
+
+In a future analysis, we could **postulate** a family of distributions $\mathcal P=\{P_\theta:\theta\in\Theta\}$.
+
+If the true distribution belongs to this family, then $P_0=P_{\theta_0}$ for some unknown parameter $\theta_0$.
+
+In our simplified example, this parameter could be the probability $p$ of conversion.
+
+Statistical Inference will seek to learn about this parameter **from the data**, not simply to “recover the entire DGP.” And if $P_0$ does not belong to the chosen family, there may not even be a true parameter $\theta_0$ **within that model**.
+
+For now, just keep this question in mind: **how can we learn about something we do not observe directly?**
+
+## What if we could run the process on a computer?
+
+There is an important difference between the real, unknown DGP and a **mathematical DGP that we specify ourselves**.
+
+Suppose we create an artificial generator in which each conversion outcome is drawn independently, with a probability of conversion $p=0.10$. We can run it several times:
+
+```text
+Simulation 1 → 0 0 1 0 0 0 0 1 0 0
+Simulation 2 → 0 0 0 0 0 1 0 0 0 0
+Simulation 3 → 1 0 0 0 0 0 0 0 1 0
+```
+
+The sequences are illustrative only. Even when we keep **the same mechanism and the same $p$**, the data produced may change.
+
+This is [**simulation**]{.conceito}. When we repeat this procedure many times to study the behavior of methods, we enter the realm of [**Monte Carlo**]{.conceito} methods.
+
+Later, this idea will help us study the quality of statistical procedures, experimental design, and the uncertainty of results.
+
+## A modern connection: Synthetic Data
+
+[**Synthetic data**]{.conceito} are artificially generated data. The generator can be a mechanism we specify ourselves or a model learned from real data.
+
+In industry, synthetic data can help us **test pipelines**, explore rare situations, supplement training data, and evaluate methods. They can also facilitate certain uses and forms of data sharing, **but they do not guarantee privacy on their own**.
+
+A particularly interesting example arises in Causal Inference: we can construct an artificial DGP in which we know, by definition, that the average treatment effect of an intervention is $ATE=2$.
+
+We then generate several datasets and check whether different methods can get close to $2$. In the real world, this true effect is generally unknown — and that is precisely why simulation is so useful for testing methods.
+
+Another emerging application involves *synthetic respondents* and virtual consumers used to explore hypotheses in market research. They do not automatically replace real people: a generator may reproduce certain observed patterns and fail to capture precisely the behavior we want to investigate.
+
+> **The usefulness of synthetic data depends on whether the generating mechanism adequately represents the properties relevant to the question we want to answer.**
+
+## Before moving on
+
+We constructed $(\Omega,\mathcal F,P)$ to mathematically represent **uncertainty about what may happen**. Now we know why this construction matters in Data Science: it allows us to reason about the process behind the observations without confusing the model with the world itself.
+
+But so far, we have essentially dealt with **one trial**.
+
+**What changes when we observe multiple outcomes of the same experiment?** This is the next step in our construction.
+
+But first, let us take a **more in-depth** look at a particular case: when the sample space is **continuous**, that is, a case closer to real life.

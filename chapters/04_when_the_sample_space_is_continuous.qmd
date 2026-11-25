@@ -1,0 +1,1555 @@
+---
+title: "Real Life: When the Sample Space Is Continuous"
+---
+
+<!--
+MAIN SOURCES / INSPIRATION FOR THIS SECTION
+
+Bertsekas & Tsitsiklis / MIT 6.041, Lecture 2:
+- review of the axioms of probability
+- interpretation of probability as mass/area
+- unit square, zero-area singletons, and the apparent 1 = 0
+- exact source of the error: additivity is only countable
+- probability zero does not imply impossibility; probability one does not require the event to equal Omega
+
+Spanos:
+- Probability Theory as a modeling framework
+- probability as a function on events / sets
+- connection between probabilistic formalization and modeling
+
+Robert B. Ash:
+- measure-theoretic motivation for nondiscrete spaces without introducing the entire formal machinery prematurely
+-->
+
+In the previous chapter, we constructed a probability space
+
+$$
+(\Omega,\mathcal F,P)
+$$
+
+to represent a random experiment mathematically.
+
+So far, our examples have had simple sample spaces: heads or tails, purchase or no purchase, the faces of a die.
+
+But many quantities used in Data Science — such as time, temperature, distance, or spending — are often **modeled as continuous**.
+
+When this happens, a new difficulty arises:
+
+> **How do we construct probabilities when we can no longer list all the possible outcomes?**
+
+This is the focus of this chapter.
+
+## Before moving on: finite and infinite
+
+Before discussing continuous spaces, we need to establish a simple distinction.
+
+A set can be:
+
+- [**finite**]{.conceito}: it contains a finite number of elements;
+- [**infinite**]{.conceito}: it contains infinitely many elements.
+
+For example,
+
+$$
+\{H,T\}
+$$
+
+is finite, whereas
+
+$$
+\mathbb N=\{1,2,3,\ldots\}
+$$
+
+is infinite.
+
+But there is an important distinction between infinite sets: some can still be organized into a **sequence**; others cannot.
+
+
+## Counting, listing, and sequences
+
+### Counting and cardinality
+
+Counting means putting the elements of a set into correspondence with the natural numbers.
+
+In this course, we will use
+
+$$
+\mathbb N=\{1,2,3,\ldots\}.
+$$
+
+For example, for
+
+$$
+A=\{a,b,c\},
+$$
+
+we can associate
+
+$$
+\begin{array}{ccc}
+a & b & c\\
+\uparrow & \uparrow & \uparrow\\
+1 & 2 & 3
+\end{array}
+$$
+
+and we say that
+
+$$
+|A|=3.
+$$
+
+This quantity is the [**cardinality**]{.conceito} of the set.
+
+For infinite sets, counting never ends. The question then becomes:
+
+> **Can we organize all the elements into sequential positions indexed by $1,2,3,\ldots$, without leaving any out?**
+
+### What does it mean to list a set?
+
+A [**sequence**]{.conceito} is precisely a collection organized by position:
+
+$$
+x_1,x_2,x_3,\ldots
+$$
+
+So, in this chapter, saying that we can [**list**]{.conceito} a set means:
+
+> we can construct a sequence that contains **all** the elements of the set.
+
+We do not need to finish writing the list. We simply need a rule specifying what occupies position $1$, position $2$, position $3$, and so on.
+
+When this is possible, the set is [**countable**]{.conceito}.
+
+### Some infinite sets we can list
+
+The first example is almost immediate.
+
+The positive integers can be listed as
+
+$$
+1,2,3,4,5,\ldots
+$$
+
+Now consider all the integers,
+
+$$
+\mathbb Z=\{\ldots,-3,-2,-1,0,1,2,3,\ldots\}.
+$$
+
+At first glance, it seems that we now have "more" numbers on both sides. But we can still organize them into a single sequence:
+
+$$
+0,\;1,\;-1,\;2,\;-2,\;3,\;-3,\ldots
+$$
+
+Or, thinking in terms of positions,
+
+$$
+\begin{array}{ccccccc}
+1 & 2 & 3 & 4 & 5 & 6 & \cdots\\
+\downarrow & \downarrow & \downarrow & \downarrow & \downarrow & \downarrow & \\
+0 & 1 & -1 & 2 & -2 & 3 & \cdots
+\end{array}
+$$
+
+Therefore, $\mathbb Z$ is also countable.
+
+The same is true of the rational numbers,
+
+$$
+\mathbb Q
+=
+\left\{
+\frac{p}{q}:p,q\in\mathbb Z,\;q\neq0
+\right\}.
+$$
+
+For example,
+
+$$
+\frac12,\quad
+-\frac34,\quad
+\frac57,\quad
+2,\quad
+-\frac{11}{3}
+$$
+
+are all elements of $\mathbb Q$.
+
+Here the list is less obvious, because there are infinitely many rational numbers between two integers.
+
+Even so, we can organize them systematically.
+
+For example, one possible sequence starts like this:
+
+$$
+q_1=0,\qquad
+q_2=1,\qquad
+q_3=-1,\qquad
+q_4=\frac12,\qquad
+q_5=-\frac12,\qquad
+q_6=2,\qquad
+q_7=-2,\qquad
+\ldots
+$$
+
+or, more visually,
+
+$$
+0,\;
+1,\;
+-1,\;
+\frac12,\;
+-\frac12,\;
+2,\;
+-2,\;
+\frac13,\;
+-\frac13,\;
+\frac23,\;
+-\frac23,\;
+\ldots
+$$
+
+The exact order is not the main point.
+
+What matters is that there is **some enumeration rule** that allows us to put all the rational numbers into a sequence
+
+$$
+q_1,q_2,q_3,\ldots
+$$
+
+without leaving out any rational number.
+
+Therefore,
+
+$$
+\boxed{\mathbb Q\text{ is infinite but countable}.}
+$$
+
+Therefore,
+
+$$
+\boxed{\mathbb N,\;\mathbb Z\;\text{and}\;\mathbb Q\text{ are infinite but countable}.}
+$$
+
+This is one of the first surprising things we encounter when studying infinity: sets that seem much larger can still have their elements organized into a sequence.
+
+### Can every infinite set be listed?
+
+No.
+
+Cantor showed that there are infinite sets too large to fit into any sequence
+
+$$
+x_1,x_2,x_3,\ldots
+$$
+
+These sets are called [**uncountable**]{.conceito}.
+
+The example that matters to us is precisely
+
+$$
+[0,1].
+$$
+
+In a moment, we will see a short and beautiful proof of this.
+
+::: {.callout-note title="The classification we will use"}
+
+$$
+\boxed{
+\text{sets}
+\longrightarrow
+\begin{cases}
+\text{finite}\\
+\text{infinite}
+\begin{cases}
+\text{countable}\\
+\text{uncountable}
+\end{cases}
+\end{cases}
+}
+$$
+
+The idea of a **sequence** will be fundamental because Kolmogorov's third axiom allows us to sum probabilities over a countable collection of events.
+
+:::
+
+
+## When we cannot list the outcomes
+
+We can now isolate the new difficulty.
+
+Consider
+
+$$
+\Omega=[0,1].
+$$
+
+The new question is this: can we list all the points of $[0,1]$ as
+
+$$
+\omega_1,\omega_2,\omega_3,\ldots \; ?
+$$
+
+The answer is **no**.
+
+More precisely, sets such as $(0,1)$ and $[0,1]$ are [**uncountable**]{.conceito}.
+
+This means that there **is no** infinite list
+
+$$
+\omega_1,\omega_2,\omega_3,\ldots
+$$
+
+that captures all their elements.
+
+Let's look at a short and beautiful proof from Tsitsiklis's lecture.
+
+### An intuitive proof by contradiction
+
+A [**proof by contradiction**]{.conceito} works as follows:
+
+1. we temporarily assume that the statement we want to negate is true;
+2. we follow the logical consequences of that assumption;
+3. if we arrive at an absurdity or impossibility, we conclude that the initial assumption was wrong.
+
+In very simple terms:
+
+> "Let's pretend for a moment that this can be done.  
+> If that assumption leads us to a dead end, then it was not actually possible."
+
+### Cantor's proof: why $[0,1]$ cannot be listed
+
+Rather than looking at all the numbers in $[0,1]$ at once, let's focus on a specific subset:
+
+$$
+A=\{x\in[0,1]: \text{ the decimal expansion of }x\text{ uses only the digits }2\text{ and }7\}.
+$$
+
+There is nothing special about using 2 and 7; this is simply an example sufficient for what we want to do here.
+
+For example, some elements of $A$ are:
+
+$$
+0.2222\ldots,\quad
+0.72727\ldots,\quad
+0.277772\ldots,\quad
+0.7722227\ldots
+$$
+
+If even this special set could be listed, then we could write something like this:
+
+$$
+x_1,\;x_2,\;x_3,\;\ldots
+$$
+
+with **all** the elements of $A$ appearing somewhere in the list.
+
+Let's assume that this **is possible**.
+
+#### Step 1: Assuming it is possible, we start listing some of these numbers
+
+Imagine a list like this:
+
+<div style="font-family: monospace; line-height: 1.8;">
+
+x1 = 0. <strong style="color: red;">2</strong> 7 2 7 7 2 ...  
+x2 = 0. 7 <strong style="color: red;">2</strong> 7 2 7 7 ...  
+x3 = 0. 2 2 <strong style="color: red;">7</strong> 7 2 7 ...  
+x4 = 0. 7 7 2 <strong style="color: red;">2</strong> 7 2 ...  
+...
+
+</div>
+
+We then ask ourselves:
+
+- Can this sequence exhaust all the possible elements of $A$?
+
+
+
+Now look at the **first decimal digit** of $x_1$, the **second decimal digit** of $x_2$, the **third decimal digit** of $x_3$, and so on.
+
+These digits form what is called the **diagonal** of the list.
+
+#### Step 2: The key trick: construct a new number that could belong to the sequence
+
+Now let's construct a new number $y$ of the form: $y=0.y_1y_2y_3\ldots$
+
+The construction rule is very simple:
+
+- look at the **first decimal digit** of $x_1$, which is $2$, and replace it with $7$
+- look at the **second decimal digit** of $x_2$, which is $2$, and replace it with $7$
+- look at the **third decimal digit** of $x_3$, which is $7$, and replace it with $2$
+- and so on
+
+Focusing on the highlighted diagonal, for example, if the diagonal of the list were
+
+```text
+2, 2, 7, 2, ...
+```
+
+then we would construct
+
+```text
+7, 7, 2, 7, ...
+```
+
+In the end, following this rule of **Cantor's diagonal argument**, we obtain a number $y=0.7727\ldots$.
+
+#### Step 3: Would this number appear in the sequence?
+
+Notice that this new number $y$ **still belongs to** $A$, because its decimal expansion also uses only the digits $2$ and $7$.
+
+But it cannot equal any of the numbers in the list, as we can see below:
+
+- $y\neq x_1$, because it differs from $x_1$ in the **first decimal digit**;
+- $y\neq x_2$, because it differs from $x_2$ in the **second decimal digit**;
+- $y\neq x_3$, because it differs from $x_3$ in the **third decimal digit**;
+- and so on.
+
+In general, we have just discovered that
+
+$$
+y\neq x_i \quad \text{for every }i.
+$$
+
+In other words, we constructed an element of $A$ that **does not appear** in the list!
+
+Following our proof by contradiction, we started from the assumption that we could list all the elements of $A$ in a sequence, but ended up with a conclusion contradicting the assumption that the list contained all the elements of $A$.
+
+#### Step 4: Conclusion
+
+Thus, our initial assumption was wrong.
+
+Therefore, the set $A$ **is uncountable**.
+
+Since $A\subset[0,1]$, we conclude that the interval $[0,1]$ itself cannot be countable.
+
+::: {.callout-important title="The takeaway from the proof"}
+
+Even a very special subset of $[0,1]$ is already too large to fit into a list.
+
+All the more reason why the entire interval cannot be enumerated.
+
+:::
+
+### What about the entire set of real numbers, $\mathbb R$?
+
+Proving this directly for the entire set of real numbers would require a little more organization.
+
+But conceptually, the essential difficulty has already appeared here.
+
+If the interval $[0,1]$, which is contained in $\mathbb R$, is already uncountable, then the set of all real numbers cannot be countable either.
+
+What matters to us in this chapter is the **probabilistic consequence**:
+
+> when the sample space is a continuum such as $[0,1]$, we cannot treat its points as a sequence $\omega_1,\omega_2,\omega_3,\ldots$.
+
+And this is exactly what will come up **when we try to use Kolmogorov's third axiom** for something very interesting later on.
+
+## The strange part: the whole has probability $1$, but each point has probability $0$
+
+Before moving into the continuous case, it is worth revisiting an infinite case in which everything still works in a familiar way.
+
+Imagine the experiment:
+
+> **toss a coin repeatedly until the first heads appears.**
+
+If we record the toss on which the first heads appears, we have $\Omega=\{1,2,3,\ldots\}.$
+
+This sample space is infinite but [**countable**]{.conceito}: we can organize all possible outcomes into a **list** $1,2,3,4,\ldots$
+
+Each individual outcome corresponds to a singleton, $\{1\},\{2\},\{3\},\ldots,$ and if we model the coin as **fair**, we are choosing a specific probability law for this experiment, according to which
+
+$$
+P(\{1\})=\frac12,\qquad
+P(\{2\})=\frac14,\qquad
+P(\{3\})=\frac18,\qquad\ldots
+$$
+
+Since these events are mutually exclusive and the collection is countable, Kolmogorov's third axiom applies directly:
+
+$$
+P(\Omega)
+=
+P\left(\bigcup_{n=1}^{\infty}\{n\}\right)
+=
+\sum_{n=1}^{\infty}P(\{n\})
+=
+\frac12+\frac14+\frac18+\cdots
+=1.
+$$
+
+So far, the more "naive" intuition of looking only at _individual outcomes_ when working with Kolmogorov's third axiom works perfectly: we can think of the space **as a list of individual outcomes**, assign a probability to each one, and reconstruct larger events by **_adding_** these probabilities, without inconsistencies.
+
+But the most important point **is not merely that the sum worked out**. It is that the function $P$ remained **consistent** in this context.
+
+**Consider an example.**
+
+Suppose we want to ask the following question about the experiment:
+
+> **"What is the probability that the first heads appears on one of the first three tosses?"**
+
+This event can be represented by $A = \{1,2,3\}$ and, as we know, it is a subset of the sample space.
+
+Since outcomes $1$, $2$, and $3$ are mutually exclusive, we can break this question down into three smaller cases: $P(\{1\})$, $P(\{2\})$, and $P(\{3\})$.
+
+But can we simply add these probabilities? More importantly: **is this sum exactly the probability that $A$ occurs?**
+
+In other words, we want to know whether the third axiom really preserves the consistency of the function $P$ in this case:
+
+$$
+P(A)=P(\{1\}) + P(\{2\}) + P(\{3\}).
+$$
+
+Whether we calculate the probability of $A$ directly or break the question down into these three individual outcomes and add their probabilities, **the answer must be the same**.
+
+This is precisely the consistency we want to preserve in the function $P$.
+
+### $P$ is a function, and the axioms guarantee its internal consistency
+
+We want to use $P$ to answer questions about a random experiment.
+
+Each question corresponds to an **event** $A\subseteq\Omega$, and the function
+
+$$
+P(A)
+$$
+
+assigns a number to that event.
+
+Kolmogorov's three axioms are not there to tell us, on their own, which numbers each event should receive. They tell us **how a valid probability function must behave**.
+
+The three requirements make sense when we think about the real-world phenomenon:
+
+- probabilities cannot be negative;
+- something in $\Omega$ necessarily occurs, so $P(\Omega)=1$;
+- if a question can be broken down into mutually exclusive possibilities, calculating the probability of the whole or of its parts cannot produce incompatible answers.
+
+It is this last requirement that will now be decisive.
+
+Suppose a broader event can occur in two mutually exclusive ways:
+
+$$
+A=A_1\cup A_2,
+\qquad
+A_1\cap A_2=\varnothing.
+$$
+
+Then the **internal consistency of the function $P$** requires
+
+$$
+P(A)=P(A_1)+P(A_2).
+$$
+
+In terms of the experiment: if we ask _"did $A_1$ **or** $A_2$ occur?"_, the answer cannot change simply because we decided to break that broader question into two smaller possibilities.
+
+And if the decomposition has infinitely many parts that can still be arranged _in a sequence_,
+
+$$
+A=A_1\cup A_2\cup A_3\cup\cdots,
+$$
+
+with the $A_i$ mutually exclusive, we want to preserve exactly the same consistency:
+
+$$
+P\left(\bigcup_{n=1}^{\infty}A_n\right)
+=
+\sum_{n=1}^{\infty}P(A_n).
+$$
+
+This is Kolmogorov's third axiom: [**countable additivity**]{.conceito}.
+
+In the coin example, **it applies directly to the singletons themselves** because $\Omega$ is countable.
+
+**And this is where the key insight will come in when we switch to a continuous sample space — keep this in mind!**
+
+Now we return to the experiment we are interested in:
+
+> **draw a number between $0$ and $1$ at random.**
+
+Our sample space is
+
+$$
+\Omega=[0,1].
+$$
+
+As we have just proved using Cantor's argument, this space is also infinite, but it is now **uncountable**: this means that **there is no** sequence
+
+$$
+\omega_1,\omega_2,\omega_3,\ldots
+$$
+
+that contains all its possible outcomes.
+
+This is where the story changes.
+
+### This is where measure theory comes in
+
+So far, in countable spaces, we have been able to think of individual outcomes as the basic building blocks: we assign probabilities to singletons and reconstruct larger events by adding those probabilities.
+
+But in $\Omega=[0,1]$ this is no longer possible point by point, because there is no list containing all the outcomes.
+
+A natural question then arises:
+
+> **How can we continue assigning probabilities to events consistently if we can no longer construct everything by adding the probabilities of individual outcomes?**
+
+This is precisely where modern probability theory **borrows the framework of measure theory**.
+
+The idea is simple and very powerful: rather than requiring the size of a set always to be constructed by adding the sizes of its points, we can assign a size **directly to sets**, provided that this assignment obeys consistency rules.
+
+A [**measure**]{.conceito} is, intuitively, a function that assigns a "size" to sets. Length measures intervals, area measures regions of the plane, and in probability theory, $P$ assigns **probability mass** to events.
+
+Probability is therefore a special case of a measure, normalized so that
+
+$$
+P(\Omega)=1.
+$$
+
+Kolmogorov's axioms formalize precisely the properties that this function $P$ must satisfy to remain consistent.
+
+The most important conceptual point is:
+
+> **we do not need to define the probability of an event as the sum of the probabilities of all the points that make it up.**
+
+We can assign probability directly to sets — to events — and require these assignments to be compatible with one another, especially when we break an event into a countable sequence of mutually exclusive parts.
+
+Later, we will formalize which sets can be assigned this probability measure by introducing $\mathcal F$, measurability, and $\sigma$-algebras. For now, we only want to understand why this change in perspective is necessary in the continuous case.
+
+### $\Omega=[0,1]$ cannot be listed point by point
+
+Since $[0,1]$ consists of all its points, in set theory we can certainly write
+
+$$
+[0,1]
+=
+\bigcup_{\omega\in[0,1]}\{\omega\}.
+$$
+
+There is no problem so far. In other words, the union of all its points is the entire set, of course.
+
+The problem arises if we try to treat this collection of singletons as a **sequence**
+
+$$
+\{\omega_1\},\{\omega_2\},\{\omega_3\},\ldots
+$$
+
+because that would require **the existence** of a list $\omega_1,\omega_2,\omega_3,\ldots$ containing **all** the points of $[0,1]$.
+
+And we have just proved that this **is impossible**.
+
+The collection
+
+$$
+\{\{\omega\}:\omega\in[0,1]\}
+$$
+
+is also **uncountable**.
+
+Therefore, **the third axiom does not authorize us to decompose the space point by point and turn this union into a (countable) sum of probabilities**, as would be justified by countable additivity.
+
+::: {.callout-important title="🤨 So how does the third axiom still work here?"}
+
+Measure theory has already given us the main conceptual shift: **$P$ is defined on events and does not need to be constructed by adding probabilities point by point**.
+
+Now we want to understand how countable additivity continues to preserve the consistency of $P$ when we break a larger event into smaller parts.
+
+**This is the key point:** we do not need to partition $\Omega$ into singletons. We can partition an uncountable space into a **countable collection of disjoint subsets**, even if each of these subsets still contains uncountably many points.
+:::
+
+### The key insight: we enumerate the blocks, not the points
+
+For example, consider
+
+$$
+A_1=(1/2,1],\qquad
+A_2=(1/4,1/2],\qquad
+A_3=(1/8,1/4],\qquad\ldots
+$$
+
+and, to complete $[0,1]$, we add the singleton $\{0\}$.
+
+We can visualize this decomposition directly on the number line:
+
+```text
+0        1/8        1/4              1/2                         1
+●---------|----------|----------------|---------------------------|
+   ...        A3              A2                     A1
+```
+
+where
+
+$$
+A_1=(1/2,1],\qquad
+A_2=(1/4,1/2],\qquad
+A_3=(1/8,1/4],\qquad\ldots
+$$
+
+and the point $0$ is included separately as the singleton $\{0\}$.
+
+Visually, we are simply dividing $[0,1]$ into disjoint blocks:
+
+$$
+[0,1]
+=
+\{0\}
+\cup \cdots
+\cup A_3
+\cup A_2
+\cup A_1.
+$$
+
+Notice what happened.
+
+The sample space is still $\Omega=[0,1],$ so it is still **uncountable**.
+
+Moreover, each interval $A_i$ also contains **uncountably many points**.
+
+What changed was something else: we managed to organize **the blocks of the partition** into a sequence.
+
+In fact, there is a simple rule for generating each one:
+
+$$
+A_n
+=
+\left(
+\frac{1}{2^n},
+\frac{1}{2^{\,n-1}}
+\right],
+\qquad n=1,2,3,\ldots
+$$
+
+Observe:
+
+$$
+n=1
+\quad\Rightarrow\quad
+A_1=(1/2,1],
+$$
+
+$$
+n=2
+\quad\Rightarrow\quad
+A_2=(1/4,1/2],
+$$
+
+$$
+n=3
+\quad\Rightarrow\quad
+A_3=(1/8,1/4],
+$$
+
+and so on.
+
+In other words, we can put **each block** into correspondence with a natural number:
+
+$$
+1\longleftrightarrow A_1,\qquad
+2\longleftrightarrow A_2,\qquad
+3\longleftrightarrow A_3,\qquad\ldots
+$$
+
+This is exactly what it means to say that this collection is **countable**.
+
+The singleton $\{0\}$ poses no problem: we simply include it as one more block of the partition. For example, we can call it $A_0$.
+
+Thus,
+
+$$
+[0,1]
+=
+A_0\cup A_1\cup A_2\cup A_3\cup\cdots,
+\qquad
+A_0=\{0\}.
+$$
+
+Moreover, these blocks do not overlap: no outcome can belong to two of them at the same time.
+
+Therefore, we have a **countable partition of an uncountable space**.
+
+This is the key point:
+
+> **We cannot enumerate the points of $[0,1]$. But we can partition $[0,1]$ into a countable collection of subsets, even if each of these subsets contains uncountably many points.**
+
+And now Kolmogorov's third axiom can be applied directly to this decomposition:
+
+$$
+P([0,1])
+=
+P(A_0)+P(A_1)+P(A_2)+P(A_3)+\cdots.
+$$
+
+The space has not become countable. **It is the partition that is countable.**
+
+This is the **key insight**:
+
+> **we have not made the space $[0,1]$ countable. It remains uncountable. What we have managed to enumerate is the collection of subsets into which we chose to decompose the space.**
+
+We now satisfy the conditions of the third axiom.
+
+Since these events are mutually exclusive,
+
+$$
+P\left(\bigcup_{n=1}^{\infty}A_n\right)
+=
+\sum_{n=1}^{\infty}P(A_n).
+$$
+
+Therefore, even in an uncountable sample space, we can still **break more complex questions into smaller questions** and reconstruct the probability of the whole by adding the probabilities of the parts, provided that the family of parts over which we sum is countable.
+
+::: {.callout-important title="The central point"}
+
+In the countable discrete case, we can often use the individual outcomes themselves as the pieces of the decomposition.
+
+In the continuous case, this point-by-point strategy no longer works, because the points form an uncountable family.
+
+But this does not destroy the idea of probability: we continue to assign probability to events — that is, to sets — and continue to require that whenever an event can be decomposed into a **countable sequence of mutually exclusive parts**, the probability of the whole can be reconstructed by adding the probabilities of those parts.
+
+This is precisely the consistency that the third axiom protects.
+
+:::
+
+### But what is the probability of a singleton?
+
+There is an important distinction here.
+
+So far, the axioms have told us **how the function $P$ must behave**.
+
+They have not yet told us which numerical values $P$ should assign to specific events.
+
+In particular, from the three axioms alone, we cannot conclude that
+
+$$
+P(\{0.37\})=0.
+$$
+
+To answer this, we need to take a second step: choose a **specific probability law** for the experiment.
+
+> **The axioms provide the structure and internal consistency of the function $P$; the probability law determines how probability is actually distributed across events.**
+
+Let's now be more specific, that is, give an example of a possible $P$.
+
+Suppose the number is drawn according to the [**uniform law**]{.conceito} on $[0,1]$.
+
+In this model, intervals of equal length have equal probability, and
+
+$$
+P([a,b])=b-a,
+\qquad 0\leq a\leq b\leq1.
+$$
+
+For example,
+
+$$
+P([0.2,0.5])=0.3.
+$$
+
+Now we can ask:
+
+> what is the probability of obtaining exactly $0.37$?
+
+Consider increasingly smaller intervals around this point:
+
+$$
+A_2=[0.36,0.38],
+$$
+
+$$
+A_3=[0.369,0.371],
+$$
+
+$$
+A_4=[0.3699,0.3701],
+$$
+
+and so on.
+
+In general,
+
+$$
+A_n=
+\left[
+0.37-\frac{1}{10^n},
+0.37+\frac{1}{10^n}
+\right].
+$$
+
+These sets keep shrinking,
+
+$$
+A_2\supset A_3\supset A_4\supset\cdots,
+$$
+
+and their intersection contains only the point $0.37$:
+
+$$
+\bigcap_{n=2}^{\infty}A_n=\{0.37\}.
+$$
+
+Since we are using the uniform law, the probability of each interval is its length:
+
+$$
+P(A_n)=\frac{2}{10^n}.
+$$
+
+And therefore,
+
+$$
+P(\{0.37\})
+=
+\lim_{n\to\infty}P(A_n)
+=
+\lim_{n\to\infty}\frac{2}{10^n}
+=0.
+$$
+
+Taking this limit is a consequence of countable additivity itself.
+
+Thus, in this model,
+
+$$
+\boxed{P(\{\omega\})=0\quad\text{for every }\omega\in[0,1].}
+$$
+
+Notice where this zero came from.
+
+It did **not** come simply from the fact that $[0,1]$ is continuous.
+
+It did **not** come simply from the fact that $[0,1]$ is uncountable.
+
+And it did **not** come directly from the three axioms.
+
+It came from the **uniform law we have just chosen**.
+
+### Now comes the provocative question
+
+We have, simultaneously,
+
+$$
+\boxed{P([0,1])=1}
+$$
+
+by Kolmogorov's second axiom, and
+
+$$
+\boxed{P(\{\omega\})=0\quad\text{for every }\omega\in[0,1]}
+$$
+
+by the uniform law we have just specified.
+
+Someone might then reason:
+
+$$
+[0,1]
+=
+\bigcup_{\omega\in[0,1]}\{\omega\}.
+$$
+
+_"If every point has probability zero, why not add up all those zeros?"_
+
+It is tempting to write
+
+$$
+P\left(
+\bigcup_{\omega\in[0,1]}\{\omega\}
+\right)
+\overset{\color{red}{?}}{=}
+\sum_{\omega\in[0,1]}P(\{\omega\}).
+$$
+
+And then arrive at
+
+$$
+1=0.
+$$
+
+But now we know exactly where the error lies.
+
+The third axiom guarantees additivity for a **countable sequence** of disjoint events:
+
+$$
+A_1,A_2,A_3,\ldots
+$$
+
+The family of singletons of $[0,1]$ is not countable.
+
+There is no sequence
+
+$$
+\omega_1,\omega_2,\omega_3,\ldots
+$$
+
+that contains all the points of the interval.
+
+Therefore,
+
+$$
+\boxed{
+\bigcup_{\omega\in[0,1]}\{\omega\}
+\neq
+\bigcup_{i=1}^{\infty}\{\omega_i\}
+}
+$$
+
+for any sequence $\omega_1,\omega_2,\omega_3,\ldots$.
+
+We have not discovered that $1=0$.
+
+We have discovered that we tried to use a rule outside the conditions under which it holds.
+
+### The strangeness continues: remove a point and the probability is still 1
+
+We can now see why partitioning the space into larger blocks solves precisely the problem that the third axiom needs to address.
+
+In the uniform model,
+
+$$
+P(A_1)=\frac12,\qquad
+P(A_2)=\frac14,\qquad
+P(A_3)=\frac18,\qquad\ldots
+$$
+
+Thus,
+
+$$
+P((0,1])
+=
+\sum_{i=1}^{\infty}P(A_i)
+=
+\frac12+\frac14+\frac18+\cdots
+=
+1.
+$$
+
+Now comes another consequence that seems strange at first glance.
+
+The interval $(0,1]$ differs from $[0,1]$: we removed the point $0$.
+
+Even so, in this uniform model,
+
+$$
+P(\{0\})=0.
+$$
+
+Therefore,
+
+$$
+P([0,1])
+=
+P((0,1])+P(\{0\})
+=
+1+0
+=
+1.
+$$
+
+In other words, **removing one possible outcome from the space did not change the total probability**.
+
+This may seem contradictory: after all, $[0,1]$ and $(0,1]$ are different sets.
+
+But the function $P$ is not simply measuring whether two sets contain exactly the same elements. It assigns probability to these events according to the chosen law. And under the uniform law, a singleton such as $\{0\}$ is assigned probability zero.
+
+Thus,
+
+$$
+[0,1]\neq(0,1],
+$$
+
+but
+
+$$
+P([0,1])=P((0,1])=1.
+$$
+
+This already anticipates an important idea: **different events can have the same probability**.
+
+Returning to the main point:
+
+1. point by point, we have an **uncountable** collection of singletons, so countable additivity cannot be applied in this way;
+2. by grouping the points into a **countable partition of disjoint subsets**, we can apply the third axiom as usual;
+3. each of these subsets can still contain uncountably many points.
+
+> **The space can be uncountable. What must be countable is the collection of events over which we sum.**
+
+## The madness of uncertainty about an individual outcome
+
+### Speaking of probability $0$
+
+We have reached one of the strangest — and most beautiful — consequences of continuous models.
+
+Consider again the uniform experiment on
+
+$$
+\Omega=[0,1].
+$$
+
+Choose a specific point, for example
+
+$$
+\omega=0.372814\ldots
+$$
+
+Since a single point has zero length,
+
+$$
+P(\{\omega\})=0.
+$$
+
+So far, so good.
+
+**_But what if we perform (or realize) the experiment?_**
+
+Some value in $[0,1]$ will certainly be observed!
+
+Perhaps it will be $0.372814\ldots$ or some other point.
+
+But whatever value is observed, **before the experiment that singleton had probability zero**. 😲
+
+In other words:
+
+$$
+\boxed{\text{the outcome that actually occurred had probability }0.}
+$$
+
+This seems absurd the first time we see it.
+
+But it is **exactly** what happens in a continuous model.
+
+::: {.callout-important title="🤯 So something with probability zero actually happened?"}
+
+Yes.
+
+What occurred in the trial was an **individual outcome** $\omega$.
+
+And, in a continuous model like this,
+
+$$
+P(\{\omega\})=0
+$$
+
+for each individual point.
+
+Therefore, an event having probability zero does not necessarily imply that it is the empty set, that is, that it contains none of the possible outcomes in $\Omega$:
+
+$$
+\boxed{P(A)=0\;\not\Rightarrow\;A=\varnothing.}
+$$
+
+A singleton such as $\{0.372814\ldots\}$ is not impossible. It is a perfectly possible outcome of the experiment — it simply has **probability measure zero**.
+
+:::
+
+This distinction is important.
+
+Another interesting point is that we are **not** saying that the point has an "infinitesimally small" probability. In this model, $P(\{\omega\})=0$ **exactly**.
+
+In experiments with a **continuous sample space**, a much more useful way to think probabilistically is not to ask about the probability of an exact point, but about the probability that the outcome falls **near** that point.
+
+In mathematics, we often use $\varepsilon>0$ to represent a small distance around a number. Thus, around $\omega$, we can imagine the small interval
+
+```text
+                 ω
+                 ●
+        |--------|--------|
+      ω - ε      ω      ω + ε
+```
+
+The smaller $\varepsilon$ is, the narrower this neighborhood around $\omega$ becomes.
+
+Instead of asking for the probability of the exact point,
+
+$$
+P(X=\omega),
+$$
+
+we can then ask for the probability that the outcome falls within this small interval:
+
+$$
+P(\omega-\varepsilon<X<\omega+\varepsilon).
+$$
+
+As $\varepsilon$ decreases, the interval shrinks and, in this continuous model, its probability also approaches zero.
+
+Later, this idea will help us understand why the [**probability density**]{.conceito}, usually denoted by $f_X(x)$, **is not the probability of a point**, that is,
+
+$$
+f_X(x) \neq P(X=x).
+$$
+
+But the strangeness does not end here.
+
+### And does probability $1$ mean absolute certainty?
+
+Now consider the event
+
+$$
+A=[0,1]\setminus\{0.5\}.
+$$
+
+In other words, any outcome is accepted, **except exactly $0.5$**.
+
+We already know that
+
+$$
+P(\{0.5\})=0.
+$$
+
+Therefore,
+
+$$
+P(A)
+=
+P([0,1])-P(\{0.5\})
+=
+1-0
+=
+1.
+$$
+
+So:
+
+$$
+\boxed{P(A)=1.}
+$$
+
+But be careful:
+
+$$
+A\neq\Omega.
+$$
+
+The outcome $0.5$ still belongs to the sample space.
+
+It is still a possible outcome of the experiment.
+
+Thus,
+
+$$
+\boxed{P(A)=1\;\not\Rightarrow\;A=\Omega.}
+$$
+
+::: {.callout-tip title="Two counterintuitive facts"}
+
+In continuous models, $P(A)=0$ does not necessarily mean that $A$ is impossible.
+
+And $P(A)=1$ does not necessarily mean that $A$ literally contains all possible outcomes.
+
+This is why, later on, we will encounter the expression [**almost surely**]{.conceito}: an event can occur with probability $1$ even when there are possible outcomes, of total probability zero, in which it does not occur.
+
+:::
+
+This is one of those situations in which everyday language and mathematical language begin to diverge.
+
+In everyday life, we tend to use
+
+> "probability zero"
+
+as synonymous with
+
+> "this will never happen".
+
+But mathematically, these two statements are different.
+
+And in continuous models, this difference is more than a curiosity:
+
+- **every trial ends at some individual point of probability zero**. 😲
+
+## Returning to $\mathcal F$: where $P$ is defined
+
+One final question remains.
+
+Recall the construction we made:
+
+- $\Omega$ contains all the possible elementary outcomes of the experiment;
+- an event $A\subseteq\Omega$ represents a **question about the experiment**;
+- $\mathcal F$ brings together precisely the questions we decided to consider in our probability model.
+
+For example, if $\Omega=\{1,2,3,4,5,6\}$, the event
+
+$$
+A=\{2,4,6\}
+$$
+
+represents the question:
+
+> **was the outcome even?**
+
+When we write
+
+$$
+A\in\mathcal F,
+$$
+
+we are saying that this question belongs to the collection of events on which our probability function is defined.
+
+In other words, we can ask for
+
+$$
+P(A).
+$$
+
+This is also the intuitive interpretation of the word [**measurable**]{.conceito}.
+
+> An event $A$ is **measurable** when $A\in\mathcal F$: it is a set to which our probability measure $P$ can assign a value.
+
+In other words,
+
+$$
+A\in\mathcal F
+\quad\Longrightarrow\quad
+P(A)\text{ is defined.}
+$$
+
+In simple finite spaces, we can usually include all possible questions:
+
+$$
+\mathcal F=2^\Omega.
+$$
+
+That is, every subset of $\Omega$ can be treated as an event.
+
+In continuous spaces, however, there are sufficiently irregular subsets for which we cannot define a probability measure while preserving all the properties we require of $P$.
+
+For this reason, rather than necessarily using all subsets of $\Omega$, we choose a collection $\mathcal F$ of **measurable events**.
+
+But $\mathcal F$ cannot be just any collection either.
+
+Recall the idea of closure: if we can formulate certain questions about the experiment, we also want to be able to formulate questions naturally constructed from them.
+
+For example, if $A\in\mathcal F$ represents
+
+> “does the outcome belong to $A$?”,
+
+we also want to be able to ask
+
+> “does the outcome **not** belong to $A$?”
+
+Therefore,
+
+$$
+A\in\mathcal F
+\quad\Longrightarrow\quad
+A^c\in\mathcal F.
+$$
+
+Similarly, if we have a sequence of events $A_1,A_2,A_3,\ldots$ in $\mathcal F$, we want to be able to ask
+
+> “did at least one of these events occur?”
+
+This question corresponds to the union
+
+$$
+\bigcup_{i=1}^{\infty}A_i,
+$$
+
+and therefore we require that
+
+$$
+A_1,A_2,A_3,\ldots\in\mathcal F
+\quad\Longrightarrow\quad
+\bigcup_{i=1}^{\infty}A_i\in\mathcal F.
+$$
+
+A family with these properties — and which contains $\Omega$ — is called a [**$\sigma$-algebra**]{.conceito}.
+
+The operational idea is simple:
+
+> **$\mathcal F$ must contain the questions we want to ask and must also contain the new questions we construct from them.**
+
+Thus, probabilistic operations **never take us outside the domain** of $P$.
+
+## When $\Omega$ lies on the real line: the Borel $\sigma$-algebra
+
+We can now connect this construction to the continuous case we are studying.
+
+Suppose our sample space is
+
+$$
+\Omega=[0,1].
+$$
+
+Recall the interpretation we are using:
+
+- $\Omega$ contains the possible outcomes;
+- an event is a **question about the outcome of the experiment**;
+- $\mathcal F$ contains the questions for which we want $P$ to be defined.
+
+If the outcome is a real number, many of the most natural questions are described by **intervals**.
+
+For example:
+
+> “was the outcome between $0.2$ and $0.5$?”
+
+corresponds to the event
+
+$$
+[0.2,0.5].
+$$
+
+Similarly, in real-world applications:
+
+- “was the time between 2 and 5 seconds?” corresponds to an interval;
+- “was the temperature above 30°C?” corresponds to an interval;
+- “was the spending less than R$ 100?” corresponds to an interval.
+
+So, when working with quantities modeled on the real line, it seems natural to start our collection of events with **intervals**.
+
+But we want more than just the original intervals.
+
+If we can ask
+
+> “was the outcome between 2 and 5?”
+
+we also want to be able to ask questions constructed from it, such as
+
+> “was the outcome outside this interval?”
+
+or combine several regions of the real line into a single question.
+
+For this reason, we start with intervals and close this collection under the operations required of a $\sigma$-algebra.
+
+The collection obtained in this way is called the [**Borel $\sigma$-algebra**]{.conceito}.
+
+Intuitively:
+
+> **the Borel $\sigma$-algebra contains the sets we can construct from intervals on the real line by repeatedly using complements and countable unions.**
+
+It is the **smallest $\sigma$-algebra containing the intervals of the real line**.
+
+This means that we are not simply putting every imaginable subset of $\mathbb R$ into $\mathcal F$.
+
+We start with extremely natural objects — intervals — and include everything we need to add so that the collection remains closed under probabilistic operations.
+
+These sets are called [**Borel sets**]{.conceito}.
+
+Thus, in a model such as
+
+$$
+\Omega=[0,1],
+$$
+
+a natural choice is to work with the Borel sets contained in $[0,1]$.
+
+The probability function is then defined on these events:
+
+$$
+P:\mathcal F\longrightarrow[0,1].
+$$
+
+The intuitive interpretation remains exactly the same:
+
+> $\mathcal F$ organizes the questions about the experiment for which we want it to make sense to ask **“what is the probability that this happens?”**
+
+We do not need to learn how to construct the Borel $\sigma$-algebra formally in this course.
+
+The important point is to understand why it appears: **in continuous spaces, we need to choose carefully which sets will be measurable events, and intervals on the real line provide the natural starting point for this construction.**
+
+## What about the real world?
+
+This strange phenomenon appears very often in Data Science, **but most people are not even aware of it**!
+
+Imagine we are building a **churn** model.
+
+For each customer, we observe some characteristics and then whether the customer actually left or not.
+
+A small portion of the dataset might look like this:
+
+| customer | monthly spending (R$) | hours in app/week | tickets in the last 30 days | observed churn (Y) | estimated churn probability |
+|---|---:|---:|---:|---:|---:|
+| A | 187.43 | 6.72 | 0 | 0 | 0.08 |
+| B | 94.18 | 1.37 | 3 | 1 | 0.71 |
+| C | 231.06 | 3.94 | 1 | 0 | 0.22 |
+
+Notice customer B.
+
+After the experiment took place, we observed:
+
+$$
+x_B=(94.18,\;1.37,\;3,\ldots)
+$$
+
+and we also observed that
+
+$$
+Y_B=1.
+$$
+
+That row is in the dataset.
+
+It **happened**.
+
+Now suppose that at least some of these characteristics are modeled as continuous.
+
+Then, for an exact feature vector $x_B$,
+
+$$
+P(X=x_B=(94.18,\;1.37,\;3,\ldots))=0.
+$$
+
+And if we treat the complete outcome for that customer as the pair
+
+$$
+(X,Y)=(x_B,1)=(94.18,\;1.37,\;3,\ldots,1),
+$$
+
+we will also have, in this type of model,
+
+$$
+P(X=x_B,\;Y=1)=P(X=(94.18,\;1.37,\;3,\ldots),\;Y=1))=0.
+$$
+
+Even so, it was precisely a realization of this kind that appeared before us in the dataset.
+
+It is the same "madness" we have just seen in the interval:
+
+> **the fact that an individual outcome has probability zero does not prevent it from being the observed outcome of a trial.**
+
+
+## What changed?
+
+The structure remains the same:
+
+$$
+\boxed{(\Omega,\mathcal F,P)}.
+$$
+
+But we now better understand the role of each component, even when $\Omega$ cannot be listed outcome by outcome:
+
+- $\Omega$: which outcomes can occur;
+- $\mathcal F$: which questions about these outcomes we can represent as measurable events;
+- $P$: what probability we assign to each of these questions.
+
+In the discrete case, we can often think of probability as **mass placed on individual points**.
+
+In the continuous case, this intuition is no longer sufficient:
+
+$$
+\boxed{\text{discrete: mass on points}}
+\;\longrightarrow\;
+\boxed{\text{continuous: measure of sets}}.
+$$
+
+This is the main conceptual leap of the chapter.
+
+The next step will be to return to the third characteristic of a random experiment:
+
+> **what happens when we repeat the experiment several times?**
+
+
+## Before moving on
+
+1. If we observe only **purchase/no purchase** during a session, why might $\Omega=\{0,1\}$ be sufficient? What changes if we also want to represent time?
+
+2. In the uniform model on $[0,1]$, we have $P(\{\omega\})=0$ for each point and $P([0,1])=1$. Where exactly is the error in the attempt to conclude that $1=0$?
+
+3. Where does the idea of [**countability**]{.conceito} come in? What must be countable for us to apply Kolmogorov's third axiom directly: the sample space or the collection of events being united?
+
+4. Why does $P(A)=0$ not imply $A=\varnothing$ in a continuous model? And why does $P(A)=1$ not require $A=\Omega$ either?
+
+5. What problem does $\mathcal F$ solve? What does it mean to say that an event is **measurable**?
+
+6. Why, in a continuous model, are questions such as $P(2<T<5)$ generally more natural than $P(T=t)$ for an exact value $t$?
+
+7. What is the main intuitive difference between thinking about probability in the discrete case and in the continuous case?

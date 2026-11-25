@@ -1,0 +1,867 @@
+---
+title: "Part 2 of 2 - Sampling Space"
+---
+
+<!--
+
+OBJECTIVE OF THIS CHAPTER
+
+Answer a single question:
+
+    we already have (Ω,F,P) for one trial;
+    how can we represent several trials jointly?
+
+The construction should make four ideas clear:
+
+1. repetition depends on the boundary chosen for the experiment;
+2. several trials require a joint probability space;
+3. knowing the law of each trial in isolation does not determine the joint law;
+4. the sampling space G_n identifies the sequence of trials and completes,
+   together with the joint probability space, the general statistical space.
+
+IMPORTANT
+
+- A Cartesian product does not in itself imply repetition.
+- The meaning of the coordinates comes from how we define the experiment.
+- P takes events, that is, sets, as arguments.
+- Ω^n does not imply independence.
+- Do not introduce IID in depth here.
+- Do not introduce random samples before random variables.
+- End with the GENERAL statistical space and motivate the next chapter.
+
+MAIN SOURCES
+
+Spanos:
+- Chapter 2 — Probability Theory: A Modeling Framework
+- 2.7 Formalizing condition [c]: Random Trials
+- 2.8 Statistical Space
+
+Bertsekas & Tsitsiklis:
+- Chapter 1 — Sample Space and Probability
+- MIT 6.041 — Lecture 1
+
+Robert Ash:
+- Chapter 1 — Basic Concepts
+- discussion of composite experiments and the experiment boundary
+
+Studený:
+- Appendix A.9 — Elementary Statistical Concepts
+
+-->
+
+In the chapter on formalization, we began with the broader conceptual object: the [**Random Experiment**]{.conceito}.
+
+It is the mechanism we want to represent mathematically:
+
+$$
+\boxed{\text{Random Experiment}}
+\longrightarrow
+\boxed{\text{mathematical representation}}
+\longrightarrow
+\boxed{\text{Statistical Space}}
+$$
+
+In the framework we are building, the [**Statistical Space**]{.conceito} has two main components:
+
+```{=html}
+<div style="max-width: 900px; margin: 2rem auto; border: 2px solid currentColor; border-radius: 12px; padding: 1.25rem 1.5rem 1.5rem 1.5rem;">
+  <div style="text-align: center; font-weight: 700; font-size: 1.15rem; margin-bottom: 1rem;">
+    Statistical Space
+  </div>
+
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+
+    <div style="flex: 1 1 280px; border: 1.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+      <strong>Probability Space</strong><br>
+      <span style="font-size: 0.95rem;">what can happen and how we represent its uncertainty</span><br><br>
+      <span>\((\Omega,\mathcal F,P)\)</span><br><br>
+      <span style="font-size: 0.9rem;"><strong>✓ already constructed</strong></span>
+    </div>
+
+    <div style="flex: 1 1 280px; border: 2.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+      <strong>Sampling Space</strong><br>
+      <span style="font-size: 0.95rem;">how to represent repetition of the experiment</span><br><br>
+      <span>\(\mathcal G_n=\{T_1,\ldots,T_n\}\)</span><br><br>
+      <span style="font-size: 0.9rem;"><strong>(we are here)</strong></span>
+    </div>
+
+  </div>
+</div>
+```
+
+In the previous chapter, we opened the **first box** and constructed
+
+$$
+\boxed{
+(\Omega,\mathcal F,P)
+}
+$$
+
+to represent uncertainty about **one complete trial** of the experiment we defined.
+
+Now we return to the overall framework and open the **second box**.
+
+## Where are we in the formalization of the Random Experiment?
+
+Recall that the Random Experiment brings together three ideas:
+
+1. **[a]** we know the possible outcomes;
+2. **[b]** we do not know in advance which outcome will occur in a trial, but there is probabilistic regularity;
+3. **[c]** the experiment can be repeated **under the same conditions**.
+
+Conditions [a] and [b] led us to the Probability Space.
+
+Now we begin to formalize [c].
+
+But there is an important subtlety: before explaining what it means to repeat an experiment **under the same conditions**, we must first construct a structure capable of representing **several trials jointly**.
+
+That is precisely the objective of this chapter.
+
+We will begin with a general sequence
+
+$$
+\boxed{
+\mathcal G_n=\{T_1,T_2,\ldots,T_n\}
+}
+$$
+
+without yet assuming independence or identical distributions.
+
+At the same time, we will need to extend
+
+$$
+(\Omega,\mathcal F,P)
+$$
+
+to a probabilistic structure that can represent the outcomes of these trials jointly:
+
+$$
+\boxed{
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}).
+}
+$$
+
+By the end of this chapter, we will have constructed the [**General Statistical Space**]{.conceito}:
+
+$$
+\boxed{
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right].
+}
+$$
+
+Only in the next step will we ask:
+
+> **what does it mean, mathematically, to repeat this experiment "under the same conditions"?**
+
+That is where we will specialize $\mathcal G_n$ by imposing **Identical Distribution + Independence**, producing
+
+$$
+\mathcal G_n^{IID},
+$$
+
+a sequence of [**Random Trials**]{.conceito}.
+
+Therefore, the step taken in this chapter is:
+
+$$
+\boxed{
+\text{one trial}
+\;\longrightarrow\;
+\text{several trials represented jointly}
+}
+$$
+
+and not yet
+
+$$
+\boxed{
+\text{several trials}
+\;\longrightarrow\;
+\text{IID}.
+}
+$$
+
+Now we can construct this second box carefully.
+
+## The form of $\Omega$ depends on how we define the experiment!
+
+In the previous chapter, we saw that the sample space must represent everything we want to observe **at the end of one trial**.
+
+For this reason, the number of coordinates of an outcome $\omega$ depends on **how we define the experiment**.
+
+If the experiment is
+
+> tossing a coin once,
+
+we have $\Omega=\{H,T\}$ and one possible outcome is simply $\omega=H$.
+
+But we could define another experiment:
+
+> tossing a coin twice and recording the order.
+
+Now a trial ends only after both tosses, and one possible outcome is $\omega=(H,T)$.
+
+This is still **a single outcome of a single trial**.
+
+Mathematically, the sample space can be written as 
+
+$$
+\Omega
+=
+\{H,T\}\times\{H,T\}=\{(H,H),(H,T),(T,H),(T,T)\}.
+$$
+
+The Cartesian product simply constructs a space whose elements have several coordinates.
+
+> **The coordinates alone do not tell us whether trials were repeated. Their interpretation comes from how we define the experiment.**
+
+### The context of this chapter
+
+Now we will make a specific choice.
+
+We will define our basic experiment as:
+
+> tossing a coin **once**.
+
+Therefore, one trial of this experiment produces just one $\omega\in\Omega$, that is, an element of $\{H,T\}$.
+
+From this point on, whenever we perform **this same basic experiment** again, we will treat each new execution as a new trial.
+
+It is in this sense, and only because we have chosen this **experiment boundary**, that the coordinates appearing below will have a new interpretation:
+
+$$
+(\omega_1,\omega_2,\ldots,\omega_n)
+$$
+
+will represent the outcomes of **different trials**.
+
+## From one trial to several trials
+
+We represent each trial by $T_i$:
+
+$$
+T_1,T_2,\ldots,T_n.
+$$
+
+Each trial produces its own outcome:
+
+$$
+T_1\to\omega_1,
+\qquad
+T_2\to\omega_2,
+\qquad
+\ldots,
+\qquad
+T_n\to\omega_n.
+$$
+
+We now want to represent these outcomes **jointly**.
+
+This is the new idea in this chapter:
+
+$$
+\boxed{
+\text{one trial}
+\quad\longrightarrow\quad
+\text{several trials of the same basic experiment}
+}
+$$
+
+## Why is $(\Omega,\mathcal F,P)$ alone not enough?
+
+For one coin toss, $\Omega=\{H,T\}$.
+
+Since the space is finite, we can take
+
+$$
+\mathcal F
+=
+\left\{
+\varnothing,
+\{H\},
+\{T\},
+\{H,T\}
+\right\}.
+$$
+
+Thus, we can ask questions such as
+
+> _“did we get heads?”_
+
+represented by the event $A=\{H\}\in\mathcal F$, and calculate $P(A)$.
+
+But now we want to ask:
+
+> **what is the probability of obtaining exactly three heads in five trials?**
+
+An outcome relevant to this question has the form
+
+$$
+(H,T,H,H,T),
+$$
+
+and
+
+$$
+(H,T,H,H,T)\notin\Omega.
+$$
+
+This object simply **does not live in the space we constructed for one trial**.
+
+::: {.callout-important title="The problem is the domain"}
+
+The function
+
+$$
+P:\mathcal F\to[0,1]
+$$
+
+only assigns probabilities to events in $\mathcal F$.
+
+But $\mathcal F$ was constructed over the outcome space of **one trial**.
+
+To discuss five trials, we must first construct a space **in which sequences of five outcomes exist**.
+
+:::
+
+## Where do the outcomes of the sequence live?
+
+For five trials, we construct
+
+$$
+\Omega^5
+=
+\Omega\times\Omega\times\Omega\times\Omega\times\Omega.
+$$
+
+Now
+
+$$
+\omega
+=
+(\omega_1,\omega_2,\omega_3,\omega_4,\omega_5)
+=
+(H,T,H,H,T)
+$$
+
+is a legitimate element of this space:
+
+$$
+\omega\in\Omega^5.
+$$
+
+We can visualize the **joint trials** of this experiment as follows:
+
+$$
+\boxed{
+\begin{array}{ccccc}
+T_1 & T_2 & T_3 & T_4 & T_5\\
+\downarrow & \downarrow & \downarrow & \downarrow & \downarrow\\
+H & T & H & H & T
+\end{array}
+}
+$$
+
+The Cartesian product constructs **all possible joint realizations of the sequence**.
+
+In general, we will denote this **joint sample space** by
+
+$$
+\boxed{
+\Omega^{(n)}
+=
+\Omega_1\times\cdots\times\Omega_n
+}
+\quad
+\text{and}
+\quad
+(\omega_1,\ldots,\omega_n)\in\Omega^{(n)}
+$$
+
+If all trials have **the same** sample space $\Omega$, **for simplicity**, we write
+
+$$
+\Omega^{(n)}=\Omega^n.
+$$
+
+### From the product space to the joint probability space
+
+As with one trial, the set of possible outcomes is not enough.
+
+We also need:
+
+- an event space $\mathcal F^{(n)}$;
+- a joint law $P^{(n)}:\mathcal F^{(n)}\to[0,1]$.
+
+We thus arrive at the [**joint probability space**]{.conceito}
+
+$$
+\boxed{
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)})
+}
+$$
+
+### Returning to three heads in five trials
+
+We can now formally define
+
+$$
+B
+=
+\left\{
+(\omega_1,\ldots,\omega_5)\in\Omega^5:
+\text{ exactly three coordinates are }H
+\right\}.
+$$
+
+For example,
+
+$$
+(H,T,H,H,T)\in B,
+$$
+
+whereas
+
+$$
+(H,T,H,T,T)\notin B.
+$$
+
+Now $B$ is indeed an event of the sequence, that is,
+
+$$
+B\in\mathcal F^{(5)},
+$$
+
+and the original question becomes "_what is the probability of $B$_"
+
+$$
+P^{(5)}(B).
+$$
+
+::: {.callout-note title="The idea of probability has not changed"}
+
+For one trial:
+
+$$
+A\in\mathcal F
+\quad\longrightarrow\quad
+P(A).
+$$
+
+For several trials:
+
+$$
+B\in\mathcal F^{(n)}
+\quad\longrightarrow\quad
+P^{(n)}(B).
+$$
+
+What changed was **the space in which the events live**.
+
+:::
+
+### A notational convention
+
+Strictly speaking, $(H,T)$ is a possible outcome and
+
+$$
+\{(H,T)\}
+$$
+
+is the singleton event containing that outcome.
+
+Thus, the explicit form is
+
+$$
+P^{(2)}\big(\{(H,T)\}\big).
+$$
+
+Having made this clear, **to simplify notation**, we will write
+
+$$
+P^{(2)}(H,T)
+$$
+
+as shorthand, leaving the braces implicit.
+
+## Knowing each trial separately is not enough
+
+Let us return to the case of **two trials** of the basic experiment:
+
+$$
+T_1
+\qquad\text{and}\qquad
+T_2.
+$$
+
+Suppose that, when we look at each trial **separately**, both are described as a fair coin:
+
+$$
+P_1(\{H\})=P_1(\{T\})=\frac12,
+\qquad
+P_2(\{H\})=P_2(\{T\})=\frac12.
+$$
+
+That is, we know the distribution of the outcome of $T_1$ and the distribution of the outcome of $T_2$.
+
+We can summarize this in the table below:
+
+::: {.compact-table}
+
+| outcome | $P_1$ | $P_2$ |
+|---|---:|---:|
+| $H$ | $1/2$ | $1/2$ |
+| $T$ | $1/2$ | $1/2$ |
+
+:::
+
+The two distributions are therefore identical.
+
+This means that if we look at each trial **in isolation**, both behave like a fair coin.
+
+But this still does not answer the central question:
+
+> **how do the outcomes of $T_1$ and $T_2$ occur together?**
+
+This is precisely why we still need the **joint law** $P^{(2)}$.
+
+Knowing the probabilities of each trial in isolation does not, by itself, determine the probabilities of the four possible sequences $(H,H),(H,T),(T,H),(T,T)$.
+
+This is why we still need to specify a **joint law**, which we will denote by $P^{(2)}$.
+
+And different joint laws can be compatible with exactly the same individual probabilities above.
+
+Here we can revisit an idea introduced at the beginning of the course: 
+
+- behind the observed outcomes there is an **underlying mechanism**, which we call the [**Data Generating Process**]{.conceito} (**DGP**).
+
+We are still working at the abstract level of trials and outcomes, but the interpretation is already the same:
+
+> The DGP determines how trial outcomes can occur jointly. The law $P^{(2)}$ is our probabilistic representation of this mechanism that generates the outcomes of an experiment in the form of a sequence of two trials.
+
+The two cases below therefore correspond to **two different generating mechanisms**.
+
+### Case 1: two ordinary tosses of a fair coin
+
+**What is the experiment?**
+
+We define our experiment as a sequence of **two trials**:
+
+$$
+T_1 \quad\text{followed by}\quad T_2.
+$$
+
+Each trial can result in $H$ or $T$. Therefore, the outcome of the complete experiment is an ordered pair:
+
+$$
+\Omega^{(2)}
+=
+\{(H,H),(H,T),(T,H),(T,T)\}.
+$$
+
+So far, we know only **which sequences are possible**.
+
+Now we need to specify how the DGP distributes probability among these sequences.
+
+Suppose that the mechanism corresponds to what we normally imagine as two separate tosses of a fair coin: there is no mechanism causing the outcome of one toss to alter the other.
+
+In this case, we model the four sequences as equally likely. Since their probabilities must sum to $1$,
+
+$$
+P^{(2)}(H,H)
+=
+P^{(2)}(H,T)
+=
+P^{(2)}(T,H)
+=
+P^{(2)}(T,T)
+=
+\frac14.
+$$
+
+The table simply organizes this law:
+
+::: {.compact-table}
+
+| $\begin{array}{c} T_2\rightarrow \\ T_1\downarrow \end{array}$ | $H$ | $T$ | total for $T_1$ |
+|:---:|:---:|:---:|:---:|
+| $H$ | $1/4$ | $1/4$ | $1/2$ |
+| $T$ | $1/4$ | $1/4$ | $1/2$ |
+| **total for $T_2$** | **$1/2$** | **$1/2$** | **$1$** |
+
+:::
+
+**How do we interpret a cell?**
+
+Consider
+
+$$
+P^{(2)}(H,T)=\frac14.
+$$
+
+This means:
+
+> the probability that the **complete experiment** produces the sequence “$H$ on the first trial and $T$ on the second trial” is $1/4$.
+
+The $1/4$ is therefore the probability of **one joint outcome**:
+
+$$
+(H,T).
+$$
+
+We are not assigning $1/4$ to $H$ and $1/4$ to $T$ separately.
+
+When we look only at $T_1$ or only at $T_2$, we recover
+
+$$
+P_1(H)=P_1(T)=\frac12,
+\qquad
+P_2(H)=P_2(T)=\frac12.
+$$
+
+But $P^{(2)}$ contains something more: it tells us **how the outcomes of the two trials occur together**.
+
+### Case 2: the same outcome space, but without assuming independence
+
+**What is the experiment?**
+
+We retain exactly the same experiment: a sequence of **two trials**,
+
+$$
+T_1 \quad\text{followed by}\quad T_2,
+$$
+
+where each trial can result in $H$ or $T$.
+
+Therefore, the outcome space is still
+
+$$
+\Omega^{(2)}
+=
+\{(H,H),(H,T),(T,H),(T,T)\}.
+$$
+
+What changes now is not the outcome space, but the **generating mechanism**.
+
+In Case 1, we constructed a DGP in which the two trials behaved like separate tosses of a fair coin.
+
+Now we want to show that this **need not be true**.
+
+We can have a DGP in which the trials are related, so that knowing the outcome of one provides information about the other.
+
+> In other words, we are not yet assuming that the trials are independent.
+
+To make this particularly clear, let us construct an extreme case.
+
+Suppose that the DGP chooses $H$ or $T$ with probability $1/2$ on the first trial and makes the second trial **copy the first**.
+
+Thus, if the first outcome is $H$, the complete outcome will be
+
+$$
+(H,H),
+$$
+
+and if the first outcome is $T$,
+
+$$
+(T,T).
+$$
+
+The sequences $(H,T)$ and $(T,H)$ never occur under this mechanism.
+
+The joint law is then:
+
+::: {.compact-table}
+
+| $\begin{array}{c} T_2\rightarrow \\ T_1\downarrow \end{array}$ | $H$ | $T$ | total for $T_1$ |
+|:---:|:---:|:---:|:---:|
+| $H$ | $1/2$ | $0$ | $1/2$ |
+| $T$ | $0$ | $1/2$ | $1/2$ |
+| **total for $T_2$** | **$1/2$** | **$1/2$** | **$1$** |
+
+:::
+
+**How do we interpret a cell?**
+
+Consider
+
+$$
+P^{(2)}(H,T)=0.
+$$
+
+This means:
+
+> under this DGP, the probability that the complete experiment produces the sequence “$H$ on the first trial and $T$ on the second trial” is zero.
+
+Now notice something important.
+
+If we look at each trial **in isolation**, we still have
+
+$$
+P_1(H)=P_1(T)=\frac12,
+\qquad
+P_2(H)=P_2(T)=\frac12.
+$$
+
+That is, each trial still looks like a fair coin when observed separately.
+
+But when we look at both **jointly**, we see information that these individual probabilities do not reveal:
+
+> if we know that $T_1$ resulted in $H$, we also know that $T_2$ resulted in $H$.
+
+Therefore, what changed was **the way the two outcomes occur jointly**.
+
+::: {.callout-note title="We are not yet talking about two random variables"}
+
+These tables resemble a joint distribution of two random variables, but we are still one step before that.
+
+Here they represent the **joint law $P^{(2)}$ over the possible outcomes of the two trials**:
+
+$$
+\Omega^{(2)}
+=
+\{(H,H),(H,T),(T,H),(T,T)\}.
+$$
+
+Later, after introducing random variables $X_1$ and $X_2$, this same idea will reappear as a **joint distribution** of random variables.
+
+:::
+
+::: {.callout-tip title="This can also occur in real-world phenomena"}
+
+Imagine two parts produced in sequence by the same machine.
+
+If the machine is temporarily out of adjustment, observing a defect in the first part may provide information about the chance that the second part is also defective.
+
+This does not necessarily mean that the defect in the first part **causes** the defect in the second. The two outcomes may be related because they share part of the same generating mechanism.
+
+:::
+
+Therefore,
+
+$$
+\boxed{
+\text{probabilities of each trial in isolation}
+\;\not\Rightarrow\;
+\text{joint law of the sequence}
+}
+$$
+
+It is precisely **the joint law** $P^{(n)}$ that contains information about how the outcomes of different trials occur together.
+
+## The second ingredient: sampling space
+
+Now we give a name to the sequence of trials:
+
+$$
+\boxed{
+\mathcal G_n=\{T_1,T_2,\ldots,T_n\}.
+}
+$$
+
+We will call $\mathcal G_n$ the [**sampling space**]{.conceito}.
+
+It identifies the trials we are representing jointly.
+
+Combining
+
+$$
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)})
+$$
+
+and
+
+$$
+\mathcal G_n,
+$$
+
+we obtain the general [**statistical space**]{.conceito}:
+
+$$
+\boxed{
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right].
+}
+$$
+
+::: {.callout-warning title="The sample space is not the sampling space"}
+
+The [**sample space**]{.conceito} $\Omega$ contains possible outcomes.
+
+The [**sampling space**]{.conceito} $\mathcal G_n$ identifies the sequence of trials under consideration.
+
+And we are not yet talking about a **random sample**.
+
+That will come later, when we introduce random variables.
+
+:::
+
+::: {.callout-note title="What if $\Omega$ is continuous?"}
+
+Nothing changes conceptually.
+
+If $\Omega=\mathbb R$, then $n$ trials produce elements of
+
+$$
+\mathbb R^n.
+$$
+
+The rigorous construction of the joint event space uses the product $\sigma$-algebra
+
+$$
+\mathcal F_1\otimes\cdots\otimes\mathcal F_n,
+$$
+
+but we will not develop this technical part here.
+
+The idea remains the same: **several trials must live within a joint probabilistic structure**.
+
+:::
+
+## What is still missing?
+
+So far, we have not assumed that the trials are independent.
+
+Nor have we assumed that they all have the same distribution.
+
+We have only constructed the structure needed to say:
+
+$$
+\boxed{
+\text{these trials will be represented jointly}
+}
+$$
+
+and allow $P^{(n)}$ to describe **how they are related**.
+
+In the next chapter, we will ask an additional question:
+
+> **what do we mean when we say that the same mechanism is repeated “under the same conditions”?**
+
+This statement will lead us to two different ideas:
+
+- the same probabilistic structure across trials;
+- the absence of probabilistic influence between them.
+
+To formalize the second, we must first understand an even more basic question:
+
+> **how does new information change a probability?**
+
+This is where [**conditional probability**]{.conceito} comes in.
+
+## Before continuing
+
+1. Why can $(H,T)$ represent either two coordinates of a single trial or outcomes of two different trials?
+
+2. Why does $P:\mathcal F\to[0,1]$ not directly answer the question “three heads in five trials”?
+
+3. What does an element $(\omega_1,\ldots,\omega_n)\in\Omega^{(n)}$ represent in this chapter?
+
+4. Why does knowing the probabilities of each trial in isolation not determine $P^{(n)}$?
+
+5. What is the difference between the sample space $\Omega$ and the sampling space $\mathcal G_n$?

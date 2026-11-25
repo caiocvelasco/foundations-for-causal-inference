@@ -1,0 +1,52 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Environment files
+.env
+.env.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS & editor files
+Thumbs.db
+.DS_Store
+.Rhistory
+.Rproj.user/
+
+# Quarto
+/.quarto/
+.quarto/
+_site/
+_book/
+_publish/
+
+# Build artifacts & logs
+*.log
+*.pdf
+*.aux
+*.out
+*.toc
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*.Rproj
+
+# VS Code settings (optional - remove if you want to share settings)
+.vscode/
+
+# Project assets not meant for version control
+marketing/
+references/
+
+# IDE files
+.idea/
+*.sublime-project
+*.sublime-workspace

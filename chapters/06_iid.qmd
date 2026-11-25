@@ -1,0 +1,790 @@
+---
+title: "The IID Case"
+---
+
+<!--
+OBJECTIVE: start from the general statistical space and develop, briefly and intuitively,
+the two restrictions that lead to the IID case at the trial level:
+(1) Identical Distribution = complete homogeneity of the marginal laws;
+(2) Independence = information about one trial does not change probabilities concerning the others.
+
+Do NOT formally define a random sample yet: that will come only after random variables.
+
+Main conceptual references:
+- Spanos, ch. 2 (§§2.7–2.8), ch. 4 (§§4.5–4.6), ch. 5 and ch. 6 (§6.1.3).
+- Bertsekas & Tsitsiklis / MIT 6.041 for the intuition behind conditioning as a revision
+  of probabilities in light of new information.
+
+Course notation:
+T_i = trial
+omega_i = outcome of the trial
+P^(n) = joint law of the sequence
+P_i = marginal law of trial i
+G_n = sampling space
+-->
+
+In the chapter on formalization, we introduced the abstract architecture we are building:
+
+```{=html}
+<div style="max-width: 780px; margin: 1.75rem auto; border: 2px solid currentColor; border-radius: 12px; padding: 1.2rem 1.4rem 1.4rem 1.4rem;">
+  <div style="text-align: center; font-weight: 700; font-size: 1.15rem; margin-bottom: 1rem;">
+    Statistical Space
+  </div>
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <div style="flex: 1 1 280px; border: 1.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+      <strong>Probability Space</strong><br>
+      <span style="font-size: 0.95rem;">probabilistic structure of the outcomes</span><br><br>
+      <span>\((\Omega^{(n)},\mathcal F^{(n)},P^{(n)})\)</span>
+    </div>
+    <div style="flex: 1 1 280px; border: 1.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+      <strong>Sampling Space</strong><br>
+      <span style="font-size: 0.95rem;">abstract structure of the trials</span><br><br>
+      <span>\(\mathcal G_n=\{T_1,T_2,\ldots,T_n\}\)</span>
+    </div>
+  </div>
+</div>
+```
+
+In the previous chapter, we arrived at the **general** form:
+
+$$
+\boxed{
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right].
+}
+$$
+
+It allows us to represent several trials jointly, but does not yet impose any restrictions on how these trials relate to one another.
+
+## Revisiting the Random Experiment
+
+At the beginning of the module, we introduced a [**Random Experiment**]{.conceito} as a mechanism satisfying three conditions:
+
+1. we know the possible outcomes;
+2. we do not know in advance which outcome will occur in a trial, but there is probabilistic regularity;
+3. the experiment can be repeated **under the same conditions**.
+
+The first two ideas are formalized by the **Probability Space**.
+
+The third is precisely the issue we still need to resolve:
+
+> **what does it mean, mathematically, to repeat the experiment "under the same conditions"?**
+
+This is where we need to return to the **Sampling Space** box.
+
+### Reopening the Sampling Space box
+
+So far, we have only a general sequence of trials:
+
+$$
+\mathcal G_n=\{T_1,T_2,\ldots,T_n\}.
+$$
+
+To represent repetition "under the same conditions", we will impose two properties:
+
+$$
+\boxed{
+\begin{array}{c}
+\text{same probabilistic structure in each trial}\\
+\downarrow\\
+\text{Identical Distribution (ID)}
+\end{array}
+}
+\qquad
+\boxed{
+\begin{array}{c}
+\text{one trial provides no information about the others}\\
+\downarrow\\
+\text{Independence (I)}
+\end{array}
+}
+$$
+
+When both are satisfied,
+
+$$
+\boxed{
+\mathcal G_n
+\quad\xrightarrow{\;\mathrm{ID+I}\;}\quad
+\mathcal G_n^{IID}
+=
+\{T_1,T_2,\ldots,T_n\}.
+}
+$$
+
+The sequence is then referred to as a sequence of [**random trials**]{.conceito}.
+
+Visually, this is the box we are specializing:
+
+```{=html}
+<div style="max-width: 780px; margin: 1.75rem auto;">
+  <div style="border: 2px solid currentColor; border-radius: 12px; padding: 1.2rem 1.4rem;">
+    <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
+      Sampling Space
+    </div>
+
+    <div style="border: 1.5px solid currentColor; border-radius: 9px; padding: 0.9rem 1rem; text-align: center;">
+      <strong>General case</strong><br>
+      \(\mathcal G_n=\{T_1,\ldots,T_n\}\)
+    </div>
+
+    <div style="text-align: center; padding: 0.8rem 0; font-weight: 600;">
+      \(\downarrow\) impose ID + Independence
+    </div>
+
+    <div style="border: 1.5px solid currentColor; border-radius: 9px; padding: 0.9rem 1rem; text-align: center;">
+      <strong>Simple case: Random Trials</strong><br>
+      \(\mathcal G_n^{IID}=\{T_1,\ldots,T_n\}\)
+    </div>
+  </div>
+</div>
+```
+
+When we combine this box with the probabilistic structure of the outcomes, we obtain the complete abstract formalization of the Random Experiment:
+
+```{=html}
+<div style="max-width: 820px; margin: 1.75rem auto;">
+  <div style="text-align: center; font-weight: 700; font-size: 1.12rem; margin-bottom: 0.65rem;">
+    Random Experiment
+  </div>
+  <div style="text-align: center; font-size: 0.95rem; margin-bottom: 0.65rem;">
+    mathematical representation
+  </div>
+  <div style="text-align: center; font-size: 1.7rem; line-height: 1; margin-bottom: 0.65rem;">
+    \(\downarrow\)
+  </div>
+
+  <div style="border: 2px solid currentColor; border-radius: 12px; padding: 1.2rem 1.4rem 1.4rem 1.4rem;">
+    <div style="text-align: center; font-weight: 700; font-size: 1.15rem; margin-bottom: 1rem;">
+      Simple Statistical Space
+    </div>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <div style="flex: 1 1 280px; border: 1.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+        <strong>Probability Space</strong><br>
+        <span style="font-size: 0.92rem;">outcomes + probabilistic regularity</span><br><br>
+        <span>\((\Omega,\mathcal F,P)^n\)</span>
+      </div>
+
+      <div style="flex: 1 1 280px; border: 1.5px solid currentColor; border-radius: 9px; padding: 1rem; text-align: center;">
+        <strong>Simple Sampling Space</strong><br>
+        <span style="font-size: 0.92rem;">repetition under the same conditions</span><br><br>
+        <span>\(\mathcal G_n^{IID}=\{T_1,\ldots,T_n\}\)</span><br>
+        <span style="font-size: 0.9rem;">Random Trials</span>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Therefore,
+
+$$
+\boxed{
+\left[
+(\Omega,\mathcal F,P)^n,
+\quad
+\mathcal G_n^{IID}
+\right]
+}
+$$
+
+is the [**Simple Statistical Space**]{.conceito}: the abstract formalization of the simplest case of a Random Experiment.
+
+The aim of this chapter is precisely to understand **why ID and Independence appear in this second box** and what each of these assumptions tells us about the DGP.
+
+## Three dimensions of a probabilistic description of the DGP
+
+Before defining **ID** and **Independence**, it is worth looking at the broader problem: **what do we need to know to describe a stochastic phenomenon probabilistically?**
+
+Think about data generated across different trials: customer purchases, sensor measurements, or outcomes observed over time. It is not enough to ask which outcomes are more probable. We also need to ask whether **one outcome tells us something about the others** and whether **the probabilistic behavior remains the same across trials**.
+
+This is the central idea behind the framework proposed by Spanos. The patterns of regularity found in stochastic phenomena can be described, in probabilistic terms, by assumptions grouped into three dimensions:
+
+::: {.compact-table}
+
+| Dimension | Question we ask about the DGP | Intuition: what do we want to find out? |
+|:---|:---|:---|
+| **(D) Distribution** | **How** are probabilities distributed among the possible outcomes? | Are some outcomes more probable than others? |
+| **(M) Dependence ("Memory")** | Does knowing what happened in one trial **change** the probabilities of the others? | Does knowing the previous outcome change our probabilities for the next one? |
+| **(H) Heterogeneity** | Does the probability distribution **change** from one trial to another? | Do the probabilities remain the same in each trial, or do they change over time? |
+
+:::
+
+These three dimensions represent different types of probabilistic information we can use to describe a DGP.
+
+**By imposing or relaxing assumptions along these dimensions, we construct more restrictive or more general statistical models**, capable of representing different stochastic phenomena.
+
+In this chapter, we will start with a particularly simple case: we will assume **Independence (M)** and **Identical Distribution (H)**. Together, these two assumptions characterize the **IID** case.
+
+Later, we will see that not all phenomena satisfy these conditions — and that recognizing dependence and heterogeneity is essential to building models that adequately describe the data.
+
+### Why does this distinction matter in practice?
+
+In reality, data do not always behave like a sequence of ordinary coin tosses. Today's purchases may be related to yesterday's (**dependence**); customer profiles may change over the months (**heterogeneity**); and a heavy-tailed distribution may make a model that assumes a different distributional shape inadequate (**distribution**).
+
+This is an important source of modeling errors: **assuming a simple probabilistic structure without considering whether it represents the phenomenon that generated the data**.
+
+For example, when ignored, changes in distribution (*data drift*) and temporal dependence can undermine the validity of analyses and predictive evaluations.
+
+### Where do ID and Independence fit in?
+
+In this chapter, we will study **a particularly simple case** within this architecture. We leave dimension **D** arbitrary and impose strong restrictions on the other two:
+
+::: {.compact-table}
+
+| Dimension | Choice in the simple case (IID) |
+|:---|:---|
+| **(D) Distribution** | The distribution remains arbitrary: IID does not require a Normal, Bernoulli, or any other specific family. |
+| **(M) Dependence** | **Independence (I):** knowing the outcome of one trial does not change our probabilities concerning the others. |
+| **(H) Heterogeneity** | **Identical Distribution (ID):** the same probability law describes all trials, that is, **complete homogeneity**. |
+
+:::
+
+Therefore, **I and ID are two distinct assumptions, each restricting one dimension of the DGP**. By relaxing them, we make room for models that represent dependence and/or heterogeneity, without abandoning probabilistic rigor.
+
+We will start with **ID**, then develop the intuition behind **Independence**. Only then will we combine the two conditions to arrive at the **IID** case.
+
+## 1. (ID) Identical Distribution: the DGP does not change from one trial to another
+
+Since we are now looking at the trials **jointly**, we have a joint law $P^{(n)}$ for the entire sequence.
+
+But we can also look at each position separately. The probability law corresponding to trial $T_i$ will be denoted by $P_i$.
+
+This law answers questions about trial $i$ alone, without having to specify what happened in the other trials.
+
+For example:
+
+- what is the probability of obtaining $H$ on the second toss, regardless of the outcome of the first?
+
+Later, we will refer to this law as the [**marginal law**]{.conceito}.
+
+### A concrete way to think about this
+
+Suppose that
+
+$$
+\Omega=\{H,T\}.
+$$
+
+For each trial, we can summarize its probability law using the vector
+
+$$
+\mathbf p_i
+=
+\left[
+P_i(\{H\}),
+P_i(\{T\})
+\right].
+$$
+
+If the first trial involves a fair coin,
+
+$$
+\mathbf p_1
+=
+\left[
+\tfrac12,\tfrac12
+\right].
+$$
+
+If we are saying that the **same probabilistic mechanism** remains in place from one trial to another, then
+
+$$
+\boxed{
+\mathbf p_1
+=
+\mathbf p_2
+=
+\cdots
+=
+\mathbf p_n
+=
+\mathbf p.
+}
+$$
+
+For the fair coin, across all its trials:
+
+$$
+\mathbf p_1
+=
+\mathbf p_2
+=
+\cdots
+=
+\mathbf p_n
+=
+\left[
+\tfrac12,\tfrac12
+\right].
+$$
+
+Here, $P_i$ **is not a number**, but a **function**: the probability law of trial $i$. As we saw when formalizing the probability space, it takes an event as input and returns its probability:
+
+$$
+P_i:\mathcal F_i\longrightarrow[0,1],\qquad A\longmapsto P_i(A).
+$$
+
+Therefore, saying that two laws are equal means that **these functions assign the same probability to each corresponding event**. This is what we mean, at this level, by [**Identical Distribution (ID)**]{.conceito}:
+
+$$
+\boxed{
+P_1=P_2=\cdots=P_n=P.
+}
+$$
+
+Or, writing out the complete structure of each trial,
+
+$$
+(\Omega_i,\mathcal F_i,P_i)
+=
+(\Omega,\mathcal F,P),
+\qquad i=1,\ldots,n.
+$$
+
+ID does not mean that the **observed outcomes** are identical. It means that the **same probability function** describes each trial when considered separately from the others. This equality, by itself, tells us nothing about how the outcomes of different trials relate to one another.
+
+This is the most restrictive form of homogeneity: [**complete homogeneity**]{.conceito}.
+
+If, for example,
+
+$$
+\mathbf p_1=[0.5,0.5],
+\qquad
+\mathbf p_2=[0.8,0.2],
+$$
+
+the probabilistic mechanism has changed across positions. We have **heterogeneity**, not ID.
+
+But even knowing that all the marginal laws are equal, one question remains:
+
+> **how do the outcomes of different trials relate to one another?**
+
+## 2. Dependence: does information about one trial change what we know about another?
+
+This brings us to one of the most important ideas in Probability Theory: [**conditioning**]{.conceito}.
+
+The intuition is simple:
+
+> we have a probabilistic model; we receive new information; should we revise the probabilities we assign to events?
+
+We will use the notation
+
+$$
+P(B\mid A)
+$$
+
+to represent the probability we assign to $B$ **after learning that $A$ has occurred**.
+
+For now, we do not need the formula for conditional probability. What matters is understanding its purpose: **revising probabilities in light of new information**.
+
+### An example involving a single trial
+
+Consider a fair die.
+
+Before receiving any information,
+
+$$
+P(\text{even})=\frac12.
+$$
+
+Now someone tells us that the outcome was greater than $3$.
+
+The only outcomes that are still possible are
+
+$$
+\{4,5,6\}.
+$$
+
+Two of them are even. Therefore,
+
+$$
+P(\text{even}\mid \text{outcome}>3)=\frac23.
+$$
+
+The new information has changed our probabilistic assessment.
+
+Conditioning does not require repeated trials. We are simply updating the probabilistic model in light of additional information.
+
+### Now return to our trials
+
+Define:
+
+- $A$: “the first trial resulted in $H$”;
+- $B$: “the second trial resulted in $H$”.
+
+The question is:
+
+> **does knowing that $A$ occurred change the probability we assign to $B$?**
+
+This question naturally distinguishes two types of DGP.
+
+In the DGP involving two ordinary tosses of a fair coin,
+
+$$
+P^{(2)}(B)=\frac12,
+\qquad
+P^{(2)}(B\mid A)=\frac12.
+$$
+
+Knowing the outcome of the first trial does not change what we expect from the second.
+
+In the DGP constructed in the previous chapter, where the second outcome copies the first,
+
+$$
+P^{(2)}(B)=\frac12,
+\qquad
+P^{(2)}(B\mid A)=1.
+$$
+
+Now, information about the first trial completely changes our assessment of the second.
+
+This is the difference we want to capture with the idea of **dependence**.
+
+## 3. Independence: no revision is necessary
+
+In the simplest case, we want information about one trial to be irrelevant to the others.
+
+Intuitively,
+
+$$
+\boxed{
+P^{(2)}(B\mid A)=P^{(2)}(B).
+}
+$$
+
+If knowing that $A$ occurred does not change the probability we assign to $B$, we say that the events are [**independent**]{.conceito}.
+
+### How can we express this idea without using conditioning?
+
+We can think of many repetitions of the mechanism.
+
+Event $A$ occurs in approximately a proportion $P(A)$ of the cases.
+
+Now look only at those situations in which $A$ occurred.
+
+If $A$ truly **provides no information about $B$**, then $B$ should continue to occur within this subset of cases in the same proportion $P(B)$ as before.
+
+Therefore, the proportion of situations in which **$A$ and $B$ occur together** should be
+
+$$
+P(A)\times P(B).
+$$
+
+### Visualizing the multiplication rule
+
+A tree helps us see where this product comes from.
+
+In general, to follow the path along which **$A$ occurs and then $B$ also occurs**, we multiply the probabilities along the path:
+
+```{=html}
+<div style="max-width: 620px; margin: 1.3rem auto;">
+<pre style="font-family: monospace; font-size: 1rem; line-height: 1.65; border: 1px solid #bbb; border-radius: 8px; padding: 1rem 1.2rem; background: #fafafa;">
+start
+├── A                              P(A)
+│   ├── B                          P(B|A)
+│   │   └── A and B                P(A) × P(B|A)
+│   └── Bᶜ
+└── Aᶜ
+</pre>
+</div>
+```
+
+The general rule is therefore
+
+$$
+P(A\cap B)=P(A)\,P(B\mid A).
+$$
+
+Now the assumption of independence comes into play.
+
+If knowing that $A$ occurred **does not change** our probability for $B$, then
+
+$$
+P(B\mid A)=P(B).
+$$
+
+Hence, the second branch of the tree retains exactly the same probability that $B$ had before we knew anything about $A$:
+
+$$
+P(A\cap B)
+=
+P(A)\,P(B).
+$$
+
+This motivates the mathematical form of independence:
+
+$$
+\boxed{
+P(A\cap B)=P(A)P(B).
+}
+$$
+
+The equality conveys a very intuitive idea:
+
+> **to determine the probability that $A$ and $B$ occur together, we do not need any additional information about the relationship between them: the individual probabilities are sufficient.**
+
+If there is some probabilistic relationship between the events, the second branch will, in general, be $P(B\mid A)$ rather than simply $P(B)$. In that case, knowing only $P(A)$ and $P(B)$ is not sufficient to determine $P(A\cap B)$.
+
+### Why do we prefer this form as the definition?
+
+The expression
+
+$$
+P(B\mid A)=P(B)
+$$
+
+is excellent for understanding the **idea** of independence: knowing $A$ does not change our probabilities concerning $B$.
+
+But it requires the conditional probability to be defined.
+
+By contrast,
+
+$$
+P(A\cap B)=P(A)P(B)
+$$
+
+is symmetric in $A$ and $B$ and remains meaningful even when one of the events has probability zero.
+
+For this reason, we use the product form as the mathematical definition of independence and the conditional form as its intuitive interpretation:
+
+$$
+\boxed{
+\begin{array}{c}
+\text{information about }A\text{ does not change }B\\[4pt]
+\Updownarrow\\[4pt]
+P(A\cap B)=P(A)P(B)
+\end{array}
+}
+$$
+
+when the conditional probability involved is well defined.
+
+When we talk about several trials, we want to extend exactly the same idea: knowing the outcomes of some trials should provide no probabilistic information about the others.
+
+In compact form, for events $E_i\in\mathcal F_i$,
+
+$$
+\boxed{
+P^{(n)}(E_1\times\cdots\times E_n)
+=
+P_1(E_1)\cdots P_n(E_n).
+}
+$$
+
+Independence is therefore **an assumption about the joint structure of the DGP**.
+
+It does not follow from each trial being fair, nor from the trials having identical distributions.
+
+## 4. ID is not independence
+
+The two assumptions answer different questions:
+
+::: {.compact-table}
+
+| Assumption | Question |
+|:---|:---|
+| [**Identical Distribution (ID)**]{.conceito} | Does the marginal law remain the same from one position to another? |
+| [**Independence (I)**]{.conceito} | Does information about one position change the probabilities of the others? |
+
+:::
+
+We can have **ID with dependence**: in the DGP where the second trial copies the first,
+
+$$
+P_1(H)=P_2(H)=\frac12,
+$$
+
+but knowing the first outcome determines the second.
+
+We can also have **independence without ID**: for example,
+
+$$
+P_1(H)=0.5,
+\qquad
+P_2(H)=0.8,
+$$
+
+even if the mechanism creates no probabilistic relationship between the two outcomes.
+
+Therefore,
+
+$$
+\boxed{\mathrm{I}\neq\mathrm{ID}.}
+$$
+
+## 5. Combining the two restrictions: IID
+
+We can now formalize the idea of repeating the same experiment under the simplest conditions:
+
+1. the marginal law does not change across trials — **ID**;
+2. one trial provides no probabilistic information about the others — **I**.
+
+Hence,
+
+$$
+\boxed{
+\underbrace{\text{Independence}}_{\mathrm I}
++
+\underbrace{\text{Identical Distribution}}_{\mathrm{ID}}
+=
+\mathrm{IID}.
+}
+$$
+
+A sequence
+
+$$
+\boxed{
+\mathcal G_n^{IID}
+=
+\{T_1,T_2,\ldots,T_n\}
+}
+$$
+
+that satisfies these two properties will be called a sequence of [**random trials**]{.conceito}.
+
+Since all the marginal laws are equal,
+
+$$
+P_1=P_2=\cdots=P_n=P,
+$$
+
+and, by independence, the joint law factorizes into these marginal laws.
+
+Thus, the joint structure takes the product form
+
+$$
+(\Omega^n,\mathcal F^{\otimes n},P^{\otimes n}),
+$$
+
+which we will abbreviate as
+
+$$
+(\Omega,\mathcal F,P)^n.
+$$
+
+We thus arrive at the [**simple statistical space**]{.conceito}:
+
+$$
+\boxed{
+\left[
+(\Omega,\mathcal F,P)^n,
+\mathcal G_n^{IID}
+\right].
+}
+$$
+
+It is merely a **special case** of the general statistical space:
+
+$$
+\left[
+(\Omega^{(n)},\mathcal F^{(n)},P^{(n)}),
+\mathcal G_n
+\right].
+$$
+
+The difference is that we have now imposed two strong simplifying assumptions on the DGP:
+
+$$
+\boxed{
+\text{absence of dependence}
+\quad+\quad
+\text{absence of heterogeneity}
+}
+$$
+
+or, equivalently,
+
+$$
+\boxed{
+\text{Independence}
+\quad+\quad
+\text{Identical Distribution}.
+}
+$$
+
+IID is therefore **an assumption about the DGP**. It is not something that arises simply because we collect many observations.
+
+## 6. Why do we not yet have a random sample?
+
+So far, we have constructed a sequence of [**random trials**]{.conceito}:
+
+$$
+\boxed{
+\mathcal G_n^{IID}
+=
+\{T_1,T_2,\ldots,T_n\}.
+}
+$$
+
+Each trial produces an abstract outcome:
+
+$$
+T_i\longrightarrow\omega_i.
+$$
+
+We have not yet introduced random variables.
+
+In the next step, we will build the bridge
+
+$$
+\boxed{
+T_i
+\longrightarrow
+X_i
+\longrightarrow
+x_i
+}
+$$
+
+where
+
+$$
+\begin{array}{rcl}
+T_i &:& \text{trial }i,\\
+X_i &:& \text{random variable associated with trial }i,\\
+x_i &:& \text{actual observed value.}
+\end{array}
+$$
+
+Only then will we be able to formally define
+
+$$
+\boxed{
+X^{(n)}=(X_1,\ldots,X_n)
+}
+$$
+
+as a **sample**.
+
+And when $X_1,\ldots,X_n$ are IID,
+
+$$
+\boxed{
+X^{(n)}_{IID}=(X_1,\ldots,X_n)
+}
+$$
+
+we will have a [**random sample**]{.conceito}.
+
+After realization,
+
+$$
+\boxed{
+x=(x_1,\ldots,x_n)
+}
+$$
+
+will be the [**sample realization**]{.conceito}: the actual observed data.
+
+## Before moving on
+
+1. In what sense does ID represent homogeneity of the DGP across trials?
+2. Why do equal marginal laws not imply independence?
+3. What is the interpretation of $P(B\mid A)$ even before we know its formula?
+4. What are we restricting in the DGP when we assume IID?
+5. Why is $\mathcal G_n^{IID}$ not yet a random sample?
