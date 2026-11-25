@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Real Life: When the Sample Space Is Continuous – Foundations for Causal Inference</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/05_sampling_space.html" rel="next">
+<link href="../chapters/03_2_dgp.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8ee17f74d3b140f8619030554e94af15.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_from_uncertainty_to_probability.html">Module 1 - Probability</a></li><li class="breadcrumb-item"><a href="../chapters/04_when_the_sample_space_is_continuous.html"><span class="chapter-title">Real Life: When the Sample Space Is Continuous</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Foundations for Causal Inference</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Foundations for Causal Inference</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Prelude</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00_what_can_we_learn_from_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">What Do We Want to Learn from Data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The Map of Probability and Inference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_02.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Empirical Modeling: from the Real World to the Statistical Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/00-2_prelude_03.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Where We Want to Go: from the Random Experiment to the Statistical Model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 - Probability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01_from_uncertainty_to_probability.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">From Uncertainty to Probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02_formalizing_the_statistical_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mathematical Formalization - Statistical Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_1_probability_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Part 1 of 2 - Constructing a Probability Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_2_dgp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Where Do Data Come From? The Data Generating Process</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_when_the_sample_space_is_continuous.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Real Life: When the Sample Space Is Continuous</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_sampling_space.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Part 2 of 2 - Sampling Space</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_iid.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The IID Case</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_conditional_probability.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conditional Probability: Information, Updating Probabilities, and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#before-moving-on-finite-and-infinite" id="toc-before-moving-on-finite-and-infinite" class="nav-link active" data-scroll-target="#before-moving-on-finite-and-infinite">Before moving on: finite and infinite</a></li>
+  <li><a href="#counting-listing-and-sequences" id="toc-counting-listing-and-sequences" class="nav-link" data-scroll-target="#counting-listing-and-sequences">Counting, listing, and sequences</a>
+  <ul class="collapse">
+  <li><a href="#counting-and-cardinality" id="toc-counting-and-cardinality" class="nav-link" data-scroll-target="#counting-and-cardinality">Counting and cardinality</a></li>
+  <li><a href="#what-does-it-mean-to-list-a-set" id="toc-what-does-it-mean-to-list-a-set" class="nav-link" data-scroll-target="#what-does-it-mean-to-list-a-set">What does it mean to list a set?</a></li>
+  <li><a href="#some-infinite-sets-we-can-list" id="toc-some-infinite-sets-we-can-list" class="nav-link" data-scroll-target="#some-infinite-sets-we-can-list">Some infinite sets we can list</a></li>
+  <li><a href="#can-every-infinite-set-be-listed" id="toc-can-every-infinite-set-be-listed" class="nav-link" data-scroll-target="#can-every-infinite-set-be-listed">Can every infinite set be listed?</a></li>
+  </ul></li>
+  <li><a href="#when-we-cannot-list-the-outcomes" id="toc-when-we-cannot-list-the-outcomes" class="nav-link" data-scroll-target="#when-we-cannot-list-the-outcomes">When we cannot list the outcomes</a>
+  <ul class="collapse">
+  <li><a href="#an-intuitive-proof-by-contradiction" id="toc-an-intuitive-proof-by-contradiction" class="nav-link" data-scroll-target="#an-intuitive-proof-by-contradiction">An intuitive proof by contradiction</a></li>
+  <li><a href="#cantors-proof-why-01-cannot-be-listed" id="toc-cantors-proof-why-01-cannot-be-listed" class="nav-link" data-scroll-target="#cantors-proof-why-01-cannot-be-listed">Cantor’s proof: why <span class="math inline">\([0,1]\)</span> cannot be listed</a></li>
+  <li><a href="#what-about-the-entire-set-of-real-numbers-mathbb-r" id="toc-what-about-the-entire-set-of-real-numbers-mathbb-r" class="nav-link" data-scroll-target="#what-about-the-entire-set-of-real-numbers-mathbb-r">What about the entire set of real numbers, <span class="math inline">\(\mathbb R\)</span>?</a></li>
+  </ul></li>
+  <li><a href="#the-strange-part-the-whole-has-probability-1-but-each-point-has-probability-0" id="toc-the-strange-part-the-whole-has-probability-1-but-each-point-has-probability-0" class="nav-link" data-scroll-target="#the-strange-part-the-whole-has-probability-1-but-each-point-has-probability-0">The strange part: the whole has probability <span class="math inline">\(1\)</span>, but each point has probability <span class="math inline">\(0\)</span></a>
+  <ul class="collapse">
+  <li><a href="#p-is-a-function-and-the-axioms-guarantee-its-internal-consistency" id="toc-p-is-a-function-and-the-axioms-guarantee-its-internal-consistency" class="nav-link" data-scroll-target="#p-is-a-function-and-the-axioms-guarantee-its-internal-consistency"><span class="math inline">\(P\)</span> is a function, and the axioms guarantee its internal consistency</a></li>
+  <li><a href="#this-is-where-measure-theory-comes-in" id="toc-this-is-where-measure-theory-comes-in" class="nav-link" data-scroll-target="#this-is-where-measure-theory-comes-in">This is where measure theory comes in</a></li>
+  <li><a href="#omega01-cannot-be-listed-point-by-point" id="toc-omega01-cannot-be-listed-point-by-point" class="nav-link" data-scroll-target="#omega01-cannot-be-listed-point-by-point"><span class="math inline">\(\Omega=[0,1]\)</span> cannot be listed point by point</a></li>
+  <li><a href="#the-key-insight-we-enumerate-the-blocks-not-the-points" id="toc-the-key-insight-we-enumerate-the-blocks-not-the-points" class="nav-link" data-scroll-target="#the-key-insight-we-enumerate-the-blocks-not-the-points">The key insight: we enumerate the blocks, not the points</a></li>
+  <li><a href="#but-what-is-the-probability-of-a-singleton" id="toc-but-what-is-the-probability-of-a-singleton" class="nav-link" data-scroll-target="#but-what-is-the-probability-of-a-singleton">But what is the probability of a singleton?</a></li>
+  <li><a href="#now-comes-the-provocative-question" id="toc-now-comes-the-provocative-question" class="nav-link" data-scroll-target="#now-comes-the-provocative-question">Now comes the provocative question</a></li>
+  <li><a href="#the-strangeness-continues-remove-a-point-and-the-probability-is-still-1" id="toc-the-strangeness-continues-remove-a-point-and-the-probability-is-still-1" class="nav-link" data-scroll-target="#the-strangeness-continues-remove-a-point-and-the-probability-is-still-1">The strangeness continues: remove a point and the probability is still 1</a></li>
+  </ul></li>
+  <li><a href="#the-madness-of-uncertainty-about-an-individual-outcome" id="toc-the-madness-of-uncertainty-about-an-individual-outcome" class="nav-link" data-scroll-target="#the-madness-of-uncertainty-about-an-individual-outcome">The madness of uncertainty about an individual outcome</a>
+  <ul class="collapse">
+  <li><a href="#speaking-of-probability-0" id="toc-speaking-of-probability-0" class="nav-link" data-scroll-target="#speaking-of-probability-0">Speaking of probability <span class="math inline">\(0\)</span></a></li>
+  <li><a href="#and-does-probability-1-mean-absolute-certainty" id="toc-and-does-probability-1-mean-absolute-certainty" class="nav-link" data-scroll-target="#and-does-probability-1-mean-absolute-certainty">And does probability <span class="math inline">\(1\)</span> mean absolute certainty?</a></li>
+  </ul></li>
+  <li><a href="#returning-to-mathcal-f-where-p-is-defined" id="toc-returning-to-mathcal-f-where-p-is-defined" class="nav-link" data-scroll-target="#returning-to-mathcal-f-where-p-is-defined">Returning to <span class="math inline">\(\mathcal F\)</span>: where <span class="math inline">\(P\)</span> is defined</a></li>
+  <li><a href="#when-omega-lies-on-the-real-line-the-borel-sigma-algebra" id="toc-when-omega-lies-on-the-real-line-the-borel-sigma-algebra" class="nav-link" data-scroll-target="#when-omega-lies-on-the-real-line-the-borel-sigma-algebra">When <span class="math inline">\(\Omega\)</span> lies on the real line: the Borel <span class="math inline">\(\sigma\)</span>-algebra</a></li>
+  <li><a href="#what-about-the-real-world" id="toc-what-about-the-real-world" class="nav-link" data-scroll-target="#what-about-the-real-world">What about the real world?</a></li>
+  <li><a href="#what-changed" id="toc-what-changed" class="nav-link" data-scroll-target="#what-changed">What changed?</a></li>
+  <li><a href="#before-moving-on" id="toc-before-moving-on" class="nav-link" data-scroll-target="#before-moving-on">Before moving on</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_from_uncertainty_to_probability.html">Module 1 - Probability</a></li><li class="breadcrumb-item"><a href="../chapters/04_when_the_sample_space_is_continuous.html"><span class="chapter-title">Real Life: When the Sample Space Is Continuous</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Real Life: When the Sample Space Is Continuous</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+MAIN SOURCES / INSPIRATION FOR THIS SECTION
+
+Bertsekas & Tsitsiklis / MIT 6.041, Lecture 2:
+- review of the axioms of probability
+- interpretation of probability as mass/area
+- unit square, zero-area singletons, and the apparent 1 = 0
+- exact source of the error: additivity is only countable
+- probability zero does not imply impossibility; probability one does not require the event to equal Omega
+
+Spanos:
+- Probability Theory as a modeling framework
+- probability as a function on events / sets
+- connection between probabilistic formalization and modeling
+
+Robert B. Ash:
+- measure-theoretic motivation for nondiscrete spaces without introducing the entire formal machinery prematurely
+-->
+<p>In the previous chapter, we constructed a probability space</p>
+<p><span class="math display">\[
+(\Omega,\mathcal F,P)
+\]</span></p>
+<p>to represent a random experiment mathematically.</p>
+<p>So far, our examples have had simple sample spaces: heads or tails, purchase or no purchase, the faces of a die.</p>
+<p>But many quantities used in Data Science — such as time, temperature, distance, or spending — are often <strong>modeled as continuous</strong>.</p>
+<p>When this happens, a new difficulty arises:</p>
+<blockquote class="blockquote">
+<p><strong>How do we construct probabilities when we can no longer list all the possible outcomes?</strong></p>
+</blockquote>
+<p>This is the focus of this chapter.</p>
+<section id="before-moving-on-finite-and-infinite" class="level2">
+<h2 class="anchored" data-anchor-id="before-moving-on-finite-and-infinite">Before moving on: finite and infinite</h2>
+<p>Before discussing continuous spaces, we need to establish a simple distinction.</p>
+<p>A set can be:</p>
+<ul>
+<li><span class="conceito"><strong>finite</strong></span>: it contains a finite number of elements;</li>
+<li><span class="conceito"><strong>infinite</strong></span>: it contains infinitely many elements.</li>
+</ul>
+<p>For example,</p>
+<p><span class="math display">\[
+\{H,T\}
+\]</span></p>
+<p>is finite, whereas</p>
+<p><span class="math display">\[
+\mathbb N=\{1,2,3,\ldots\}
+\]</span></p>
+<p>is infinite.</p>
+<p>But there is an important distinction between infinite sets: some can still be organized into a <strong>sequence</strong>; others cannot.</p>
+</section>
+<section id="counting-listing-and-sequences" class="level2">
+<h2 class="anchored" data-anchor-id="counting-listing-and-sequences">Counting, listing, and sequences</h2>
+<section id="counting-and-cardinality" class="level3">
+<h3 class="anchored" data-anchor-id="counting-and-cardinality">Counting and cardinality</h3>
+<p>Counting means putting the elements of a set into correspondence with the natural numbers.</p>
+<p>In this course, we will use</p>
+<p><span class="math display">\[
+\mathbb N=\{1,2,3,\ldots\}.
+\]</span></p>
+<p>For example, for</p>
+<p><span class="math display">\[
+A=\{a,b,c\},
+\]</span></p>
+<p>we can associate</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+a &amp; b &amp; c\\
+\uparrow &amp; \uparrow &amp; \uparrow\\
+1 &amp; 2 &amp; 3
+\end{array}
+\]</span></p>
+<p>and we say that</p>
+<p><span class="math display">\[
+|A|=3.
+\]</span></p>
+<p>This quantity is the <span class="conceito"><strong>cardinality</strong></span> of the set.</p>
+<p>For infinite sets, counting never ends. The question then becomes:</p>
+<blockquote class="blockquote">
+<p><strong>Can we organize all the elements into sequential positions indexed by <span class="math inline">\(1,2,3,\ldots\)</span>, without leaving any out?</strong></p>
+</blockquote>
+</section>
+<section id="what-does-it-mean-to-list-a-set" class="level3">
+<h3 class="anchored" data-anchor-id="what-does-it-mean-to-list-a-set">What does it mean to list a set?</h3>
+<p>A <span class="conceito"><strong>sequence</strong></span> is precisely a collection organized by position:</p>
+<p><span class="math display">\[
+x_1,x_2,x_3,\ldots
+\]</span></p>
+<p>So, in this chapter, saying that we can <span class="conceito"><strong>list</strong></span> a set means:</p>
+<blockquote class="blockquote">
+<p>we can construct a sequence that contains <strong>all</strong> the elements of the set.</p>
+</blockquote>
+<p>We do not need to finish writing the list. We simply need a rule specifying what occupies position <span class="math inline">\(1\)</span>, position <span class="math inline">\(2\)</span>, position <span class="math inline">\(3\)</span>, and so on.</p>
+<p>When this is possible, the set is <span class="conceito"><strong>countable</strong></span>.</p>
+</section>
+<section id="some-infinite-sets-we-can-list" class="level3">
+<h3 class="anchored" data-anchor-id="some-infinite-sets-we-can-list">Some infinite sets we can list</h3>
+<p>The first example is almost immediate.</p>
+<p>The positive integers can be listed as</p>
+<p><span class="math display">\[
+1,2,3,4,5,\ldots
+\]</span></p>
+<p>Now consider all the integers,</p>
+<p><span class="math display">\[
+\mathbb Z=\{\ldots,-3,-2,-1,0,1,2,3,\ldots\}.
+\]</span></p>
+<p>At first glance, it seems that we now have “more” numbers on both sides. But we can still organize them into a single sequence:</p>
+<p><span class="math display">\[
+0,\;1,\;-1,\;2,\;-2,\;3,\;-3,\ldots
+\]</span></p>
+<p>Or, thinking in terms of positions,</p>
+<p><span class="math display">\[
+\begin{array}{ccccccc}
+1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6 &amp; \cdots\\
+\downarrow &amp; \downarrow &amp; \downarrow &amp; \downarrow &amp; \downarrow &amp; \downarrow &amp; \\
+0 &amp; 1 &amp; -1 &amp; 2 &amp; -2 &amp; 3 &amp; \cdots
+\end{array}
+\]</span></p>
+<p>Therefore, <span class="math inline">\(\mathbb Z\)</span> is also countable.</p>
+<p>The same is true of the rational numbers,</p>
+<p><span class="math display">\[
+\mathbb Q
+=
+\left\{
+\frac{p}{q}:p,q\in\mathbb Z,\;q\neq0
+\right\}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+\frac12,\quad
+-\frac34,\quad
+\frac57,\quad
+2,\quad
+-\frac{11}{3}
+\]</span></p>
+<p>are all elements of <span class="math inline">\(\mathbb Q\)</span>.</p>
+<p>Here the list is less obvious, because there are infinitely many rational numbers between two integers.</p>
+<p>Even so, we can organize them systematically.</p>
+<p>For example, one possible sequence starts like this:</p>
+<p><span class="math display">\[
+q_1=0,\qquad
+q_2=1,\qquad
+q_3=-1,\qquad
+q_4=\frac12,\qquad
+q_5=-\frac12,\qquad
+q_6=2,\qquad
+q_7=-2,\qquad
+\ldots
+\]</span></p>
+<p>or, more visually,</p>
+<p><span class="math display">\[
+0,\;
+1,\;
+-1,\;
+\frac12,\;
+-\frac12,\;
+2,\;
+-2,\;
+\frac13,\;
+-\frac13,\;
+\frac23,\;
+-\frac23,\;
+\ldots
+\]</span></p>
+<p>The exact order is not the main point.</p>
+<p>What matters is that there is <strong>some enumeration rule</strong> that allows us to put all the rational numbers into a sequence</p>
+<p><span class="math display">\[
+q_1,q_2,q_3,\ldots
+\]</span></p>
+<p>without leaving out any rational number.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{\mathbb Q\text{ is infinite but countable}.}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{\mathbb N,\;\mathbb Z\;\text{and}\;\mathbb Q\text{ are infinite but countable}.}
+\]</span></p>
+<p>This is one of the first surprising things we encounter when studying infinity: sets that seem much larger can still have their elements organized into a sequence.</p>
+</section>
+<section id="can-every-infinite-set-be-listed" class="level3">
+<h3 class="anchored" data-anchor-id="can-every-infinite-set-be-listed">Can every infinite set be listed?</h3>
+<p>No.</p>
+<p>Cantor showed that there are infinite sets too large to fit into any sequence</p>
+<p><span class="math display">\[
+x_1,x_2,x_3,\ldots
+\]</span></p>
+<p>These sets are called <span class="conceito"><strong>uncountable</strong></span>.</p>
+<p>The example that matters to us is precisely</p>
+<p><span class="math display">\[
+[0,1].
+\]</span></p>
+<p>In a moment, we will see a short and beautiful proof of this.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="The classification we will use">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The classification we will use
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\boxed{
+\text{sets}
+\longrightarrow
+\begin{cases}
+\text{finite}\\
+\text{infinite}
+\begin{cases}
+\text{countable}\\
+\text{uncountable}
+\end{cases}
+\end{cases}
+}
+\]</span></p>
+<p>The idea of a <strong>sequence</strong> will be fundamental because Kolmogorov’s third axiom allows us to sum probabilities over a countable collection of events.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="when-we-cannot-list-the-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="when-we-cannot-list-the-outcomes">When we cannot list the outcomes</h2>
+<p>We can now isolate the new difficulty.</p>
+<p>Consider</p>
+<p><span class="math display">\[
+\Omega=[0,1].
+\]</span></p>
+<p>The new question is this: can we list all the points of <span class="math inline">\([0,1]\)</span> as</p>
+<p><span class="math display">\[
+\omega_1,\omega_2,\omega_3,\ldots \; ?
+\]</span></p>
+<p>The answer is <strong>no</strong>.</p>
+<p>More precisely, sets such as <span class="math inline">\((0,1)\)</span> and <span class="math inline">\([0,1]\)</span> are <span class="conceito"><strong>uncountable</strong></span>.</p>
+<p>This means that there <strong>is no</strong> infinite list</p>
+<p><span class="math display">\[
+\omega_1,\omega_2,\omega_3,\ldots
+\]</span></p>
+<p>that captures all their elements.</p>
+<p>Let’s look at a short and beautiful proof from Tsitsiklis’s lecture.</p>
+<section id="an-intuitive-proof-by-contradiction" class="level3">
+<h3 class="anchored" data-anchor-id="an-intuitive-proof-by-contradiction">An intuitive proof by contradiction</h3>
+<p>A <span class="conceito"><strong>proof by contradiction</strong></span> works as follows:</p>
+<ol type="1">
+<li>we temporarily assume that the statement we want to negate is true;</li>
+<li>we follow the logical consequences of that assumption;</li>
+<li>if we arrive at an absurdity or impossibility, we conclude that the initial assumption was wrong.</li>
+</ol>
+<p>In very simple terms:</p>
+<blockquote class="blockquote">
+<p>“Let’s pretend for a moment that this can be done.<br>
+If that assumption leads us to a dead end, then it was not actually possible.”</p>
+</blockquote>
+</section>
+<section id="cantors-proof-why-01-cannot-be-listed" class="level3">
+<h3 class="anchored" data-anchor-id="cantors-proof-why-01-cannot-be-listed">Cantor’s proof: why <span class="math inline">\([0,1]\)</span> cannot be listed</h3>
+<p>Rather than looking at all the numbers in <span class="math inline">\([0,1]\)</span> at once, let’s focus on a specific subset:</p>
+<p><span class="math display">\[
+A=\{x\in[0,1]: \text{ the decimal expansion of }x\text{ uses only the digits }2\text{ and }7\}.
+\]</span></p>
+<p>There is nothing special about using 2 and 7; this is simply an example sufficient for what we want to do here.</p>
+<p>For example, some elements of <span class="math inline">\(A\)</span> are:</p>
+<p><span class="math display">\[
+0.2222\ldots,\quad
+0.72727\ldots,\quad
+0.277772\ldots,\quad
+0.7722227\ldots
+\]</span></p>
+<p>If even this special set could be listed, then we could write something like this:</p>
+<p><span class="math display">\[
+x_1,\;x_2,\;x_3,\;\ldots
+\]</span></p>
+<p>with <strong>all</strong> the elements of <span class="math inline">\(A\)</span> appearing somewhere in the list.</p>
+<p>Let’s assume that this <strong>is possible</strong>.</p>
+<section id="step-1-assuming-it-is-possible-we-start-listing-some-of-these-numbers" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-assuming-it-is-possible-we-start-listing-some-of-these-numbers">Step 1: Assuming it is possible, we start listing some of these numbers</h4>
+<p>Imagine a list like this:</p>
+<div style="font-family: monospace; line-height: 1.8;">
+<p>x1 = 0. <strong style="color: red;">2</strong> 7 2 7 7 2 …<br>
+x2 = 0. 7 <strong style="color: red;">2</strong> 7 2 7 7 …<br>
+x3 = 0. 2 2 <strong style="color: red;">7</strong> 7 2 7 …<br>
+x4 = 0. 7 7 2 <strong style="color: red;">2</strong> 7 2 …<br>
+…</p>
+</div>
+<p>We then ask ourselves:</p>
+<ul>
+<li>Can this sequence exhaust all the possible elements of <span class="math inline">\(A\)</span>?</li>
+</ul>
+<p>Now look at the <strong>first decimal digit</strong> of <span class="math inline">\(x_1\)</span>, the <strong>second decimal digit</strong> of <span class="math inline">\(x_2\)</span>, the <strong>third decimal digit</strong> of <span class="math inline">\(x_3\)</span>, and so on.</p>
+<p>These digits form what is called the <strong>diagonal</strong> of the list.</p>
+</section>
+<section id="step-2-the-key-trick-construct-a-new-number-that-could-belong-to-the-sequence" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-the-key-trick-construct-a-new-number-that-could-belong-to-the-sequence">Step 2: The key trick: construct a new number that could belong to the sequence</h4>
+<p>Now let’s construct a new number <span class="math inline">\(y\)</span> of the form: <span class="math inline">\(y=0.y_1y_2y_3\ldots\)</span></p>
+<p>The construction rule is very simple:</p>
+<ul>
+<li>look at the <strong>first decimal digit</strong> of <span class="math inline">\(x_1\)</span>, which is <span class="math inline">\(2\)</span>, and replace it with <span class="math inline">\(7\)</span></li>
+<li>look at the <strong>second decimal digit</strong> of <span class="math inline">\(x_2\)</span>, which is <span class="math inline">\(2\)</span>, and replace it with <span class="math inline">\(7\)</span></li>
+<li>look at the <strong>third decimal digit</strong> of <span class="math inline">\(x_3\)</span>, which is <span class="math inline">\(7\)</span>, and replace it with <span class="math inline">\(2\)</span></li>
+<li>and so on</li>
+</ul>
+<p>Focusing on the highlighted diagonal, for example, if the diagonal of the list were</p>
+<pre class="text"><code>2, 2, 7, 2, ...</code></pre>
+<p>then we would construct</p>
+<pre class="text"><code>7, 7, 2, 7, ...</code></pre>
+<p>In the end, following this rule of <strong>Cantor’s diagonal argument</strong>, we obtain a number <span class="math inline">\(y=0.7727\ldots\)</span>.</p>
+</section>
+<section id="step-3-would-this-number-appear-in-the-sequence" class="level4">
+<h4 class="anchored" data-anchor-id="step-3-would-this-number-appear-in-the-sequence">Step 3: Would this number appear in the sequence?</h4>
+<p>Notice that this new number <span class="math inline">\(y\)</span> <strong>still belongs to</strong> <span class="math inline">\(A\)</span>, because its decimal expansion also uses only the digits <span class="math inline">\(2\)</span> and <span class="math inline">\(7\)</span>.</p>
+<p>But it cannot equal any of the numbers in the list, as we can see below:</p>
+<ul>
+<li><span class="math inline">\(y\neq x_1\)</span>, because it differs from <span class="math inline">\(x_1\)</span> in the <strong>first decimal digit</strong>;</li>
+<li><span class="math inline">\(y\neq x_2\)</span>, because it differs from <span class="math inline">\(x_2\)</span> in the <strong>second decimal digit</strong>;</li>
+<li><span class="math inline">\(y\neq x_3\)</span>, because it differs from <span class="math inline">\(x_3\)</span> in the <strong>third decimal digit</strong>;</li>
+<li>and so on.</li>
+</ul>
+<p>In general, we have just discovered that</p>
+<p><span class="math display">\[
+y\neq x_i \quad \text{for every }i.
+\]</span></p>
+<p>In other words, we constructed an element of <span class="math inline">\(A\)</span> that <strong>does not appear</strong> in the list!</p>
+<p>Following our proof by contradiction, we started from the assumption that we could list all the elements of <span class="math inline">\(A\)</span> in a sequence, but ended up with a conclusion contradicting the assumption that the list contained all the elements of <span class="math inline">\(A\)</span>.</p>
+</section>
+<section id="step-4-conclusion" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-conclusion">Step 4: Conclusion</h4>
+<p>Thus, our initial assumption was wrong.</p>
+<p>Therefore, the set <span class="math inline">\(A\)</span> <strong>is uncountable</strong>.</p>
+<p>Since <span class="math inline">\(A\subset[0,1]\)</span>, we conclude that the interval <span class="math inline">\([0,1]\)</span> itself cannot be countable.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="The takeaway from the proof">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The takeaway from the proof
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Even a very special subset of <span class="math inline">\([0,1]\)</span> is already too large to fit into a list.</p>
+<p>All the more reason why the entire interval cannot be enumerated.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="what-about-the-entire-set-of-real-numbers-mathbb-r" class="level3">
+<h3 class="anchored" data-anchor-id="what-about-the-entire-set-of-real-numbers-mathbb-r">What about the entire set of real numbers, <span class="math inline">\(\mathbb R\)</span>?</h3>
+<p>Proving this directly for the entire set of real numbers would require a little more organization.</p>
+<p>But conceptually, the essential difficulty has already appeared here.</p>
+<p>If the interval <span class="math inline">\([0,1]\)</span>, which is contained in <span class="math inline">\(\mathbb R\)</span>, is already uncountable, then the set of all real numbers cannot be countable either.</p>
+<p>What matters to us in this chapter is the <strong>probabilistic consequence</strong>:</p>
+<blockquote class="blockquote">
+<p>when the sample space is a continuum such as <span class="math inline">\([0,1]\)</span>, we cannot treat its points as a sequence <span class="math inline">\(\omega_1,\omega_2,\omega_3,\ldots\)</span>.</p>
+</blockquote>
+<p>And this is exactly what will come up <strong>when we try to use Kolmogorov’s third axiom</strong> for something very interesting later on.</p>
+</section>
+</section>
+<section id="the-strange-part-the-whole-has-probability-1-but-each-point-has-probability-0" class="level2">
+<h2 class="anchored" data-anchor-id="the-strange-part-the-whole-has-probability-1-but-each-point-has-probability-0">The strange part: the whole has probability <span class="math inline">\(1\)</span>, but each point has probability <span class="math inline">\(0\)</span></h2>
+<p>Before moving into the continuous case, it is worth revisiting an infinite case in which everything still works in a familiar way.</p>
+<p>Imagine the experiment:</p>
+<blockquote class="blockquote">
+<p><strong>toss a coin repeatedly until the first heads appears.</strong></p>
+</blockquote>
+<p>If we record the toss on which the first heads appears, we have <span class="math inline">\(\Omega=\{1,2,3,\ldots\}.\)</span></p>
+<p>This sample space is infinite but <span class="conceito"><strong>countable</strong></span>: we can organize all possible outcomes into a <strong>list</strong> <span class="math inline">\(1,2,3,4,\ldots\)</span></p>
+<p>Each individual outcome corresponds to a singleton, <span class="math inline">\(\{1\},\{2\},\{3\},\ldots,\)</span> and if we model the coin as <strong>fair</strong>, we are choosing a specific probability law for this experiment, according to which</p>
+<p><span class="math display">\[
+P(\{1\})=\frac12,\qquad
+P(\{2\})=\frac14,\qquad
+P(\{3\})=\frac18,\qquad\ldots
+\]</span></p>
+<p>Since these events are mutually exclusive and the collection is countable, Kolmogorov’s third axiom applies directly:</p>
+<p><span class="math display">\[
+P(\Omega)
+=
+P\left(\bigcup_{n=1}^{\infty}\{n\}\right)
+=
+\sum_{n=1}^{\infty}P(\{n\})
+=
+\frac12+\frac14+\frac18+\cdots
+=1.
+\]</span></p>
+<p>So far, the more “naive” intuition of looking only at <em>individual outcomes</em> when working with Kolmogorov’s third axiom works perfectly: we can think of the space <strong>as a list of individual outcomes</strong>, assign a probability to each one, and reconstruct larger events by <strong><em>adding</em></strong> these probabilities, without inconsistencies.</p>
+<p>But the most important point <strong>is not merely that the sum worked out</strong>. It is that the function <span class="math inline">\(P\)</span> remained <strong>consistent</strong> in this context.</p>
+<p><strong>Consider an example.</strong></p>
+<p>Suppose we want to ask the following question about the experiment:</p>
+<blockquote class="blockquote">
+<p><strong>“What is the probability that the first heads appears on one of the first three tosses?”</strong></p>
+</blockquote>
+<p>This event can be represented by <span class="math inline">\(A = \{1,2,3\}\)</span> and, as we know, it is a subset of the sample space.</p>
+<p>Since outcomes <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, and <span class="math inline">\(3\)</span> are mutually exclusive, we can break this question down into three smaller cases: <span class="math inline">\(P(\{1\})\)</span>, <span class="math inline">\(P(\{2\})\)</span>, and <span class="math inline">\(P(\{3\})\)</span>.</p>
+<p>But can we simply add these probabilities? More importantly: <strong>is this sum exactly the probability that <span class="math inline">\(A\)</span> occurs?</strong></p>
+<p>In other words, we want to know whether the third axiom really preserves the consistency of the function <span class="math inline">\(P\)</span> in this case:</p>
+<p><span class="math display">\[
+P(A)=P(\{1\}) + P(\{2\}) + P(\{3\}).
+\]</span></p>
+<p>Whether we calculate the probability of <span class="math inline">\(A\)</span> directly or break the question down into these three individual outcomes and add their probabilities, <strong>the answer must be the same</strong>.</p>
+<p>This is precisely the consistency we want to preserve in the function <span class="math inline">\(P\)</span>.</p>
+<section id="p-is-a-function-and-the-axioms-guarantee-its-internal-consistency" class="level3">
+<h3 class="anchored" data-anchor-id="p-is-a-function-and-the-axioms-guarantee-its-internal-consistency"><span class="math inline">\(P\)</span> is a function, and the axioms guarantee its internal consistency</h3>
+<p>We want to use <span class="math inline">\(P\)</span> to answer questions about a random experiment.</p>
+<p>Each question corresponds to an <strong>event</strong> <span class="math inline">\(A\subseteq\Omega\)</span>, and the function</p>
+<p><span class="math display">\[
+P(A)
+\]</span></p>
+<p>assigns a number to that event.</p>
+<p>Kolmogorov’s three axioms are not there to tell us, on their own, which numbers each event should receive. They tell us <strong>how a valid probability function must behave</strong>.</p>
+<p>The three requirements make sense when we think about the real-world phenomenon:</p>
+<ul>
+<li>probabilities cannot be negative;</li>
+<li>something in <span class="math inline">\(\Omega\)</span> necessarily occurs, so <span class="math inline">\(P(\Omega)=1\)</span>;</li>
+<li>if a question can be broken down into mutually exclusive possibilities, calculating the probability of the whole or of its parts cannot produce incompatible answers.</li>
+</ul>
+<p>It is this last requirement that will now be decisive.</p>
+<p>Suppose a broader event can occur in two mutually exclusive ways:</p>
+<p><span class="math display">\[
+A=A_1\cup A_2,
+\qquad
+A_1\cap A_2=\varnothing.
+\]</span></p>
+<p>Then the <strong>internal consistency of the function <span class="math inline">\(P\)</span></strong> requires</p>
+<p><span class="math display">\[
+P(A)=P(A_1)+P(A_2).
+\]</span></p>
+<p>In terms of the experiment: if we ask <em>“did <span class="math inline">\(A_1\)</span> <strong>or</strong> <span class="math inline">\(A_2\)</span> occur?”</em>, the answer cannot change simply because we decided to break that broader question into two smaller possibilities.</p>
+<p>And if the decomposition has infinitely many parts that can still be arranged <em>in a sequence</em>,</p>
+<p><span class="math display">\[
+A=A_1\cup A_2\cup A_3\cup\cdots,
+\]</span></p>
+<p>with the <span class="math inline">\(A_i\)</span> mutually exclusive, we want to preserve exactly the same consistency:</p>
+<p><span class="math display">\[
+P\left(\bigcup_{n=1}^{\infty}A_n\right)
+=
+\sum_{n=1}^{\infty}P(A_n).
+\]</span></p>
+<p>This is Kolmogorov’s third axiom: <span class="conceito"><strong>countable additivity</strong></span>.</p>
+<p>In the coin example, <strong>it applies directly to the singletons themselves</strong> because <span class="math inline">\(\Omega\)</span> is countable.</p>
+<p><strong>And this is where the key insight will come in when we switch to a continuous sample space — keep this in mind!</strong></p>
+<p>Now we return to the experiment we are interested in:</p>
+<blockquote class="blockquote">
+<p><strong>draw a number between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> at random.</strong></p>
+</blockquote>
+<p>Our sample space is</p>
+<p><span class="math display">\[
+\Omega=[0,1].
+\]</span></p>
+<p>As we have just proved using Cantor’s argument, this space is also infinite, but it is now <strong>uncountable</strong>: this means that <strong>there is no</strong> sequence</p>
+<p><span class="math display">\[
+\omega_1,\omega_2,\omega_3,\ldots
+\]</span></p>
+<p>that contains all its possible outcomes.</p>
+<p>This is where the story changes.</p>
+</section>
+<section id="this-is-where-measure-theory-comes-in" class="level3">
+<h3 class="anchored" data-anchor-id="this-is-where-measure-theory-comes-in">This is where measure theory comes in</h3>
+<p>So far, in countable spaces, we have been able to think of individual outcomes as the basic building blocks: we assign probabilities to singletons and reconstruct larger events by adding those probabilities.</p>
+<p>But in <span class="math inline">\(\Omega=[0,1]\)</span> this is no longer possible point by point, because there is no list containing all the outcomes.</p>
+<p>A natural question then arises:</p>
+<blockquote class="blockquote">
+<p><strong>How can we continue assigning probabilities to events consistently if we can no longer construct everything by adding the probabilities of individual outcomes?</strong></p>
+</blockquote>
+<p>This is precisely where modern probability theory <strong>borrows the framework of measure theory</strong>.</p>
+<p>The idea is simple and very powerful: rather than requiring the size of a set always to be constructed by adding the sizes of its points, we can assign a size <strong>directly to sets</strong>, provided that this assignment obeys consistency rules.</p>
+<p>A <span class="conceito"><strong>measure</strong></span> is, intuitively, a function that assigns a “size” to sets. Length measures intervals, area measures regions of the plane, and in probability theory, <span class="math inline">\(P\)</span> assigns <strong>probability mass</strong> to events.</p>
+<p>Probability is therefore a special case of a measure, normalized so that</p>
+<p><span class="math display">\[
+P(\Omega)=1.
+\]</span></p>
+<p>Kolmogorov’s axioms formalize precisely the properties that this function <span class="math inline">\(P\)</span> must satisfy to remain consistent.</p>
+<p>The most important conceptual point is:</p>
+<blockquote class="blockquote">
+<p><strong>we do not need to define the probability of an event as the sum of the probabilities of all the points that make it up.</strong></p>
+</blockquote>
+<p>We can assign probability directly to sets — to events — and require these assignments to be compatible with one another, especially when we break an event into a countable sequence of mutually exclusive parts.</p>
+<p>Later, we will formalize which sets can be assigned this probability measure by introducing <span class="math inline">\(\mathcal F\)</span>, measurability, and <span class="math inline">\(\sigma\)</span>-algebras. For now, we only want to understand why this change in perspective is necessary in the continuous case.</p>
+</section>
+<section id="omega01-cannot-be-listed-point-by-point" class="level3">
+<h3 class="anchored" data-anchor-id="omega01-cannot-be-listed-point-by-point"><span class="math inline">\(\Omega=[0,1]\)</span> cannot be listed point by point</h3>
+<p>Since <span class="math inline">\([0,1]\)</span> consists of all its points, in set theory we can certainly write</p>
+<p><span class="math display">\[
+[0,1]
+=
+\bigcup_{\omega\in[0,1]}\{\omega\}.
+\]</span></p>
+<p>There is no problem so far. In other words, the union of all its points is the entire set, of course.</p>
+<p>The problem arises if we try to treat this collection of singletons as a <strong>sequence</strong></p>
+<p><span class="math display">\[
+\{\omega_1\},\{\omega_2\},\{\omega_3\},\ldots
+\]</span></p>
+<p>because that would require <strong>the existence</strong> of a list <span class="math inline">\(\omega_1,\omega_2,\omega_3,\ldots\)</span> containing <strong>all</strong> the points of <span class="math inline">\([0,1]\)</span>.</p>
+<p>And we have just proved that this <strong>is impossible</strong>.</p>
+<p>The collection</p>
+<p><span class="math display">\[
+\{\{\omega\}:\omega\in[0,1]\}
+\]</span></p>
+<p>is also <strong>uncountable</strong>.</p>
+<p>Therefore, <strong>the third axiom does not authorize us to decompose the space point by point and turn this union into a (countable) sum of probabilities</strong>, as would be justified by countable additivity.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="🤨 So how does the third axiom still work here?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤨 So how does the third axiom still work here?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Measure theory has already given us the main conceptual shift: <strong><span class="math inline">\(P\)</span> is defined on events and does not need to be constructed by adding probabilities point by point</strong>.</p>
+<p>Now we want to understand how countable additivity continues to preserve the consistency of <span class="math inline">\(P\)</span> when we break a larger event into smaller parts.</p>
+<p><strong>This is the key point:</strong> we do not need to partition <span class="math inline">\(\Omega\)</span> into singletons. We can partition an uncountable space into a <strong>countable collection of disjoint subsets</strong>, even if each of these subsets still contains uncountably many points.</p>
+</div>
+</div>
+</section>
+<section id="the-key-insight-we-enumerate-the-blocks-not-the-points" class="level3">
+<h3 class="anchored" data-anchor-id="the-key-insight-we-enumerate-the-blocks-not-the-points">The key insight: we enumerate the blocks, not the points</h3>
+<p>For example, consider</p>
+<p><span class="math display">\[
+A_1=(1/2,1],\qquad
+A_2=(1/4,1/2],\qquad
+A_3=(1/8,1/4],\qquad\ldots
+\]</span></p>
+<p>and, to complete <span class="math inline">\([0,1]\)</span>, we add the singleton <span class="math inline">\(\{0\}\)</span>.</p>
+<p>We can visualize this decomposition directly on the number line:</p>
+<pre class="text"><code>0        1/8        1/4              1/2                         1
+●---------|----------|----------------|---------------------------|
+   ...        A3              A2                     A1</code></pre>
+<p>where</p>
+<p><span class="math display">\[
+A_1=(1/2,1],\qquad
+A_2=(1/4,1/2],\qquad
+A_3=(1/8,1/4],\qquad\ldots
+\]</span></p>
+<p>and the point <span class="math inline">\(0\)</span> is included separately as the singleton <span class="math inline">\(\{0\}\)</span>.</p>
+<p>Visually, we are simply dividing <span class="math inline">\([0,1]\)</span> into disjoint blocks:</p>
+<p><span class="math display">\[
+[0,1]
+=
+\{0\}
+\cup \cdots
+\cup A_3
+\cup A_2
+\cup A_1.
+\]</span></p>
+<p>Notice what happened.</p>
+<p>The sample space is still <span class="math inline">\(\Omega=[0,1],\)</span> so it is still <strong>uncountable</strong>.</p>
+<p>Moreover, each interval <span class="math inline">\(A_i\)</span> also contains <strong>uncountably many points</strong>.</p>
+<p>What changed was something else: we managed to organize <strong>the blocks of the partition</strong> into a sequence.</p>
+<p>In fact, there is a simple rule for generating each one:</p>
+<p><span class="math display">\[
+A_n
+=
+\left(
+\frac{1}{2^n},
+\frac{1}{2^{\,n-1}}
+\right],
+\qquad n=1,2,3,\ldots
+\]</span></p>
+<p>Observe:</p>
+<p><span class="math display">\[
+n=1
+\quad\Rightarrow\quad
+A_1=(1/2,1],
+\]</span></p>
+<p><span class="math display">\[
+n=2
+\quad\Rightarrow\quad
+A_2=(1/4,1/2],
+\]</span></p>
+<p><span class="math display">\[
+n=3
+\quad\Rightarrow\quad
+A_3=(1/8,1/4],
+\]</span></p>
+<p>and so on.</p>
+<p>In other words, we can put <strong>each block</strong> into correspondence with a natural number:</p>
+<p><span class="math display">\[
+1\longleftrightarrow A_1,\qquad
+2\longleftrightarrow A_2,\qquad
+3\longleftrightarrow A_3,\qquad\ldots
+\]</span></p>
+<p>This is exactly what it means to say that this collection is <strong>countable</strong>.</p>
+<p>The singleton <span class="math inline">\(\{0\}\)</span> poses no problem: we simply include it as one more block of the partition. For example, we can call it <span class="math inline">\(A_0\)</span>.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+[0,1]
+=
+A_0\cup A_1\cup A_2\cup A_3\cup\cdots,
+\qquad
+A_0=\{0\}.
+\]</span></p>
+<p>Moreover, these blocks do not overlap: no outcome can belong to two of them at the same time.</p>
+<p>Therefore, we have a <strong>countable partition of an uncountable space</strong>.</p>
+<p>This is the key point:</p>
+<blockquote class="blockquote">
+<p><strong>We cannot enumerate the points of <span class="math inline">\([0,1]\)</span>. But we can partition <span class="math inline">\([0,1]\)</span> into a countable collection of subsets, even if each of these subsets contains uncountably many points.</strong></p>
+</blockquote>
+<p>And now Kolmogorov’s third axiom can be applied directly to this decomposition:</p>
+<p><span class="math display">\[
+P([0,1])
+=
+P(A_0)+P(A_1)+P(A_2)+P(A_3)+\cdots.
+\]</span></p>
+<p>The space has not become countable. <strong>It is the partition that is countable.</strong></p>
+<p>This is the <strong>key insight</strong>:</p>
+<blockquote class="blockquote">
+<p><strong>we have not made the space <span class="math inline">\([0,1]\)</span> countable. It remains uncountable. What we have managed to enumerate is the collection of subsets into which we chose to decompose the space.</strong></p>
+</blockquote>
+<p>We now satisfy the conditions of the third axiom.</p>
+<p>Since these events are mutually exclusive,</p>
+<p><span class="math display">\[
+P\left(\bigcup_{n=1}^{\infty}A_n\right)
+=
+\sum_{n=1}^{\infty}P(A_n).
+\]</span></p>
+<p>Therefore, even in an uncountable sample space, we can still <strong>break more complex questions into smaller questions</strong> and reconstruct the probability of the whole by adding the probabilities of the parts, provided that the family of parts over which we sum is countable.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="The central point">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The central point
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the countable discrete case, we can often use the individual outcomes themselves as the pieces of the decomposition.</p>
+<p>In the continuous case, this point-by-point strategy no longer works, because the points form an uncountable family.</p>
+<p>But this does not destroy the idea of probability: we continue to assign probability to events — that is, to sets — and continue to require that whenever an event can be decomposed into a <strong>countable sequence of mutually exclusive parts</strong>, the probability of the whole can be reconstructed by adding the probabilities of those parts.</p>
+<p>This is precisely the consistency that the third axiom protects.</p>
+</div>
+</div>
+</section>
+<section id="but-what-is-the-probability-of-a-singleton" class="level3">
+<h3 class="anchored" data-anchor-id="but-what-is-the-probability-of-a-singleton">But what is the probability of a singleton?</h3>
+<p>There is an important distinction here.</p>
+<p>So far, the axioms have told us <strong>how the function <span class="math inline">\(P\)</span> must behave</strong>.</p>
+<p>They have not yet told us which numerical values <span class="math inline">\(P\)</span> should assign to specific events.</p>
+<p>In particular, from the three axioms alone, we cannot conclude that</p>
+<p><span class="math display">\[
+P(\{0.37\})=0.
+\]</span></p>
+<p>To answer this, we need to take a second step: choose a <strong>specific probability law</strong> for the experiment.</p>
+<blockquote class="blockquote">
+<p><strong>The axioms provide the structure and internal consistency of the function <span class="math inline">\(P\)</span>; the probability law determines how probability is actually distributed across events.</strong></p>
+</blockquote>
+<p>Let’s now be more specific, that is, give an example of a possible <span class="math inline">\(P\)</span>.</p>
+<p>Suppose the number is drawn according to the <span class="conceito"><strong>uniform law</strong></span> on <span class="math inline">\([0,1]\)</span>.</p>
+<p>In this model, intervals of equal length have equal probability, and</p>
+<p><span class="math display">\[
+P([a,b])=b-a,
+\qquad 0\leq a\leq b\leq1.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+P([0.2,0.5])=0.3.
+\]</span></p>
+<p>Now we can ask:</p>
+<blockquote class="blockquote">
+<p>what is the probability of obtaining exactly <span class="math inline">\(0.37\)</span>?</p>
+</blockquote>
+<p>Consider increasingly smaller intervals around this point:</p>
+<p><span class="math display">\[
+A_2=[0.36,0.38],
+\]</span></p>
+<p><span class="math display">\[
+A_3=[0.369,0.371],
+\]</span></p>
+<p><span class="math display">\[
+A_4=[0.3699,0.3701],
+\]</span></p>
+<p>and so on.</p>
+<p>In general,</p>
+<p><span class="math display">\[
+A_n=
+\left[
+0.37-\frac{1}{10^n},
+0.37+\frac{1}{10^n}
+\right].
+\]</span></p>
+<p>These sets keep shrinking,</p>
+<p><span class="math display">\[
+A_2\supset A_3\supset A_4\supset\cdots,
+\]</span></p>
+<p>and their intersection contains only the point <span class="math inline">\(0.37\)</span>:</p>
+<p><span class="math display">\[
+\bigcap_{n=2}^{\infty}A_n=\{0.37\}.
+\]</span></p>
+<p>Since we are using the uniform law, the probability of each interval is its length:</p>
+<p><span class="math display">\[
+P(A_n)=\frac{2}{10^n}.
+\]</span></p>
+<p>And therefore,</p>
+<p><span class="math display">\[
+P(\{0.37\})
+=
+\lim_{n\to\infty}P(A_n)
+=
+\lim_{n\to\infty}\frac{2}{10^n}
+=0.
+\]</span></p>
+<p>Taking this limit is a consequence of countable additivity itself.</p>
+<p>Thus, in this model,</p>
+<p><span class="math display">\[
+\boxed{P(\{\omega\})=0\quad\text{for every }\omega\in[0,1].}
+\]</span></p>
+<p>Notice where this zero came from.</p>
+<p>It did <strong>not</strong> come simply from the fact that <span class="math inline">\([0,1]\)</span> is continuous.</p>
+<p>It did <strong>not</strong> come simply from the fact that <span class="math inline">\([0,1]\)</span> is uncountable.</p>
+<p>And it did <strong>not</strong> come directly from the three axioms.</p>
+<p>It came from the <strong>uniform law we have just chosen</strong>.</p>
+</section>
+<section id="now-comes-the-provocative-question" class="level3">
+<h3 class="anchored" data-anchor-id="now-comes-the-provocative-question">Now comes the provocative question</h3>
+<p>We have, simultaneously,</p>
+<p><span class="math display">\[
+\boxed{P([0,1])=1}
+\]</span></p>
+<p>by Kolmogorov’s second axiom, and</p>
+<p><span class="math display">\[
+\boxed{P(\{\omega\})=0\quad\text{for every }\omega\in[0,1]}
+\]</span></p>
+<p>by the uniform law we have just specified.</p>
+<p>Someone might then reason:</p>
+<p><span class="math display">\[
+[0,1]
+=
+\bigcup_{\omega\in[0,1]}\{\omega\}.
+\]</span></p>
+<p><em>“If every point has probability zero, why not add up all those zeros?”</em></p>
+<p>It is tempting to write</p>
+<p><span class="math display">\[
+P\left(
+\bigcup_{\omega\in[0,1]}\{\omega\}
+\right)
+\overset{\color{red}{?}}{=}
+\sum_{\omega\in[0,1]}P(\{\omega\}).
+\]</span></p>
+<p>And then arrive at</p>
+<p><span class="math display">\[
+1=0.
+\]</span></p>
+<p>But now we know exactly where the error lies.</p>
+<p>The third axiom guarantees additivity for a <strong>countable sequence</strong> of disjoint events:</p>
+<p><span class="math display">\[
+A_1,A_2,A_3,\ldots
+\]</span></p>
+<p>The family of singletons of <span class="math inline">\([0,1]\)</span> is not countable.</p>
+<p>There is no sequence</p>
+<p><span class="math display">\[
+\omega_1,\omega_2,\omega_3,\ldots
+\]</span></p>
+<p>that contains all the points of the interval.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\bigcup_{\omega\in[0,1]}\{\omega\}
+\neq
+\bigcup_{i=1}^{\infty}\{\omega_i\}
+}
+\]</span></p>
+<p>for any sequence <span class="math inline">\(\omega_1,\omega_2,\omega_3,\ldots\)</span>.</p>
+<p>We have not discovered that <span class="math inline">\(1=0\)</span>.</p>
+<p>We have discovered that we tried to use a rule outside the conditions under which it holds.</p>
+</section>
+<section id="the-strangeness-continues-remove-a-point-and-the-probability-is-still-1" class="level3">
+<h3 class="anchored" data-anchor-id="the-strangeness-continues-remove-a-point-and-the-probability-is-still-1">The strangeness continues: remove a point and the probability is still 1</h3>
+<p>We can now see why partitioning the space into larger blocks solves precisely the problem that the third axiom needs to address.</p>
+<p>In the uniform model,</p>
+<p><span class="math display">\[
+P(A_1)=\frac12,\qquad
+P(A_2)=\frac14,\qquad
+P(A_3)=\frac18,\qquad\ldots
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+P((0,1])
+=
+\sum_{i=1}^{\infty}P(A_i)
+=
+\frac12+\frac14+\frac18+\cdots
+=
+1.
+\]</span></p>
+<p>Now comes another consequence that seems strange at first glance.</p>
+<p>The interval <span class="math inline">\((0,1]\)</span> differs from <span class="math inline">\([0,1]\)</span>: we removed the point <span class="math inline">\(0\)</span>.</p>
+<p>Even so, in this uniform model,</p>
+<p><span class="math display">\[
+P(\{0\})=0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+P([0,1])
+=
+P((0,1])+P(\{0\})
+=
+1+0
+=
+1.
+\]</span></p>
+<p>In other words, <strong>removing one possible outcome from the space did not change the total probability</strong>.</p>
+<p>This may seem contradictory: after all, <span class="math inline">\([0,1]\)</span> and <span class="math inline">\((0,1]\)</span> are different sets.</p>
+<p>But the function <span class="math inline">\(P\)</span> is not simply measuring whether two sets contain exactly the same elements. It assigns probability to these events according to the chosen law. And under the uniform law, a singleton such as <span class="math inline">\(\{0\}\)</span> is assigned probability zero.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+[0,1]\neq(0,1],
+\]</span></p>
+<p>but</p>
+<p><span class="math display">\[
+P([0,1])=P((0,1])=1.
+\]</span></p>
+<p>This already anticipates an important idea: <strong>different events can have the same probability</strong>.</p>
+<p>Returning to the main point:</p>
+<ol type="1">
+<li>point by point, we have an <strong>uncountable</strong> collection of singletons, so countable additivity cannot be applied in this way;</li>
+<li>by grouping the points into a <strong>countable partition of disjoint subsets</strong>, we can apply the third axiom as usual;</li>
+<li>each of these subsets can still contain uncountably many points.</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>The space can be uncountable. What must be countable is the collection of events over which we sum.</strong></p>
+</blockquote>
+</section>
+</section>
+<section id="the-madness-of-uncertainty-about-an-individual-outcome" class="level2">
+<h2 class="anchored" data-anchor-id="the-madness-of-uncertainty-about-an-individual-outcome">The madness of uncertainty about an individual outcome</h2>
+<section id="speaking-of-probability-0" class="level3">
+<h3 class="anchored" data-anchor-id="speaking-of-probability-0">Speaking of probability <span class="math inline">\(0\)</span></h3>
+<p>We have reached one of the strangest — and most beautiful — consequences of continuous models.</p>
+<p>Consider again the uniform experiment on</p>
+<p><span class="math display">\[
+\Omega=[0,1].
+\]</span></p>
+<p>Choose a specific point, for example</p>
+<p><span class="math display">\[
+\omega=0.372814\ldots
+\]</span></p>
+<p>Since a single point has zero length,</p>
+<p><span class="math display">\[
+P(\{\omega\})=0.
+\]</span></p>
+<p>So far, so good.</p>
+<p><strong><em>But what if we perform (or realize) the experiment?</em></strong></p>
+<p>Some value in <span class="math inline">\([0,1]\)</span> will certainly be observed!</p>
+<p>Perhaps it will be <span class="math inline">\(0.372814\ldots\)</span> or some other point.</p>
+<p>But whatever value is observed, <strong>before the experiment that singleton had probability zero</strong>. 😲</p>
+<p>In other words:</p>
+<p><span class="math display">\[
+\boxed{\text{the outcome that actually occurred had probability }0.}
+\]</span></p>
+<p>This seems absurd the first time we see it.</p>
+<p>But it is <strong>exactly</strong> what happens in a continuous model.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="🤯 So something with probability zero actually happened?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤯 So something with probability zero actually happened?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Yes.</p>
+<p>What occurred in the trial was an <strong>individual outcome</strong> <span class="math inline">\(\omega\)</span>.</p>
+<p>And, in a continuous model like this,</p>
+<p><span class="math display">\[
+P(\{\omega\})=0
+\]</span></p>
+<p>for each individual point.</p>
+<p>Therefore, an event having probability zero does not necessarily imply that it is the empty set, that is, that it contains none of the possible outcomes in <span class="math inline">\(\Omega\)</span>:</p>
+<p><span class="math display">\[
+\boxed{P(A)=0\;\not\Rightarrow\;A=\varnothing.}
+\]</span></p>
+<p>A singleton such as <span class="math inline">\(\{0.372814\ldots\}\)</span> is not impossible. It is a perfectly possible outcome of the experiment — it simply has <strong>probability measure zero</strong>.</p>
+</div>
+</div>
+<p>This distinction is important.</p>
+<p>Another interesting point is that we are <strong>not</strong> saying that the point has an “infinitesimally small” probability. In this model, <span class="math inline">\(P(\{\omega\})=0\)</span> <strong>exactly</strong>.</p>
+<p>In experiments with a <strong>continuous sample space</strong>, a much more useful way to think probabilistically is not to ask about the probability of an exact point, but about the probability that the outcome falls <strong>near</strong> that point.</p>
+<p>In mathematics, we often use <span class="math inline">\(\varepsilon&gt;0\)</span> to represent a small distance around a number. Thus, around <span class="math inline">\(\omega\)</span>, we can imagine the small interval</p>
+<pre class="text"><code>                 ω
+                 ●
+        |--------|--------|
+      ω - ε      ω      ω + ε</code></pre>
+<p>The smaller <span class="math inline">\(\varepsilon\)</span> is, the narrower this neighborhood around <span class="math inline">\(\omega\)</span> becomes.</p>
+<p>Instead of asking for the probability of the exact point,</p>
+<p><span class="math display">\[
+P(X=\omega),
+\]</span></p>
+<p>we can then ask for the probability that the outcome falls within this small interval:</p>
+<p><span class="math display">\[
+P(\omega-\varepsilon&lt;X&lt;\omega+\varepsilon).
+\]</span></p>
+<p>As <span class="math inline">\(\varepsilon\)</span> decreases, the interval shrinks and, in this continuous model, its probability also approaches zero.</p>
+<p>Later, this idea will help us understand why the <span class="conceito"><strong>probability density</strong></span>, usually denoted by <span class="math inline">\(f_X(x)\)</span>, <strong>is not the probability of a point</strong>, that is,</p>
+<p><span class="math display">\[
+f_X(x) \neq P(X=x).
+\]</span></p>
+<p>But the strangeness does not end here.</p>
+</section>
+<section id="and-does-probability-1-mean-absolute-certainty" class="level3">
+<h3 class="anchored" data-anchor-id="and-does-probability-1-mean-absolute-certainty">And does probability <span class="math inline">\(1\)</span> mean absolute certainty?</h3>
+<p>Now consider the event</p>
+<p><span class="math display">\[
+A=[0,1]\setminus\{0.5\}.
+\]</span></p>
+<p>In other words, any outcome is accepted, <strong>except exactly <span class="math inline">\(0.5\)</span></strong>.</p>
+<p>We already know that</p>
+<p><span class="math display">\[
+P(\{0.5\})=0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+P(A)
+=
+P([0,1])-P(\{0.5\})
+=
+1-0
+=
+1.
+\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[
+\boxed{P(A)=1.}
+\]</span></p>
+<p>But be careful:</p>
+<p><span class="math display">\[
+A\neq\Omega.
+\]</span></p>
+<p>The outcome <span class="math inline">\(0.5\)</span> still belongs to the sample space.</p>
+<p>It is still a possible outcome of the experiment.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{P(A)=1\;\not\Rightarrow\;A=\Omega.}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Two counterintuitive facts">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Two counterintuitive facts
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In continuous models, <span class="math inline">\(P(A)=0\)</span> does not necessarily mean that <span class="math inline">\(A\)</span> is impossible.</p>
+<p>And <span class="math inline">\(P(A)=1\)</span> does not necessarily mean that <span class="math inline">\(A\)</span> literally contains all possible outcomes.</p>
+<p>This is why, later on, we will encounter the expression <span class="conceito"><strong>almost surely</strong></span>: an event can occur with probability <span class="math inline">\(1\)</span> even when there are possible outcomes, of total probability zero, in which it does not occur.</p>
+</div>
+</div>
+<p>This is one of those situations in which everyday language and mathematical language begin to diverge.</p>
+<p>In everyday life, we tend to use</p>
+<blockquote class="blockquote">
+<p>“probability zero”</p>
+</blockquote>
+<p>as synonymous with</p>
+<blockquote class="blockquote">
+<p>“this will never happen”.</p>
+</blockquote>
+<p>But mathematically, these two statements are different.</p>
+<p>And in continuous models, this difference is more than a curiosity:</p>
+<ul>
+<li><strong>every trial ends at some individual point of probability zero</strong>. 😲</li>
+</ul>
+</section>
+</section>
+<section id="returning-to-mathcal-f-where-p-is-defined" class="level2">
+<h2 class="anchored" data-anchor-id="returning-to-mathcal-f-where-p-is-defined">Returning to <span class="math inline">\(\mathcal F\)</span>: where <span class="math inline">\(P\)</span> is defined</h2>
+<p>One final question remains.</p>
+<p>Recall the construction we made:</p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span> contains all the possible elementary outcomes of the experiment;</li>
+<li>an event <span class="math inline">\(A\subseteq\Omega\)</span> represents a <strong>question about the experiment</strong>;</li>
+<li><span class="math inline">\(\mathcal F\)</span> brings together precisely the questions we decided to consider in our probability model.</li>
+</ul>
+<p>For example, if <span class="math inline">\(\Omega=\{1,2,3,4,5,6\}\)</span>, the event</p>
+<p><span class="math display">\[
+A=\{2,4,6\}
+\]</span></p>
+<p>represents the question:</p>
+<blockquote class="blockquote">
+<p><strong>was the outcome even?</strong></p>
+</blockquote>
+<p>When we write</p>
+<p><span class="math display">\[
+A\in\mathcal F,
+\]</span></p>
+<p>we are saying that this question belongs to the collection of events on which our probability function is defined.</p>
+<p>In other words, we can ask for</p>
+<p><span class="math display">\[
+P(A).
+\]</span></p>
+<p>This is also the intuitive interpretation of the word <span class="conceito"><strong>measurable</strong></span>.</p>
+<blockquote class="blockquote">
+<p>An event <span class="math inline">\(A\)</span> is <strong>measurable</strong> when <span class="math inline">\(A\in\mathcal F\)</span>: it is a set to which our probability measure <span class="math inline">\(P\)</span> can assign a value.</p>
+</blockquote>
+<p>In other words,</p>
+<p><span class="math display">\[
+A\in\mathcal F
+\quad\Longrightarrow\quad
+P(A)\text{ is defined.}
+\]</span></p>
+<p>In simple finite spaces, we can usually include all possible questions:</p>
+<p><span class="math display">\[
+\mathcal F=2^\Omega.
+\]</span></p>
+<p>That is, every subset of <span class="math inline">\(\Omega\)</span> can be treated as an event.</p>
+<p>In continuous spaces, however, there are sufficiently irregular subsets for which we cannot define a probability measure while preserving all the properties we require of <span class="math inline">\(P\)</span>.</p>
+<p>For this reason, rather than necessarily using all subsets of <span class="math inline">\(\Omega\)</span>, we choose a collection <span class="math inline">\(\mathcal F\)</span> of <strong>measurable events</strong>.</p>
+<p>But <span class="math inline">\(\mathcal F\)</span> cannot be just any collection either.</p>
+<p>Recall the idea of closure: if we can formulate certain questions about the experiment, we also want to be able to formulate questions naturally constructed from them.</p>
+<p>For example, if <span class="math inline">\(A\in\mathcal F\)</span> represents</p>
+<blockquote class="blockquote">
+<p>“does the outcome belong to <span class="math inline">\(A\)</span>?”,</p>
+</blockquote>
+<p>we also want to be able to ask</p>
+<blockquote class="blockquote">
+<p>“does the outcome <strong>not</strong> belong to <span class="math inline">\(A\)</span>?”</p>
+</blockquote>
+<p>Therefore,</p>
+<p><span class="math display">\[
+A\in\mathcal F
+\quad\Longrightarrow\quad
+A^c\in\mathcal F.
+\]</span></p>
+<p>Similarly, if we have a sequence of events <span class="math inline">\(A_1,A_2,A_3,\ldots\)</span> in <span class="math inline">\(\mathcal F\)</span>, we want to be able to ask</p>
+<blockquote class="blockquote">
+<p>“did at least one of these events occur?”</p>
+</blockquote>
+<p>This question corresponds to the union</p>
+<p><span class="math display">\[
+\bigcup_{i=1}^{\infty}A_i,
+\]</span></p>
+<p>and therefore we require that</p>
+<p><span class="math display">\[
+A_1,A_2,A_3,\ldots\in\mathcal F
+\quad\Longrightarrow\quad
+\bigcup_{i=1}^{\infty}A_i\in\mathcal F.
+\]</span></p>
+<p>A family with these properties — and which contains <span class="math inline">\(\Omega\)</span> — is called a <span class="conceito"><strong><span class="math inline">\(\sigma\)</span>-algebra</strong></span>.</p>
+<p>The operational idea is simple:</p>
+<blockquote class="blockquote">
+<p><strong><span class="math inline">\(\mathcal F\)</span> must contain the questions we want to ask and must also contain the new questions we construct from them.</strong></p>
+</blockquote>
+<p>Thus, probabilistic operations <strong>never take us outside the domain</strong> of <span class="math inline">\(P\)</span>.</p>
+</section>
+<section id="when-omega-lies-on-the-real-line-the-borel-sigma-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="when-omega-lies-on-the-real-line-the-borel-sigma-algebra">When <span class="math inline">\(\Omega\)</span> lies on the real line: the Borel <span class="math inline">\(\sigma\)</span>-algebra</h2>
+<p>We can now connect this construction to the continuous case we are studying.</p>
+<p>Suppose our sample space is</p>
+<p><span class="math display">\[
+\Omega=[0,1].
+\]</span></p>
+<p>Recall the interpretation we are using:</p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span> contains the possible outcomes;</li>
+<li>an event is a <strong>question about the outcome of the experiment</strong>;</li>
+<li><span class="math inline">\(\mathcal F\)</span> contains the questions for which we want <span class="math inline">\(P\)</span> to be defined.</li>
+</ul>
+<p>If the outcome is a real number, many of the most natural questions are described by <strong>intervals</strong>.</p>
+<p>For example:</p>
+<blockquote class="blockquote">
+<p>“was the outcome between <span class="math inline">\(0.2\)</span> and <span class="math inline">\(0.5\)</span>?”</p>
+</blockquote>
+<p>corresponds to the event</p>
+<p><span class="math display">\[
+[0.2,0.5].
+\]</span></p>
+<p>Similarly, in real-world applications:</p>
+<ul>
+<li>“was the time between 2 and 5 seconds?” corresponds to an interval;</li>
+<li>“was the temperature above 30°C?” corresponds to an interval;</li>
+<li>“was the spending less than R$ 100?” corresponds to an interval.</li>
+</ul>
+<p>So, when working with quantities modeled on the real line, it seems natural to start our collection of events with <strong>intervals</strong>.</p>
+<p>But we want more than just the original intervals.</p>
+<p>If we can ask</p>
+<blockquote class="blockquote">
+<p>“was the outcome between 2 and 5?”</p>
+</blockquote>
+<p>we also want to be able to ask questions constructed from it, such as</p>
+<blockquote class="blockquote">
+<p>“was the outcome outside this interval?”</p>
+</blockquote>
+<p>or combine several regions of the real line into a single question.</p>
+<p>For this reason, we start with intervals and close this collection under the operations required of a <span class="math inline">\(\sigma\)</span>-algebra.</p>
+<p>The collection obtained in this way is called the <span class="conceito"><strong>Borel <span class="math inline">\(\sigma\)</span>-algebra</strong></span>.</p>
+<p>Intuitively:</p>
+<blockquote class="blockquote">
+<p><strong>the Borel <span class="math inline">\(\sigma\)</span>-algebra contains the sets we can construct from intervals on the real line by repeatedly using complements and countable unions.</strong></p>
+</blockquote>
+<p>It is the <strong>smallest <span class="math inline">\(\sigma\)</span>-algebra containing the intervals of the real line</strong>.</p>
+<p>This means that we are not simply putting every imaginable subset of <span class="math inline">\(\mathbb R\)</span> into <span class="math inline">\(\mathcal F\)</span>.</p>
+<p>We start with extremely natural objects — intervals — and include everything we need to add so that the collection remains closed under probabilistic operations.</p>
+<p>These sets are called <span class="conceito"><strong>Borel sets</strong></span>.</p>
+<p>Thus, in a model such as</p>
+<p><span class="math display">\[
+\Omega=[0,1],
+\]</span></p>
+<p>a natural choice is to work with the Borel sets contained in <span class="math inline">\([0,1]\)</span>.</p>
+<p>The probability function is then defined on these events:</p>
+<p><span class="math display">\[
+P:\mathcal F\longrightarrow[0,1].
+\]</span></p>
+<p>The intuitive interpretation remains exactly the same:</p>
+<blockquote class="blockquote">
+<p><span class="math inline">\(\mathcal F\)</span> organizes the questions about the experiment for which we want it to make sense to ask <strong>“what is the probability that this happens?”</strong></p>
+</blockquote>
+<p>We do not need to learn how to construct the Borel <span class="math inline">\(\sigma\)</span>-algebra formally in this course.</p>
+<p>The important point is to understand why it appears: <strong>in continuous spaces, we need to choose carefully which sets will be measurable events, and intervals on the real line provide the natural starting point for this construction.</strong></p>
+</section>
+<section id="what-about-the-real-world" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-the-real-world">What about the real world?</h2>
+<p>This strange phenomenon appears very often in Data Science, <strong>but most people are not even aware of it</strong>!</p>
+<p>Imagine we are building a <strong>churn</strong> model.</p>
+<p>For each customer, we observe some characteristics and then whether the customer actually left or not.</p>
+<p>A small portion of the dataset might look like this:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>customer</th>
+<th style="text-align: right;">monthly spending (R$)</th>
+<th style="text-align: right;">hours in app/week</th>
+<th style="text-align: right;">tickets in the last 30 days</th>
+<th style="text-align: right;">observed churn (Y)</th>
+<th style="text-align: right;">estimated churn probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td style="text-align: right;">187.43</td>
+<td style="text-align: right;">6.72</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.08</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td style="text-align: right;">94.18</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.71</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td style="text-align: right;">231.06</td>
+<td style="text-align: right;">3.94</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.22</td>
+</tr>
+</tbody>
+</table>
+<p>Notice customer B.</p>
+<p>After the experiment took place, we observed:</p>
+<p><span class="math display">\[
+x_B=(94.18,\;1.37,\;3,\ldots)
+\]</span></p>
+<p>and we also observed that</p>
+<p><span class="math display">\[
+Y_B=1.
+\]</span></p>
+<p>That row is in the dataset.</p>
+<p>It <strong>happened</strong>.</p>
+<p>Now suppose that at least some of these characteristics are modeled as continuous.</p>
+<p>Then, for an exact feature vector <span class="math inline">\(x_B\)</span>,</p>
+<p><span class="math display">\[
+P(X=x_B=(94.18,\;1.37,\;3,\ldots))=0.
+\]</span></p>
+<p>And if we treat the complete outcome for that customer as the pair</p>
+<p><span class="math display">\[
+(X,Y)=(x_B,1)=(94.18,\;1.37,\;3,\ldots,1),
+\]</span></p>
+<p>we will also have, in this type of model,</p>
+<p><span class="math display">\[
+P(X=x_B,\;Y=1)=P(X=(94.18,\;1.37,\;3,\ldots),\;Y=1))=0.
+\]</span></p>
+<p>Even so, it was precisely a realization of this kind that appeared before us in the dataset.</p>
+<p>It is the same “madness” we have just seen in the interval:</p>
+<blockquote class="blockquote">
+<p><strong>the fact that an individual outcome has probability zero does not prevent it from being the observed outcome of a trial.</strong></p>
+</blockquote>
+</section>
+<section id="what-changed" class="level2">
+<h2 class="anchored" data-anchor-id="what-changed">What changed?</h2>
+<p>The structure remains the same:</p>
+<p><span class="math display">\[
+\boxed{(\Omega,\mathcal F,P)}.
+\]</span></p>
+<p>But we now better understand the role of each component, even when <span class="math inline">\(\Omega\)</span> cannot be listed outcome by outcome:</p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span>: which outcomes can occur;</li>
+<li><span class="math inline">\(\mathcal F\)</span>: which questions about these outcomes we can represent as measurable events;</li>
+<li><span class="math inline">\(P\)</span>: what probability we assign to each of these questions.</li>
+</ul>
+<p>In the discrete case, we can often think of probability as <strong>mass placed on individual points</strong>.</p>
+<p>In the continuous case, this intuition is no longer sufficient:</p>
+<p><span class="math display">\[
+\boxed{\text{discrete: mass on points}}
+\;\longrightarrow\;
+\boxed{\text{continuous: measure of sets}}.
+\]</span></p>
+<p>This is the main conceptual leap of the chapter.</p>
+<p>The next step will be to return to the third characteristic of a random experiment:</p>
+<blockquote class="blockquote">
+<p><strong>what happens when we repeat the experiment several times?</strong></p>
+</blockquote>
+</section>
+<section id="before-moving-on" class="level2">
+<h2 class="anchored" data-anchor-id="before-moving-on">Before moving on</h2>
+<ol type="1">
+<li><p>If we observe only <strong>purchase/no purchase</strong> during a session, why might <span class="math inline">\(\Omega=\{0,1\}\)</span> be sufficient? What changes if we also want to represent time?</p></li>
+<li><p>In the uniform model on <span class="math inline">\([0,1]\)</span>, we have <span class="math inline">\(P(\{\omega\})=0\)</span> for each point and <span class="math inline">\(P([0,1])=1\)</span>. Where exactly is the error in the attempt to conclude that <span class="math inline">\(1=0\)</span>?</p></li>
+<li><p>Where does the idea of <span class="conceito"><strong>countability</strong></span> come in? What must be countable for us to apply Kolmogorov’s third axiom directly: the sample space or the collection of events being united?</p></li>
+<li><p>Why does <span class="math inline">\(P(A)=0\)</span> not imply <span class="math inline">\(A=\varnothing\)</span> in a continuous model? And why does <span class="math inline">\(P(A)=1\)</span> not require <span class="math inline">\(A=\Omega\)</span> either?</p></li>
+<li><p>What problem does <span class="math inline">\(\mathcal F\)</span> solve? What does it mean to say that an event is <strong>measurable</strong>?</p></li>
+<li><p>Why, in a continuous model, are questions such as <span class="math inline">\(P(2&lt;T&lt;5)\)</span> generally more natural than <span class="math inline">\(P(T=t)\)</span> for an exact value <span class="math inline">\(t\)</span>?</p></li>
+<li><p>What is the main intuitive difference between thinking about probability in the discrete case and in the continuous case?</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/03_2_dgp.html" class="pagination-link" aria-label="Where Do Data Come From? The Data Generating Process">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Where Do Data Come From? The Data Generating Process</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/05_sampling_space.html" class="pagination-link" aria-label="Part 2 of 2 - Sampling Space">
+        <span class="nav-page-text"><span class="chapter-title">Part 2 of 2 - Sampling Space</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
