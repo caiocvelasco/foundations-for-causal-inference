@@ -10,6 +10,7 @@ project:
 book:
   title: "Foundations for Causal Inference"
   subtitle: "Lecture Notes"
+  google-analytics: "G-DBT664T94D"
 
   search: true
 
